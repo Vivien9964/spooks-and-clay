@@ -1,6 +1,50 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Playfair Display", serif;
-  --font-body: "Nunito", sans-serif;
+
+  /* Fonts */
+  --font-display: "Fraunces", serif;
+  --font-body: "Lora", serif;
+
+  /* Primary color: pumpkin */
+  --color-pumpkin-100: #FDECD8;
+  --color-pumpkin-300: #F4AF7C;
+  --color-pumpkin-500: #E8874A;
+  --color-pumpkin-700: #C46530;
+  --color-pumpkin-900: #8A3D10;
+
+  /* Background: cream */
+  --color-cream-50:  #FEFAF2;
+  --color-cream-100: #FAF3E0;
+  --color-cream-200: #F2E4C4;
+  --color-cream-300: #E0CC9C;
+  --color-cream-400: #C8B080;
+
+  /* Text: bark */
+  --color-bark-300: #C8A87A;
+  --color-bark-500: #8C6040;
+  --color-bark-700: #5C3820;
+  --color-bark-900: #2A1810;
+
+  /* Accent 1: sage */
+  --color-sage-100: #D8E8C8;
+  --color-sage-300: #A8C890;
+  --color-sage-500: #7A9E62;
+  --color-sage-700: #4E6E3E;
+  --color-sage-900: #2C3E20;
+
+
+  /* Accent 2: plum */
+   --color-plum-100: #F0D8E4;
+  --color-plum-300: #C890A8;
+  --color-plum-500: #8E3A5A;
+  --color-plum-700: #5E1F35;
+  --color-plum-900: #3A1020;
+
+}
+
+@layer base {
+  body {
+    @apply bg-cream-100 text-bark-700 font-body
+  }
 }

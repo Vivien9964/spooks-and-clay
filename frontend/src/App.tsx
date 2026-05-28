@@ -1,19 +1,27 @@
 
-import Button from "./components/ui/Button";
-import Badge from "./components/ui/Badge";
+// Path aliases to simplify import paths as the application grows
+// vite.config.ts -> added resolve: { alias: { "@": path.resolve(_dirname, "src")}}
+// tsconfig.app.json -> added in compilerOptions "baseUrl": ".", "paths": { "@/*": ["src/*"]}
+import HomePage from "@/pages/HomePage"
+import ShopPage from "@/pages/ShopPage"
+import ProductPage from "@/pages/ProductPage"
+import OrdersPage from "@/pages/OrdersPage" 
+
+import { Routes, Route } from "react-router-dom"
+import RootLayout from "@/layouts/RootLayout"
 
 function App() {
 
   return (
     <>
-      <Button variant="primary">Add to cart</Button>
-      <Button variant="secondary">Out of stock</Button>
-      <Button variant="ghost">Learn more</Button>
-
-
-      <Badge variant="warning">Out of stock</Badge>
-      <Badge variant="neutral">New</Badge>
-      <Badge variant="positive">50% Off</Badge>
+      <Routes>
+          <Route element={<RootLayout /> }>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/shop" element={<ShopPage />} />
+            <Route path="/product/:slug" element={<ProductPage />} />
+            <Route path="/orders" element={<OrdersPage />} />
+          </Route>
+      </Routes>
     </>
   )
 }

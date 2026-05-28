@@ -7,15 +7,15 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 // Base style and style config can stay 
-const baseStyle = "px-4 py-2 rounded-xl cursor-pointer font-body font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+const baseStyle = "px-4 py-2 rounded-xl cursor-pointer font-body font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pumpkin-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
 
 const styleConfig = {
 
-    primary: "bg-orange-400 hover:bg-orange-500 text-amber-950 border-orange-700 hover:border-orange-700",
+    primary: "bg-pumpkin-500 hover:bg-pumpkin-700 text-bark-900",
 
-    secondary: "bg-transparent hover:bg-orange-50 text-orange-600 hover:text-orange-700 border-orange-600",
+    secondary: "bg-transparent border border-pumpkin-500 text-pumpkin-700 hover:bg-pumpkin-100 hover:border-pumpkin-700",
 
-    ghost: "bg-transparent text-stone-500 hover:text-stone-700 border-transparent"
+    ghost: "bg-transparent text-bark-500 hover:text-bark-700 hover:bg-cream-200"
 }
 
 
