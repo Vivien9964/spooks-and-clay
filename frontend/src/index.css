@@ -3,44 +3,60 @@
 @theme {
 
   /* Fonts */
-  --font-display: "Fraunces", serif;
-  --font-body: "Lora", serif;
+  --font-display: "Yeseva One", serif;
+  --font-body: "Nunito", sans-serif;
 
   /* Primary color: pumpkin */
-  --color-pumpkin-100: #FDECD8;
-  --color-pumpkin-300: #F4AF7C;
-  --color-pumpkin-500: #E8874A;
-  --color-pumpkin-700: #C46530;
-  --color-pumpkin-900: #8A3D10;
+  --color-pumpkin-100: #FFF3EA;
+  --color-pumpkin-300: #FFB060;
+  --color-pumpkin-500: #FF6B1F;
+  --color-pumpkin-700: #D94500;
+  --color-pumpkin-900: #9E2E00;
 
   /* Background: cream */
-  --color-cream-50:  #FEFAF2;
-  --color-cream-100: #FAF3E0;
-  --color-cream-200: #F2E4C4;
-  --color-cream-300: #E0CC9C;
-  --color-cream-400: #C8B080;
+  --color-cream-50:  #FDFBFF;
+  --color-cream-100: #F4F0FF;
+  --color-cream-200: #EAE2FF;
+  --color-cream-300: #D5CAFF;
+  --color-cream-400: #BAA8F0;
 
   /* Text: bark */
-  --color-bark-300: #C8A87A;
-  --color-bark-500: #8C6040;
-  --color-bark-700: #5C3820;
-  --color-bark-900: #2A1810;
+  --color-bark-300: #B8A8CC;
+  --color-bark-500: #7A608A;
+  --color-bark-700: #4A2C5E;
+  --color-bark-900: #1E0A35;
 
   /* Accent 1: sage */
-  --color-sage-100: #D8E8C8;
-  --color-sage-300: #A8C890;
-  --color-sage-500: #7A9E62;
-  --color-sage-700: #4E6E3E;
-  --color-sage-900: #2C3E20;
+  --color-sage-100: #E0F0E8;
+  --color-sage-300: #A0CEBC;
+  --color-sage-500: #5CA080;
+  --color-sage-700: #38725A;
+  --color-sage-900: #1A3E30;
 
 
   /* Accent 2: plum */
-   --color-plum-100: #F0D8E4;
-  --color-plum-300: #C890A8;
-  --color-plum-500: #8E3A5A;
-  --color-plum-700: #5E1F35;
-  --color-plum-900: #3A1020;
+  --color-plum-100: #F2E8FF;
+  --color-plum-300: #CC99EE;
+  --color-plum-500: #8B3FCE;
+  --color-plum-700: #5E1E9A;
+  --color-plum-900: #360A6E;
 
+  /* Animations */
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-float-md: float 4.5s ease-in-out 0.5s infinite;
+  --animate-float-lg: float 5.5s ease-in-out 1s infinite;
+
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float, .animate-float-md, .animate-float-lg {
+    animation: none;
+  }
 }
 
 @layer base {
