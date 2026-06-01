@@ -31,3 +31,7 @@ export type Product = {
     slug: string;
     isFeatured?: boolean;
 } & DiscountInfo
+
+export type CategoryFilter = Category | "all"
+
+export type SortOrder = "default" |"price-low" | "price-high"
