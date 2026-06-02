@@ -3,12 +3,13 @@ import { NavLink } from "react-router-dom"
 import clsx from "clsx"
 import { ShoppingBasket, Ghost, Menu, X } from 'lucide-react'
 import { useState } from "react"
+import { useCart } from "@/features/cart/CartContext"
 
 import Button from "@/components/ui/Button"
 
 
 
-  const navLinkStyle = ({ isActive }: { isActive: boolean }) => 
+const navLinkStyle = ({ isActive }: { isActive: boolean }) => 
     clsx(
         "inline-block px-3 py-1.5 rounded-lg text-base font-body",
         "text-bark-700 transition-all duration-200",
@@ -16,31 +17,29 @@ import Button from "@/components/ui/Button"
         isActive && "rotate-3 bg-pumpkin-100 text-pumpkin-700"
     )
 
- const mobileLinkStyle = ({ isActive }: { isActive: boolean }) =>
+const mobileLinkStyle = ({ isActive }: { isActive: boolean }) =>
     clsx(
         "font-display text-3xl text-bark-900 transition-colors duration-200",
         "hover:text-pumpkin-600",
         isActive && "rotate-3 text-pumpkin-600"
     )
 
- const navLinks = [
+const navLinks = [
     { to: "/", label: "Home", end: true},
     { to: "/shop",  label: "Shop" },
     { to: "/orders", label: "Orders" }
- ]
+]
 
 
  function Header() {
 
     const [ isMenuOpen, setIsMenuOpen ] = useState(false)
+    const { items, openCart } = useCart()
+
+    const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
 
     return (
-        <header className="
-                w-full py-4 px-6 sticky top-0 z-50
-                flex items-center justify-between
-                bg-cream-50 border-b border-cream-300
-              "
-        >
+        <header className="w-full py-4 px-6 sticky top-0 z-50 flex items-center justify-between bg-cream-50/95 backdrop-blur-sm border-b-2 border-bark-900">
             
             <NavLink to="/">
                 <span className="text-bark-700 text-2xl font-display font-bold">
@@ -64,7 +63,14 @@ import Button from "@/components/ui/Button"
             </nav>
 
             <div className="flex gap-6">
-                <Button variant="ghost"><ShoppingBasket className="text-bark-700"/></Button>
+                <Button variant="ghost" className="relative" onClick={openCart}><ShoppingBasket className="text-bark-700"/>
+                    {itemCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-pumpkin-500 text-cream-50 text-xs font-bold w-4 h-4 flex items-center justify-center rounded-full border border-bark-900">
+                    {itemCount}
+                </span>
+                )}
+                </Button>
+                
                 <Button variant="secondary" className="hidden md:inline-flex">
                     <span className="flex items-center gap-2 text-bark-700">
                         <Ghost />

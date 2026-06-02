@@ -6,10 +6,10 @@ import { products } from "@/data/products"
 
 const featured = products.filter((product) => product.isFeatured === true)
 const browseCategories = [
-    { slug: "figurines",          label: "Figurines",     tagline: "The ghosts live here" },
-    { slug: "accessories",        label: "Accessories",   tagline: "Wear a little weird" },
-    { slug: "seasonalCollections",label: "Collections",   tagline: "The whole haunted family" },
-    { slug: "uniquePieces",       label: "One of a Kind", tagline: "Catch it before it vanishes", rare: true },
+    { slug: "figurines",          label: "Figurines",     tagline: "The ghosts live here",       bg: "bg-cream-300",   textColor: "text-bark-900",    subtextColor: "text-bark-700",    dividerColor: "bg-bark-300" },
+    { slug: "accessories",        label: "Accessories",   tagline: "Wear a little weird",         bg: "bg-plum-300",    textColor: "text-plum-900",    subtextColor: "text-plum-700",    dividerColor: "bg-plum-500" },
+    { slug: "seasonalCollections",label: "Collections",   tagline: "The whole haunted family",    bg: "bg-sage-300",    textColor: "text-sage-900",    subtextColor: "text-sage-700",    dividerColor: "bg-sage-500" },
+    { slug: "uniquePieces",       label: "One of a Kind", tagline: "Catch it before it vanishes",  bg: "bg-pumpkin-300", textColor: "text-bark-900",    subtextColor: "text-pumpkin-900", dividerColor: "bg-pumpkin-700", rare: true },
 ]
 const trustItems = ["Handmade", "Tiny spooks", "Made with love", "No two alike", "Shipped with care"]
 
@@ -38,17 +38,17 @@ return (
 
                     <div className="flex items-end justify-center gap-4 md:gap-6 w-full max-w-2xl">
                         <div className="w-1/4 -rotate-2 animate-float shrink-0">
-                            <div className="bg-cream-50 p-2 border-2 border-bark-900 rounded-sm shadow-[4px_4px_0px_var(--color-bark-900)]">
+                            <div className="bg-cream-50 p-2 border-2 border-bark-900 rounded-sm">
                                 <img src="https://placehold.co/400x400" alt="Witch Hat Pin" className="w-full aspect-square object-cover" />
                             </div>
                         </div>
                         <div className="w-2/5 animate-float rotate-1 shrink-0">
-                            <div className="bg-cream-50 p-2 border-2 border-bark-900 rounded-sm shadow-[4px_4px_0px_var(--color-bark-900)]">
+                            <div className="bg-cream-50 p-2 border-2 border-bark-900 rounded-sm">
                                 <img src="https://placehold.co/400x400" alt="Pumpkin Patch Figurine" className="w-full aspect-square object-cover" />
                             </div>
                         </div>
                         <div className="w-1/4 -rotate-1 animate-float shrink-0">
-                            <div className="bg-cream-50 p-2 border-2 border-bark-900 rounded-sm shadow-[4px_4px_0px_var(--color-bark-900)]">
+                            <div className="bg-cream-50 p-2 border-2 border-bark-900 rounded-sm">
                                 <img src="https://placehold.co/400x400" alt="Friendly Ghost Figurine" className="w-full aspect-square object-cover" />
                             </div>
                         </div>
@@ -76,6 +76,44 @@ return (
                     ))}
                 </div>
             </div>
+
+            <section className="w-full bg-cream-100 py-16 md:py-24">
+                <div className="max-w-6xl mx-auto px-4">
+                    <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+
+                        <div className="flex justify-center">
+                            <div className="-rotate-2 bg-cream-50 p-3 border-2 border-bark-900 shadow-[6px_6px_0px_var(--color-bark-900)] w-full max-w-sm">
+                                <img
+                                    src="https://placehold.co/500x500"
+                                    alt="Ghost duo figurine — two clay ghosts on a moss and bark base"
+                                    className="w-full aspect-square object-cover"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col gap-5">
+                            <span className="font-body text-xs tracking-[0.2em] uppercase text-sage-700 bg-sage-100 px-3 py-1 rounded-full w-fit">
+                                Creature Feature
+                            </span>
+                            <h2 className="font-display text-4xl md:text-5xl text-bark-900 leading-tight">
+                                They've been here<br />since <span className="text-plum-500 italic">October.</span>
+                            </h2>
+                            <p className="font-body text-base text-bark-500 leading-relaxed">
+                                The little one won't let go of that pumpkin. The tall one is keeping watch. Neither is going anywhere - and honestly, that feels right.
+                            </p>
+                            <p className="font-body text-sm text-bark-300 italic">
+                                Sculpted by hand, one at a time. No moulds. No shortcuts.
+                            </p>
+                            <div className="pt-2">
+                                <Link to="/product/friendly-ghost-figurine">
+                                    <Button variant="primary">Meet the ghost</Button>
+                                </Link>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
 
             <section className="w-full bg-cream-200 py-12">
                 <div className="max-w-7xl mx-auto px-4 flex flex-col items-center gap-8">
@@ -123,9 +161,9 @@ return (
                                 key={index}
                                 to="/shop"
                                 aria-label={`Browse ${category.label}`}
-                                className="group flex flex-col bg-pumpkin-100 border-2 border-bark-900 rounded-sm p-2 shadow-[4px_4px_0px_var(--color-bark-900)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_var(--color-bark-900)] transition-all duration-200"
+                                className={`group flex flex-col ${category.bg} border-2 border-bark-900 rounded-sm p-2 shadow-[4px_4px_0px_var(--color-bark-900)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_var(--color-bark-900)] transition-all duration-200`}
                             >
-                                <div className="relative overflow-hidden border border-bark-300">
+                                <div className="relative overflow-hidden bg-cream-50 border border-bark-300">
                                     <img
                                         src="https://placehold.co/400x400"
                                         alt=""
@@ -139,12 +177,12 @@ return (
                                 </div>
                                 <div className="flex flex-col items-center gap-1 pt-2.5 pb-1.5 px-1">
                                     <div className="flex items-center gap-2 w-full">
-                                        <span className="flex-1 h-px bg-bark-300" />
-                                        <span className="text-bark-300 text-xs">✦</span>
-                                        <span className="flex-1 h-px bg-bark-300" />
+                                        <span className={`flex-1 h-px ${category.dividerColor} opacity-50`} />
+                                        <span className={`${category.textColor} text-xs opacity-60`}>✦</span>
+                                        <span className={`flex-1 h-px ${category.dividerColor} opacity-50`} />
                                     </div>
-                                    <span className="font-display text-base text-bark-900 text-center leading-tight">{category.label}</span>
-                                    <span className="font-body text-xs text-bark-500 text-center">{category.tagline}</span>
+                                    <span className={`font-display text-base ${category.textColor} text-center leading-tight`}>{category.label}</span>
+                                    <span className={`font-body text-xs ${category.subtextColor} text-center`}>{category.tagline}</span>
                                 </div>
                             </Link>
                         ))}
@@ -152,7 +190,45 @@ return (
 
                 </div>
             </section>
-            
+
+            <section className="w-full bg-bark-900 py-20">
+                <div className="max-w-4xl mx-auto px-4 flex flex-col items-center gap-8 text-center">
+
+                    <div className="flex items-center gap-3 w-40">
+                        <span className="flex-1 h-px bg-bark-500" />
+                        <span className="text-pumpkin-300 text-sm select-none">✦</span>
+                        <span className="flex-1 h-px bg-bark-500" />
+                    </div>
+
+                    <div className="flex flex-col gap-4">
+                        <h2 className="font-display text-4xl md:text-6xl text-cream-50 leading-tight">
+                            One of a Kind.<br />
+                            <span className="text-pumpkin-500">Gone when it's gone.</span>
+                        </h2>
+                        <p className="font-body text-base text-bark-300 max-w-md mx-auto leading-relaxed">
+                            Some pieces are made once and never repeated. No mould. No second run. When it finds its home, that's the only one that ever existed.
+                        </p>
+                    </div>
+
+                    <div className="-rotate-1 bg-cream-50 p-3 border-2 border-bark-700 shadow-[4px_4px_0px_var(--color-bark-700)] w-48">
+                        <img
+                            src="https://placehold.co/400x400"
+                            alt="Hand-Carved Moon Cat — one-of-a-kind clay sculpture"
+                            className="w-full aspect-square object-cover"
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-1 items-center">
+                        <span className="font-display text-2xl text-pumpkin-300">Hand-Carved Moon Cat</span>
+                        <span className="font-body text-sm text-bark-300">Only 1 exists · $120.00</span>
+                    </div>
+
+                    <Link to="/product/hand-carved-moon-cat">
+                        <Button variant="primary">Claim this piece</Button>
+                    </Link>
+
+                </div>
+            </section>
 
         </div>
     )

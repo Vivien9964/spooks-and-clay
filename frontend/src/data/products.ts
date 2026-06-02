@@ -10,7 +10,12 @@ export const products: readonly Product[] = [
         basePrice: 18.99,
         stockCount: 34,
         tags: ["pumpkin", "figurine", "autumn", "bestseller"],
-        images: [{ src: "https://placehold.co/400x400", alt: "Pumpkin Patch Figurine" }],
+        images: [
+                    { src: "https://placehold.co/400x400", alt: "Pumpkin Patch Figurine" },
+                    { src: "https://placehold.co/400x400", alt: "Pumpkin Patch Figurine" },
+                    { src: "https://placehold.co/400x400", alt: "Pumpkin Patch Figurine" },
+                    { src: "https://placehold.co/400x400", alt: "Pumpkin Patch Figurine" },
+                ],
         slug: "pumpkin-patch-figurine",
         isOnSale: false,
         isFeatured: true,
