@@ -1,9 +1,10 @@
 
-import { NavLink } from "react-router-dom"
+import { NavLink, Link } from "react-router-dom"
 import clsx from "clsx"
 import { ShoppingBasket, Ghost, Menu, X } from 'lucide-react'
 import { useState } from "react"
-import { useCart } from "@/features/cart/CartContext"
+import { useCartStore } from "@/store/cartStore"
+import { useUIStore } from "@/store/uiStore"
 
 import Button from "@/components/ui/Button"
 
@@ -20,8 +21,8 @@ const navLinkStyle = ({ isActive }: { isActive: boolean }) =>
 const mobileLinkStyle = ({ isActive }: { isActive: boolean }) =>
     clsx(
         "font-display text-3xl text-bark-900 transition-colors duration-200",
-        "hover:text-pumpkin-600",
-        isActive && "rotate-3 text-pumpkin-600"
+        "hover:text-pumpkin-500",
+        isActive && "rotate-3 text-pumpkin-500"
     )
 
 const navLinks = [
@@ -34,12 +35,11 @@ const navLinks = [
  function Header() {
 
     const [ isMenuOpen, setIsMenuOpen ] = useState(false)
-    const { items, openCart } = useCart()
-
-    const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
+    const itemCount = useCartStore((s) => s.items.reduce((sum, item) => sum + item.quantity, 0))
+    const openCart = useUIStore((s) => s.openCart)
 
     return (
-        <header className="w-full py-4 px-6 sticky top-0 z-50 flex items-center justify-between bg-cream-50/95 backdrop-blur-sm border-b-2 border-bark-900">
+        <header className="w-full py-4 px-6 sticky top-0 z-50 flex items-center justify-between bg-cream-50 border-b-2 border-bark-900">
             
             <NavLink to="/">
                 <span className="text-bark-700 text-2xl font-display font-bold">
@@ -78,7 +78,7 @@ const navLinks = [
                     </span>
                 </Button>
                 <button
-                    className="flex md:hidden p-2 text-bark-700 hover:text-pumpkin-700 transition-colors"
+                    className="flex md:hidden p-2 text-bark-700 hover:text-pumpkin-700 transition-colors relative z-50"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
                     {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -99,12 +99,12 @@ const navLinks = [
                         </NavLink>
                     ))}
                     <div className="px-3 py-3 border-t border-cream-300">
-                        <Button variant="secondary">
-                            <span className="flex items-center gap-2 text-bark-700">
-                                <Ghost />
-                                Log in
-                            </span>
-                        </Button>
+                            <Button variant="secondary">
+                                <span className="flex items-center gap-2 text-bark-700">
+                                    <Ghost />
+                                    Log in
+                                </span>
+                            </Button>                        
                     </div>
                 </div>
             )}

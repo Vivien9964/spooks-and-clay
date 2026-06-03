@@ -4,7 +4,7 @@ import Button from "@/components/ui/Button"
 import Badge from "@/components/ui/Badge"
 
 import { Link } from "react-router-dom"
-import { useCart } from "@/features/cart/CartContext"
+import { useCartStore } from "@/store/cartStore"
 
 const categoryLabels: Record<string, string> = {
     figurines: "Figurines",
@@ -19,7 +19,8 @@ interface ProductCardProps {
 
 function ProductCard({ product }: ProductCardProps) {
 
-    const { addItem } = useCart()
+    const addItem = useCartStore((s) => s.addItem)
+
     const productPrice = product.isOnSale ? product.basePrice * (1 - product.discountPercent / 100) : product.basePrice
     const categoryLabel = categoryLabels[product.category] ?? product.category
 

@@ -1,11 +1,16 @@
 
-import { useCart } from "@/features/cart/CartContext"
+import { useCartStore } from "@/store/cartStore"
+import { useUIStore } from "@/store/uiStore"
 import CartItem from "@/features/cart/CartItem"
 import Button from "@/components/ui/Button"
 import { X } from "lucide-react"
 
 function CartDrawer() {
-    const { items, isCartOpen, closeCart, clearCart } = useCart()
+    
+    const items = useCartStore((s) => s.items)
+    const clearCart = useCartStore((s) => s.clearCart)
+    const isCartOpen = useUIStore((s) => s.isCartOpen)
+    const closeCart = useUIStore((s) => s.closeCart)
 
     if(!isCartOpen) return null;
 

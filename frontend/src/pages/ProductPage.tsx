@@ -2,7 +2,8 @@
 import { useState } from "react"
 import { useParams, Link } from "react-router-dom"
 import { products } from "@/data/products"
-import { useCart } from "@/features/cart/CartContext"
+import { useCartStore } from "@/store/cartStore"
+import { useUIStore } from "@/store/uiStore"
 import Button from "@/components/ui/Button"
 import Badge from "@/components/ui/Badge"
 
@@ -16,7 +17,8 @@ const categoryLabels: Record<string, string> = {
 function ProductPage() {
 
     const { slug } = useParams<{ slug: string }>()
-    const { addItem, openCart } = useCart()
+    const addItem = useCartStore((s) => s.addItem)
+    const openCart = useUIStore((s) => s.openCart)
     const [selectedImage, setSelectedImage] = useState(0)
 
     const product = products.find((product) => product.slug === slug)

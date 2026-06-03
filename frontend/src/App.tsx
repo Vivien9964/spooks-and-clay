@@ -6,6 +6,7 @@ import HomePage from "@/pages/HomePage"
 import ShopPage from "@/pages/ShopPage"
 import ProductPage from "@/pages/ProductPage"
 import OrdersPage from "@/pages/OrdersPage" 
+import LoginPage from "@/pages/LoginPage"
 
 import { Routes, Route } from "react-router-dom"
 import RootLayout from "@/layouts/RootLayout"
@@ -20,6 +21,7 @@ function App() {
             <Route path="/shop" element={<ShopPage />} />
             <Route path="/product/:slug" element={<ProductPage />} />
             <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Route>
       </Routes>
     </>

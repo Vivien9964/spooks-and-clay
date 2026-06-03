@@ -1,5 +1,5 @@
 import type { CartItem as CartItemType } from "@/types/cart"
-import { useCart } from "@/features/cart/CartContext"
+import { useCartStore } from "@/store/cartStore"
 import QuantitySelector from "@/components/ui/QuantitySelector"
 import { Trash2 } from "lucide-react"
 
@@ -9,7 +9,8 @@ type CartItemProps = {
 
 function CartItem({ item }: CartItemProps) {
 
-    const { updateQty, removeItem } = useCart()
+    const updateQty = useCartStore((s) => s.updateQty)
+    const removeItem = useCartStore((s) => s.removeItem)
 
    return (
     <div className="flex items-center gap-4 py-3 border-b border-cream-300">
