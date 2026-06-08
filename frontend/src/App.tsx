@@ -7,6 +7,7 @@ import ShopPage from "@/pages/ShopPage"
 import ProductPage from "@/pages/ProductPage"
 import OrdersPage from "@/pages/OrdersPage" 
 import LoginPage from "@/pages/LoginPage"
+import RegisterPage from "@/pages/RegisterPage"
 
 import { Routes, Route } from "react-router-dom"
 import RootLayout from "@/layouts/RootLayout"
@@ -22,6 +23,7 @@ function App() {
             <Route path="/product/:slug" element={<ProductPage />} />
             <Route path="/orders" element={<OrdersPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
           </Route>
       </Routes>
     </>

@@ -71,12 +71,14 @@ const navLinks = [
                 )}
                 </Button>
                 
+                <Link to="/login">
                 <Button variant="secondary" className="hidden md:inline-flex">
                     <span className="flex items-center gap-2 text-bark-700">
                         <Ghost />
                         Log in
                     </span>
                 </Button>
+                </Link>
                 <button
                     className="flex md:hidden p-2 text-bark-700 hover:text-pumpkin-700 transition-colors relative z-50"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -99,12 +101,14 @@ const navLinks = [
                         </NavLink>
                     ))}
                     <div className="px-3 py-3 border-t border-cream-300">
+                        <Link to="/login">
                             <Button variant="secondary">
                                 <span className="flex items-center gap-2 text-bark-700">
                                     <Ghost />
                                     Log in
                                 </span>
-                            </Button>                        
+                            </Button> 
+                        </Link>                       
                     </div>
                 </div>
             )}

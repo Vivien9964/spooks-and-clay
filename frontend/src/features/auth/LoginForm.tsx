@@ -20,7 +20,7 @@ function LoginForm() {
 
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form className="flex flex-col gap-5 mt-6" onSubmit={handleSubmit(onSubmit)}>
             <Input 
                 label="Email"
                 type="email"
@@ -33,7 +33,7 @@ function LoginForm() {
                 error={errors.password?.message}
                 {...register("password")}
             />
-            <Button type="submit">Log in</Button>
+            <Button type="submit" className="w-full mt-2 py-3 text-base">Log in</Button>
 
 
 
