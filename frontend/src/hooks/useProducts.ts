@@ -14,6 +14,7 @@ export function useProducts({ searchTerm, selectedCategory, sortOrder}: UseProdu
 
     const productCategories = [...new Set(products.map((product) => product.category))];
     const [ debouncedSearchTerm, setDebouncedSearchTerm ] = useState("")
+    const [ isLoading, setIsLoading ] = useState(true)
 
     const sortedProducts = useMemo(() => {
 
@@ -39,6 +40,11 @@ export function useProducts({ searchTerm, selectedCategory, sortOrder}: UseProdu
         const timer = setTimeout(() => setDebouncedSearchTerm(searchTerm), 300)
         return () => clearTimeout(timer)
     }, [searchTerm])
+
+    useEffect(() => {
+        const timer = setTimeout(() => setIsLoading(false), 1000)
+        return () => clearTimeout(timer)
+    }, [])
     
 
 
@@ -46,7 +52,8 @@ export function useProducts({ searchTerm, selectedCategory, sortOrder}: UseProdu
 
     return {
         productCategories,
-        sortedProducts
+        sortedProducts,
+        isLoading
     }
 
 

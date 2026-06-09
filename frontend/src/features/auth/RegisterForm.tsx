@@ -21,7 +21,7 @@ function RegisterForm() {
     return (
         <form className="flex flex-col gap-5 mt-6" onSubmit={handleSubmit(onSubmit)}>
             <Input 
-                label="name"
+                label="Full Name"
                 type="text"
                 error={errors.name?.message}
                 {...register("name")}

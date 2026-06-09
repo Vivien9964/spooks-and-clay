@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useProducts } from "@/hooks/useProducts"
 
 import ProductCard from "@/features/products/ProductCard"
+import ProductCardSkeleton from "@/features/products/ProductCardSkeleton"
 
 
 function ShopPage() {
@@ -11,7 +12,7 @@ function ShopPage() {
     const [ selectedCategory, setSelectedCategory ] = useState<CategoryFilter>("all")
     const [ sortOrder, setSortOrder ] = useState<SortOrder>("default")
 
-    const { productCategories, sortedProducts } = useProducts({ searchTerm, selectedCategory, sortOrder })
+    const { productCategories, sortedProducts, isLoading } = useProducts({ searchTerm, selectedCategory, sortOrder})
 
 
     const onSaleCount = sortedProducts.filter(p => p.isOnSale).length
@@ -71,7 +72,13 @@ function ShopPage() {
             </div>
 
             <div className="max-w-7xl mx-auto px-4 py-10 w-full">
-                {sortedProducts.length === 0 ? (
+                {isLoading ? (
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+                            {Array.from({ length: 8 }).map((_, i) => (
+                                <ProductCardSkeleton key={i} />
+                            ))}
+                        </div>
+                ) :sortedProducts.length === 0 ? (
                     <div className="bg-cream-50 border-2 border-bark-900 shadow-[4px_4px_0px_var(--color-bark-900)] rounded-sm p-16 flex flex-col items-center gap-4 text-center">
                         <h2 className="font-display text-2xl text-bark-900">Nothing stirring in the hollow.</h2>
                         <p className="font-body text-sm text-bark-500 italic">Try a different search, or clear the filter.</p>

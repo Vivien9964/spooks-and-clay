@@ -28,7 +28,7 @@ function Footer() {
                 </nav>
 
                 <p className="font-body text-xs text-bark-500">
-                    &copy; {new Date().getFullYear()} Spooks &amp; Clay &mdash; All rights reserved.
+                    &copy; {new Date().getFullYear()} Spooks &amp; Clay ✦ All rights reserved.
                 </p>
 
             </div>

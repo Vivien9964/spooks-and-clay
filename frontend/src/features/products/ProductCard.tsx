@@ -1,9 +1,12 @@
 
+
 import type { Product } from "@/types/product"
 import Button from "@/components/ui/Button"
 import Badge from "@/components/ui/Badge"
 
 import { Link } from "react-router-dom"
+import { toast } from "sonner"
+
 import { useCartStore } from "@/store/cartStore"
 
 const categoryLabels: Record<string, string> = {
@@ -23,6 +26,11 @@ function ProductCard({ product }: ProductCardProps) {
 
     const productPrice = product.isOnSale ? product.basePrice * (1 - product.discountPercent / 100) : product.basePrice
     const categoryLabel = categoryLabels[product.category] ?? product.category
+
+    const handleAddToCart = () => {
+        addItem(product);
+        toast.success(`${product.name} added to cart!`);
+    }
 
     return(
         <div className="flex flex-col h-full group overflow-hidden bg-cream-50 border-2 border-bark-900 rounded-sm shadow-[3px_3px_0px_var(--color-bark-900)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_var(--color-bark-900)] transition-all duration-200">
@@ -66,7 +74,7 @@ function ProductCard({ product }: ProductCardProps) {
                     <Button
                         variant="primary"
                         className="flex-1"
-                        onClick={() => addItem(product)}
+                        onClick={handleAddToCart}
                     >
                         Add to Cart
                     </Button>
