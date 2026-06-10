@@ -1,10 +1,12 @@
 
-import { NavLink, Link } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import clsx from "clsx"
 import { ShoppingBasket, Ghost, Menu, X } from 'lucide-react'
 import { useState } from "react"
 import { useCartStore } from "@/store/cartStore"
 import { useUIStore } from "@/store/uiStore"
+import { useAuthStore } from "@/store/authStore"
+
 
 import Button from "@/components/ui/Button"
 
@@ -37,6 +39,22 @@ const navLinks = [
     const [ isMenuOpen, setIsMenuOpen ] = useState(false)
     const itemCount = useCartStore((s) => s.items.reduce((sum, item) => sum + item.quantity, 0))
     const openCart = useUIStore((s) => s.openCart)
+
+    const isLoggedIn = useAuthStore((s) => s.user !== null)
+    const logout = useAuthStore((s) => s.logout)
+    const navigate = useNavigate()
+
+    const handleAuthClick = () => {
+        if(isLoggedIn) {
+            logout()
+            navigate("/")
+        } else {
+            navigate("/login")
+        }
+
+        setIsMenuOpen(false)
+    }
+    
 
     return (
         <header className="w-full py-4 px-6 sticky top-0 z-50 flex items-center justify-between bg-cream-50 border-b-2 border-bark-900">
@@ -71,14 +89,12 @@ const navLinks = [
                 )}
                 </Button>
                 
-                <Link to="/login">
-                <Button variant="secondary" className="hidden md:inline-flex">
+                <Button variant="secondary" className="hidden md:inline-flex" onClick={handleAuthClick}>
                     <span className="flex items-center gap-2 text-bark-700">
                         <Ghost />
-                        Log in
+                        {isLoggedIn ? "Log out" : "Log in"}
                     </span>
                 </Button>
-                </Link>
                 <button
                     className="flex md:hidden p-2 text-bark-700 hover:text-pumpkin-700 transition-colors relative z-50"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -101,14 +117,12 @@ const navLinks = [
                         </NavLink>
                     ))}
                     <div className="px-3 py-3 border-t border-cream-300">
-                        <Link to="/login">
-                            <Button variant="secondary">
-                                <span className="flex items-center gap-2 text-bark-700">
-                                    <Ghost />
-                                    Log in
-                                </span>
-                            </Button> 
-                        </Link>                       
+                        <Button variant="secondary" onClick={handleAuthClick}>
+                            <span className="flex items-center gap-2 text-bark-700">
+                                <Ghost />
+                                {isLoggedIn ? "Log out" : "Log in"}
+                            </span>
+                        </Button>                     
                     </div>
                 </div>
             )}

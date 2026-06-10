@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form"
+import { useNavigate, useLocation } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema, type LoginValues } from "@/features/auth/authSchema"
+import { useAuthStore } from "@/store/authStore"
 import Input from "@/components/ui/Input"
 import Button from "@/components/ui/Button"
 
@@ -12,8 +14,15 @@ function LoginForm() {
         resolver: zodResolver(loginSchema)
     })
 
+    const login = useAuthStore((s) => s.login)
+    const navigate = useNavigate()
+
+    const location = useLocation()
+    const from = location.state?.from?.pathname ?? "/account"
+
     const onSubmit = (data: LoginValues) => {
-        console.log(data)
+        login({ id: 1, name: "Bob Bingi", email: data.email, role: "customer", createdAt: "2024-06-19" })
+        navigate(from, { replace: true })
     }
 
 

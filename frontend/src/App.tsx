@@ -8,9 +8,12 @@ import ProductPage from "@/pages/ProductPage"
 import OrdersPage from "@/pages/OrdersPage" 
 import LoginPage from "@/pages/LoginPage"
 import RegisterPage from "@/pages/RegisterPage"
+import NotFoundPage from "@/pages/NotFoundPage"
+import AccountPage from "@/pages/AccountPage"
 
 import { Routes, Route } from "react-router-dom"
 import RootLayout from "@/layouts/RootLayout"
+import ProtectedRoute from "@/features/auth/ProtectedRoute"
 
 function App() {
 
@@ -21,9 +24,15 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/shop" element={<ShopPage />} />
             <Route path="/product/:slug" element={<ProductPage />} />
-            <Route path="/orders" element={<OrdersPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+
+            <Route element={<ProtectedRoute />}>  
+              <Route path="/account" element={<AccountPage />} />
+              <Route path="/orders" element={<OrdersPage />} />
+            </Route>
+
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
       </Routes>
     </>
