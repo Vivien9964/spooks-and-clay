@@ -1,5 +1,5 @@
 
-import { NavLink, useNavigate } from "react-router-dom"
+import { NavLink, useNavigate, Link } from "react-router-dom"
 import clsx from "clsx"
 import { ShoppingBasket, Ghost, Menu, X } from 'lucide-react'
 import { useState } from "react"
@@ -43,6 +43,8 @@ const navLinks = [
     const isLoggedIn = useAuthStore((s) => s.user !== null)
     const logout = useAuthStore((s) => s.logout)
     const navigate = useNavigate()
+
+    const user = useAuthStore((s) => s.user)
 
     const handleAuthClick = () => {
         if(isLoggedIn) {
@@ -88,7 +90,13 @@ const navLinks = [
                 </span>
                 )}
                 </Button>
-                
+
+                 {isLoggedIn && user && (
+                <Link to="/account" className="hidden md:flex items-center text-bark-700 hover:text-pumpkin-700 transition-colors">
+                    {user.name}
+                </Link>
+                )}
+
                 <Button variant="secondary" className="hidden md:inline-flex" onClick={handleAuthClick}>
                     <span className="flex items-center gap-2 text-bark-700">
                         <Ghost />
@@ -116,7 +124,8 @@ const navLinks = [
                             {link.label}
                         </NavLink>
                     ))}
-                    <div className="px-3 py-3 border-t border-cream-300">
+                    <div className="flex flex-col items-center gap-4 px-3 py-3 border-t border-cream-300">
+                        {isLoggedIn && user && <Link to="/account" onClick={() => setIsMenuOpen(false)}>Hi, {user.name}</Link>}
                         <Button variant="secondary" onClick={handleAuthClick}>
                             <span className="flex items-center gap-2 text-bark-700">
                                 <Ghost />

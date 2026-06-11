@@ -21,7 +21,21 @@ function LoginForm() {
     const from = location.state?.from?.pathname ?? "/account"
 
     const onSubmit = (data: LoginValues) => {
-        login({ id: 1, name: "Bob Bingi", email: data.email, role: "customer", createdAt: "2024-06-19" })
+        login({
+            id: 1,
+            name: "Bob Bingi",
+            email: data.email,
+            role: "customer",
+            createdAt: "2024-06-19",
+            phone: "+40 712 345 678",
+            address: {
+                country: "Romania",
+                city: "Arad",
+                street: "Strada Dunari",
+                number: "12",
+                postalCode: "315300",
+            },
+        })
         navigate(from, { replace: true })
     }
 
