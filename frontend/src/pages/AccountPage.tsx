@@ -159,7 +159,7 @@ function AccountPage() {
                                                 </div>
                                                 <div className="flex items-center gap-4">
                                                     <span className="font-body text-xs text-bark-300">x{item.quantity}</span>
-                                                    <span className="font-body text-sm text-bark-500">${item.unitPrice.toFixed(2)}</span>
+                                                    <span className="font-body text-sm text-bark-500">{item.unitPrice.toFixed(2)} Lei</span>
                                                 </div>
                                             </div>
                                         ))}
@@ -170,7 +170,7 @@ function AccountPage() {
                                     <div className="flex justify-between items-center">
                                         <span className="font-body text-sm text-bark-500 font-semibold">Order total</span>
                                         <span className="font-display text-lg text-pumpkin-700">
-                                            ${order.items.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0).toFixed(2)}
+                                            {order.items.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0).toFixed(2)} Lei
                                         </span>
                                     </div>
 
