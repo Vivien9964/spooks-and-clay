@@ -46,7 +46,7 @@ function CartDrawer() {
                     <div className="p-4 border-t border-cream-300 flex flex-col gap-3">
                         <div className="flex justify-between font-body font-bold text-bark-900">
                             <span>Total</span>
-                            <span>${total.toFixed(2)}</span>
+                            <span>{total.toFixed(2)} Lei</span>
                         </div>
                         <Button variant="primary" className="w-full">Checkout</Button>
                         <Button variant="ghost" onClick={clearCart}>Clear cart</Button>

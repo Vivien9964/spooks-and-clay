@@ -23,7 +23,7 @@ function CartItem({ item }: CartItemProps) {
         <div className="flex-1">
             <p className="font-body font-bold text-bark-900">{item.product.name}</p>
             <p className="text-bark-500 text-sm">
-                ${(item.product.basePrice * item.quantity).toFixed(2)}
+                {(item.product.basePrice * item.quantity).toFixed(2)} Lei
             </p>
         </div>
 
