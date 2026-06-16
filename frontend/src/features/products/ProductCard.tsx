@@ -60,9 +60,9 @@ function ProductCard({ product }: ProductCardProps) {
                 )}
 
                 <div className="flex items-baseline gap-2 mt-auto pt-1">
-                    <span className="font-display text-xl text-pumpkin-700">${productPrice.toFixed(2)}</span>
+                    <span className="font-display text-xl text-pumpkin-700">{productPrice.toFixed(2)} Lei</span>
                     {product.isOnSale && (
-                        <span className="text-sm text-bark-300 line-through">${product.basePrice.toFixed(2)}</span>
+                        <span className="text-sm text-bark-300 line-through">{product.basePrice.toFixed(2)} Lei</span>
                     )}
                 </div>
 

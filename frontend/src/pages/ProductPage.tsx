@@ -101,10 +101,10 @@ function ProductPage() {
                         <h1 className="font-display text-4xl text-bark-900 leading-tight">{product.name}</h1>
 
                         <div className="flex items-baseline gap-3 flex-wrap">
-                            <span className="font-display text-3xl text-pumpkin-700">${price.toFixed(2)}</span>
+                            <span className="font-display text-3xl text-pumpkin-700">{price.toFixed(2)} Lei</span>
                             {product.isOnSale && (
                                 <>
-                                    <span className="font-body text-lg text-bark-300 line-through">${product.basePrice.toFixed(2)}</span>
+                                    <span className="font-body text-lg text-bark-300 line-through">{product.basePrice.toFixed(2)} Lei</span>
                                     <Badge variant="positive">{product.discountPercent}% off</Badge>
                                 </>
                             )}

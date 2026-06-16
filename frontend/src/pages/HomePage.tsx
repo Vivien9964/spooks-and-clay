@@ -133,7 +133,7 @@ return (
                     </div>
 
                     <Link to="/shop">
-                        <Button variant="ghost">Browse all</Button>
+                        <Button variant="secondary">Browse all</Button>
                     </Link>
 
                 </div>
@@ -217,7 +217,7 @@ return (
 
                     <div className="flex flex-col gap-1 items-center">
                         <span className="font-display text-2xl text-pumpkin-300">The Potion Keeper</span>
-                        <span className="font-body text-sm text-bark-300">Only 1 exists · $120.00</span>
+                        <span className="font-body text-sm text-bark-300">Only 1 exists · 50.00 Lei</span>
                     </div>
 
                     <Link to="/product/the-potion-keeper">

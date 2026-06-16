@@ -44,6 +44,8 @@ function AccountPage() {
 
     const user = useAuthStore((s) => s.user)
     const addItem = useCartStore((s) => s.addItem)
+    const logOut = useAuthStore((s) => s.logout)
+
 
     if(!user) {
         return null;
@@ -91,7 +93,10 @@ function AccountPage() {
                             Member since {new Date(user.createdAt).toLocaleDateString()}
                         </p>
 
-                        <Button variant="ghost" className="w-full mt-4 flex items-center justify-center gap-2 hover:text-pumpkin-700">
+                        <Button 
+                            variant="ghost" 
+                            onClick={logOut}
+                            className="w-full mt-4 flex items-center justify-center gap-2 hover:text-pumpkin-700">
                             <LogOut className="w-4 h-4" aria-hidden="true" />
                             Log out
                         </Button>

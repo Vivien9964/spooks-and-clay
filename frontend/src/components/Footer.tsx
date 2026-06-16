@@ -24,7 +24,6 @@ function Footer() {
                 <nav className="flex flex-wrap justify-center gap-6">
                     <NavLink to="/" end className="font-body text-sm text-bark-300 hover:text-pumpkin-300 transition-colors duration-200">Home</NavLink>
                     <NavLink to="/shop" className="font-body text-sm text-bark-300 hover:text-pumpkin-300 transition-colors duration-200">Shop</NavLink>
-                    <NavLink to="/orders" className="font-body text-sm text-bark-300 hover:text-pumpkin-300 transition-colors duration-200">Orders</NavLink>
                 </nav>
 
                 <p className="font-body text-xs text-bark-500">
