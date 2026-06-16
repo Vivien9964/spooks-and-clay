@@ -6,15 +6,11 @@ import Badge from "@/components/ui/Badge"
 
 import { Link } from "react-router-dom"
 import { toast } from "sonner"
+import { categoryLabels } from "@/data/categories"
 
 import { useCartStore } from "@/store/cartStore"
 
-const categoryLabels: Record<string, string> = {
-    figurines: "Figurines",
-    accessories: "Accessories",
-    seasonalCollections: "Collections",
-    uniquePieces: "One of a Kind",
-}
+
 
 interface ProductCardProps {
     product: Product

@@ -1,6 +1,9 @@
 import type { CategoryFilter, SortOrder } from "@/types/product"
-import { useState } from "react";
+
+import { useState } from "react"
+import { useSearchParams } from "react-router-dom"
 import { useProducts } from "@/hooks/useProducts"
+import { categoryLabels } from "@/data/categories"
 
 import ProductCard from "@/features/products/ProductCard"
 import ProductCardSkeleton from "@/features/products/ProductCardSkeleton"
@@ -8,9 +11,10 @@ import ProductCardSkeleton from "@/features/products/ProductCardSkeleton"
 
 function ShopPage() {
 
+    const [ searchParams, setSearchParams ] = useSearchParams()
     const [ searchTerm, setSearchTerm ] = useState("");
-    const [ selectedCategory, setSelectedCategory ] = useState<CategoryFilter>("all")
-    const [ sortOrder, setSortOrder ] = useState<SortOrder>("default")
+    const selectedCategory = (searchParams.get("category") ?? "all") as CategoryFilter
+    const sortOrder = (searchParams.get("sort") ?? "default") as SortOrder
 
     const { productCategories, sortedProducts, isLoading } = useProducts({ searchTerm, selectedCategory, sortOrder})
 
@@ -48,19 +52,41 @@ function ShopPage() {
 
                     <select
                         value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value as CategoryFilter)}
+                        onChange={(e) => {
+                            const value = e.target.value
+                            setSearchParams((prev) => {
+                                if(value === "all") {
+                                    prev.delete("category")
+                                } else {
+                                    prev.set("category", value)
+                                }
+
+                                return prev
+                            })
+                        }}
                         aria-label="Filter by category"
                         className="font-body text-sm text-bark-700 bg-cream-50 border border-bark-300 rounded-sm px-4 py-2.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-pumpkin-300 focus:border-pumpkin-500 transition-colors duration-200"
                     >
                         <option value="all">All Categories</option>
                         {productCategories.map((category) => (
-                            <option key={category} value={category}>{category}</option>
+                            <option key={category} value={category}>{categoryLabels[category] ?? category }</option>
                         ))}
                     </select>
 
                     <select
                         value={sortOrder}
-                        onChange={(e) => setSortOrder(e.target.value as SortOrder)}
+                        onChange={(e) => {
+                            const value = e.target.value
+                            setSearchParams((prev) => {
+                                if(value === "default") {
+                                    prev.delete("sort")
+                                } else {
+                                    prev.set("sort", value)
+                                }
+                                
+                                return prev
+                            })
+                        }}
                         aria-label="Sort products"
                         className="font-body text-sm text-bark-700 bg-cream-50 border border-bark-300 rounded-sm px-4 py-2.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-pumpkin-300 focus:border-pumpkin-500 transition-colors duration-200"
                     >

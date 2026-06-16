@@ -6,10 +6,10 @@ import { products } from "@/data/products"
 
 const featured = products.filter((product) => product.isFeatured === true)
 const browseCategories = [
-    { slug: "figurines",          label: "Figurines",     tagline: "The ghosts live here",       bg: "bg-cream-300",   textColor: "text-bark-900",    subtextColor: "text-bark-700",    dividerColor: "bg-bark-300" },
-    { slug: "accessories",        label: "Accessories",   tagline: "Wear a little weird",         bg: "bg-plum-300",    textColor: "text-plum-900",    subtextColor: "text-plum-700",    dividerColor: "bg-plum-500" },
-    { slug: "seasonalCollections",label: "Collections",   tagline: "The whole haunted family",    bg: "bg-sage-300",    textColor: "text-sage-900",    subtextColor: "text-sage-700",    dividerColor: "bg-sage-500" },
-    { slug: "uniquePieces",       label: "One of a Kind", tagline: "Catch it before it vanishes",  bg: "bg-pumpkin-300", textColor: "text-bark-900",    subtextColor: "text-pumpkin-900", dividerColor: "bg-pumpkin-700", rare: true },
+    { slug: "figurines",          label: "Figurines", image: "/categories/figurines.png", tagline: "The ghosts live here",       bg: "bg-cream-300",   textColor: "text-bark-900",    subtextColor: "text-bark-700",    dividerColor: "bg-bark-300" },
+    { slug: "accessories",        label: "Accessories", image: "/categories/accessories.png", tagline: "Wear a little weird",         bg: "bg-plum-300",    textColor: "text-plum-900",    subtextColor: "text-plum-700",    dividerColor: "bg-plum-500" },
+    { slug: "seasonalCollections",label: "Collections", image: "/categories/collections.png",   tagline: "The whole haunted family",    bg: "bg-sage-300",    textColor: "text-sage-900",    subtextColor: "text-sage-700",    dividerColor: "bg-sage-500" },
+    { slug: "uniquePieces",       label: "One of a Kind", image: "/categories/oneOfaKind.png", tagline: "Catch it before it vanishes",  bg: "bg-pumpkin-300", textColor: "text-bark-900",    subtextColor: "text-pumpkin-900", dividerColor: "bg-pumpkin-700", rare: true },
 ]
 const trustItems = ["Handmade", "Tiny spooks", "Made with love", "No two alike", "Shipped with care"]
 
@@ -32,24 +32,24 @@ return (
                             Small Creatures.<br />Spooky Vibes.
                         </h1>
                         <p className="font-body text-lg text-bark-500 max-w-sm mx-auto">
-                            Every shelf deserves a <span className="text-plum-500 italic">tiny haunting</span>.
+                            Every shelf deserves some <span className="text-plum-500 italic">whimsical</span>.
                         </p>
                     </div>
 
                     <div className="flex items-end justify-center gap-4 md:gap-6 w-full max-w-2xl">
                         <div className="w-1/4 -rotate-2 animate-float shrink-0">
                             <div className="bg-cream-50 p-2 border-2 border-bark-900 rounded-sm">
-                                <img src="https://placehold.co/400x400" alt="Witch Hat Pin" className="w-full aspect-square object-cover" />
+                                <img src="/products/witch-pin.jpg" alt="Witch Hat Pin" className="w-full aspect-square object-cover" />
                             </div>
                         </div>
                         <div className="w-2/5 animate-float rotate-1 shrink-0">
                             <div className="bg-cream-50 p-2 border-2 border-bark-900 rounded-sm">
-                                <img src="https://placehold.co/400x400" alt="Pumpkin Patch Figurine" className="w-full aspect-square object-cover" />
+                                <img src="/products/pumpkin-1.jpg" alt="Pumpkin Patch Figurine" className="w-full aspect-square object-cover" />
                             </div>
                         </div>
                         <div className="w-1/4 -rotate-1 animate-float shrink-0">
                             <div className="bg-cream-50 p-2 border-2 border-bark-900 rounded-sm">
-                                <img src="https://placehold.co/400x400" alt="Friendly Ghost Figurine" className="w-full aspect-square object-cover" />
+                                <img src="/products/ghost-1.jpg" alt="Friendly Ghost Figurine" className="w-full aspect-square object-cover" />
                             </div>
                         </div>
                     </div>
@@ -84,17 +84,14 @@ return (
                         <div className="flex justify-center">
                             <div className="-rotate-2 bg-cream-50 p-3 border-2 border-bark-900 shadow-[6px_6px_0px_var(--color-bark-900)] w-full max-w-sm">
                                 <img
-                                    src="https://placehold.co/500x500"
-                                    alt="Ghost duo figurine — two clay ghosts on a moss and bark base"
+                                    src="/products/collection.jpg"
+                                    alt="Ghost duo figurine - two clay ghosts on a moss and bark base"
                                     className="w-full aspect-square object-cover"
                                 />
                             </div>
                         </div>
 
                         <div className="flex flex-col gap-5">
-                            <span className="font-body text-xs tracking-[0.2em] uppercase text-sage-700 bg-sage-100 px-3 py-1 rounded-full w-fit">
-                                Creature Feature
-                            </span>
                             <h2 className="font-display text-4xl md:text-5xl text-bark-900 leading-tight">
                                 They've been here<br />since <span className="text-plum-500 italic">October.</span>
                             </h2>
@@ -105,8 +102,8 @@ return (
                                 Sculpted by hand, one at a time. No moulds. No shortcuts.
                             </p>
                             <div className="pt-2">
-                                <Link to="/product/friendly-ghost-figurine">
-                                    <Button variant="primary">Meet the ghost</Button>
+                                <Link to="/product/haunted-family-set">
+                                    <Button variant="primary">Meet the ghosts</Button>
                                 </Link>
                             </div>
                         </div>
@@ -159,14 +156,14 @@ return (
                         {browseCategories.map((category, index) => (
                             <Link
                                 key={index}
-                                to="/shop"
+                                to={`/shop?category=${category.slug}`}
                                 aria-label={`Browse ${category.label}`}
                                 className={`group flex flex-col ${category.bg} border-2 border-bark-900 rounded-sm p-2 shadow-[4px_4px_0px_var(--color-bark-900)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_var(--color-bark-900)] transition-all duration-200`}
                             >
                                 <div className="relative overflow-hidden bg-cream-50 border border-bark-300">
                                     <img
-                                        src="https://placehold.co/400x400"
-                                        alt=""
+                                        src={category.image}
+                                        alt={category.label}
                                         className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                                     />
                                     {category.rare && (
@@ -212,18 +209,18 @@ return (
 
                     <div className="-rotate-1 bg-cream-50 p-3 border-2 border-bark-700 shadow-[4px_4px_0px_var(--color-bark-700)] w-48">
                         <img
-                            src="https://placehold.co/400x400"
-                            alt="Hand-Carved Moon Cat — one-of-a-kind clay sculpture"
+                            src="/products/moon-cat.jpg"
+                            alt="Hand-Carved Moon Cat - one-of-a-kind clay sculpture"
                             className="w-full aspect-square object-cover"
                         />
                     </div>
 
                     <div className="flex flex-col gap-1 items-center">
-                        <span className="font-display text-2xl text-pumpkin-300">Hand-Carved Moon Cat</span>
+                        <span className="font-display text-2xl text-pumpkin-300">The Potion Keeper</span>
                         <span className="font-body text-sm text-bark-300">Only 1 exists · $120.00</span>
                     </div>
 
-                    <Link to="/product/hand-carved-moon-cat">
+                    <Link to="/product/the-potion-keeper">
                         <Button variant="primary">Claim this piece</Button>
                     </Link>
 

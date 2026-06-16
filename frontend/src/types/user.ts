@@ -13,3 +13,4 @@ export type User = {
     createdAt: string;
 }
 
+export type UpdateProfilePayload = Partial<Pick<User, "name" | "email" | "phone" | "address">> & { id: number }

@@ -4,15 +4,12 @@ import { useParams, Link } from "react-router-dom"
 import { products } from "@/data/products"
 import { useCartStore } from "@/store/cartStore"
 import { useUIStore } from "@/store/uiStore"
+import { categoryLabels } from "@/data/categories" 
+
 import Button from "@/components/ui/Button"
 import Badge from "@/components/ui/Badge"
 
-const categoryLabels: Record<string, string> = {
-    figurines: "Figurines",
-    accessories: "Accessories",
-    seasonalCollections: "Collections",
-    uniquePieces: "One of a Kind",
-}
+
 
 function ProductPage() {
 
@@ -20,6 +17,7 @@ function ProductPage() {
     const addItem = useCartStore((s) => s.addItem)
     const openCart = useUIStore((s) => s.openCart)
     const [selectedImage, setSelectedImage] = useState(0)
+    const [selectedSize, setSelectedSize] = useState<string | null>(null)
 
     const product = products.find((product) => product.slug === slug)
 
@@ -34,6 +32,10 @@ function ProductPage() {
 
     const price = product.isOnSale ? product.basePrice * (1 - product.discountPercent / 100) : product.basePrice
     const categoryLabel = categoryLabels[product.category] ?? product.category
+
+    const hasSizes = !!product.variants?.[0]?.sizes?.length
+    const needsSize = hasSizes && !selectedSize
+
 
     const handleAddToCart = () => {
         addItem(product)
@@ -131,7 +133,12 @@ function ProductPage() {
                                     {product.variants[0].sizes.map((size) => (
                                         <button
                                             key={size}
-                                            className="font-body text-sm capitalize border-2 border-bark-900 px-3 py-1 rounded-sm bg-cream-50 hover:bg-pumpkin-100 transition-colors duration-200"
+                                            onClick={() => setSelectedSize(size)}
+                                             className={`font-body text-sm capitalize border-2 px-3 py-1 rounded-sm transition-colors duration-200 ${
+                                                size === selectedSize
+                                                ? "border-bark-900 bg-pumpkin-100 text-pumpkin-700 shadow-[2px_2px_0px_var(--color-bark-900)]"
+                                                : "border-bark-900 bg-cream-50 hover:bg-pumpkin-100"
+                                                 }`}
                                         >
                                             {size}
                                         </button>
@@ -140,8 +147,8 @@ function ProductPage() {
                             </div>
                         )}
 
-                        <Button variant="primary" className="w-full" onClick={handleAddToCart}>
-                            Add to Cart
+                        <Button variant="primary" className="w-full" onClick={handleAddToCart} disabled={needsSize}>
+                            {needsSize ? "Select a size" : "Add to cart"}
                         </Button>
 
                         <div className="flex items-center gap-2">

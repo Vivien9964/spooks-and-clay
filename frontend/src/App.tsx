@@ -5,7 +5,6 @@
 import HomePage from "@/pages/HomePage"
 import ShopPage from "@/pages/ShopPage"
 import ProductPage from "@/pages/ProductPage"
-import OrdersPage from "@/pages/OrdersPage" 
 import LoginPage from "@/pages/LoginPage"
 import RegisterPage from "@/pages/RegisterPage"
 import NotFoundPage from "@/pages/NotFoundPage"
@@ -29,7 +28,6 @@ function App() {
 
             <Route element={<ProtectedRoute />}>  
               <Route path="/account" element={<AccountPage />} />
-              <Route path="/orders" element={<OrdersPage />} />
             </Route>
 
             <Route path="*" element={<NotFoundPage />} />

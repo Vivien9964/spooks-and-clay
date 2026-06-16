@@ -30,7 +30,6 @@ const mobileLinkStyle = ({ isActive }: { isActive: boolean }) =>
 const navLinks = [
     { to: "/", label: "Home", end: true},
     { to: "/shop",  label: "Shop" },
-    { to: "/orders", label: "Orders" }
 ]
 
 
