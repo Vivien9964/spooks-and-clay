@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react"
-import type { CategoryFilter, SortOrder } from "@/types/product"
-import { products } from "@/data/products"
+import type { CategoryFilter, SortOrder, Product } from "@/types/product"
+import { getProducts } from "@/services/products"
+//import { products } from "@/data/products"
 
 
 type UseProductsArgs = {
@@ -9,16 +10,22 @@ type UseProductsArgs = {
     sortOrder: SortOrder;
 }
 
+type Status = "loading" | "success" | "error"
+
 
 export function useProducts({ searchTerm, selectedCategory, sortOrder}: UseProductsArgs) {
 
-    const productCategories = [...new Set(products.map((product) => product.category))];
     const [ debouncedSearchTerm, setDebouncedSearchTerm ] = useState("")
-    const [ isLoading, setIsLoading ] = useState(true)
+    const [ productsData, setProductsData ] = useState<Product[]>([])
+    const [ loadingStatus, setLoadingStatus ] = useState<Status>("loading")
+    const [ errors, setErrors ] = useState<string | null>(null)
+
+    const productCategories = [...new Set(productsData.map((product) => product.category))];
+
 
     const sortedProducts = useMemo(() => {
 
-        const filteredProducts = products
+        const filteredProducts = productsData
                                 .filter((product) => selectedCategory === "all" || product.category === selectedCategory)
                                 .filter((product) => debouncedSearchTerm === "" || product.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
 
@@ -33,7 +40,7 @@ export function useProducts({ searchTerm, selectedCategory, sortOrder}: UseProdu
 
         return sorted;
 
-    }, [debouncedSearchTerm, selectedCategory, sortOrder])
+    }, [productsData, debouncedSearchTerm, selectedCategory, sortOrder])
 
     
     useEffect(() => {
@@ -41,9 +48,32 @@ export function useProducts({ searchTerm, selectedCategory, sortOrder}: UseProdu
         return () => clearTimeout(timer)
     }, [searchTerm])
 
+
     useEffect(() => {
-        const timer = setTimeout(() => setIsLoading(false), 1000)
-        return () => clearTimeout(timer)
+
+        let ignore = false
+       
+        async function loadData() {
+            try{
+                const data = await getProducts()
+                if(!ignore) {
+                    setProductsData(data)
+                    setLoadingStatus("success")
+                }
+
+            } catch (err) {
+                if(!ignore) {
+                    setLoadingStatus("error")
+                    setErrors("Failed to load products!")
+                }
+            } 
+            
+       }
+
+       loadData()
+
+       return () => { ignore = true }
+
     }, [])
     
 
@@ -53,7 +83,8 @@ export function useProducts({ searchTerm, selectedCategory, sortOrder}: UseProdu
     return {
         productCategories,
         sortedProducts,
-        isLoading
+        loadingStatus,
+        errors
     }
 
 
