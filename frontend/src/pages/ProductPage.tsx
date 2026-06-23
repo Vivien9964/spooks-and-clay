@@ -1,9 +1,10 @@
 
 import { useState } from "react"
 import { useParams, Link } from "react-router-dom"
-import { products } from "@/data/products"
 import { useCartStore } from "@/store/cartStore"
 import { useUIStore } from "@/store/uiStore"
+import { useProduct } from "@/hooks/useProduct"
+
 import { categoryLabels } from "@/data/categories" 
 
 import Button from "@/components/ui/Button"
@@ -14,21 +15,31 @@ import Badge from "@/components/ui/Badge"
 function ProductPage() {
 
     const { slug } = useParams<{ slug: string }>()
+    const { productData, loadingStatus, errors } = useProduct(slug ?? "")
     const addItem = useCartStore((s) => s.addItem)
     const openCart = useUIStore((s) => s.openCart)
     const [selectedImage, setSelectedImage] = useState(0)
     const [selectedSize, setSelectedSize] = useState<string | null>(null)
 
-    const product = products.find((product) => product.slug === slug)
-
-    if (!product) {
+    if (loadingStatus === "loading") {
         return (
             <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
-                <h1 className="font-display text-4xl text-bark-900">Product not found</h1>
+                <p className="font-body text-bark-500 italic">Summoning the creature…</p>
+            </div>
+        )
+    }
+ 
+    if (loadingStatus === "error" || !productData) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
+                <h1 className="font-display text-4xl text-bark-900">This ghoul has wandered off!</h1>
+                <p className="font-body text-sm text-bark-500 italic">{errors ?? "This creature has wandered off."}</p>
                 <Link to="/shop"><Button variant="ghost">Back to Shop</Button></Link>
             </div>
         )
     }
+
+    const product = productData
 
     const price = product.isOnSale ? product.basePrice * (1 - product.discountPercent / 100) : product.basePrice
     const categoryLabel = categoryLabels[product.category] ?? product.category

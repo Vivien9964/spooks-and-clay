@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react"
 import type { CategoryFilter, SortOrder, Product } from "@/types/product"
+import type { RequestStatus } from "@/types/api"
 import { getProducts } from "@/services/products"
-//import { products } from "@/data/products"
 
 
 type UseProductsArgs = {
@@ -10,14 +10,11 @@ type UseProductsArgs = {
     sortOrder: SortOrder;
 }
 
-type Status = "loading" | "success" | "error"
-
-
 export function useProducts({ searchTerm, selectedCategory, sortOrder}: UseProductsArgs) {
 
     const [ debouncedSearchTerm, setDebouncedSearchTerm ] = useState("")
     const [ productsData, setProductsData ] = useState<Product[]>([])
-    const [ loadingStatus, setLoadingStatus ] = useState<Status>("loading")
+    const [ loadingStatus, setLoadingStatus ] = useState<RequestStatus>("loading")
     const [ errors, setErrors ] = useState<string | null>(null)
 
     const productCategories = [...new Set(productsData.map((product) => product.category))];
@@ -62,6 +59,7 @@ export function useProducts({ searchTerm, selectedCategory, sortOrder}: UseProdu
                 }
 
             } catch (err) {
+                
                 if(!ignore) {
                     setLoadingStatus("error")
                     setErrors("Failed to load products!")
