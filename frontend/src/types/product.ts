@@ -35,3 +35,4 @@ export type Product = {
 export type CategoryFilter = Category | "all"
 
 export type SortOrder = "default" |"price-low" | "price-high"
+
