@@ -1,21 +1,28 @@
 import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { registerSchema, type RegisterValues } from "@/features/auth/registerSchema"
+import { registerUser } from "@/services/auth"
+import { useAuthStore } from "@/store/authStore"
 import Input from "@/components/ui/Input"
 import Button from "@/components/ui/Button"
 
 
 function RegisterForm() {
 
+    const login = useAuthStore((s) => s.login)
+    const navigate = useNavigate()
+
+
     const { register, handleSubmit, formState: { errors } } = useForm<RegisterValues>({
         resolver: zodResolver(registerSchema)
     })
 
-    const onSubmit = (data: RegisterValues) => {
-        console.log(data)
+    const onSubmit = async (data: RegisterValues) => {
+        const response = await registerUser(data)
+        login(response)
+        navigate("/account")
     }
-
-
 
 
     return (

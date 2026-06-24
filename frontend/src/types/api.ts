@@ -1,4 +1,5 @@
 import type { Category, ProductImage } from "@/types/product"
+import type { User } from "@/types/user"
 
 
 export type RequestStatus = "loading" | "success" | "error"
@@ -31,4 +32,9 @@ export type ApiError = {
     status: number;
     message: string;
     fieldErrors?: Record<string, string[]>;
+}
+
+export type AuthResponse = {
+    token: string;
+    user: User;
 }
