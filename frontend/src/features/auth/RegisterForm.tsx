@@ -4,9 +4,15 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { registerSchema, type RegisterValues } from "@/features/auth/registerSchema"
 import { registerUser } from "@/services/auth"
 import { useAuthStore } from "@/store/authStore"
+import type { ApiError } from "@/types/api"
 import Input from "@/components/ui/Input"
 import Button from "@/components/ui/Button"
+import { toast } from "sonner"
 
+
+function isApiError(err: unknown): err is ApiError {
+    return typeof err === "object" && err !== null && "fieldErrors" in err
+}
 
 function RegisterForm() {
 
@@ -14,14 +20,34 @@ function RegisterForm() {
     const navigate = useNavigate()
 
 
-    const { register, handleSubmit, formState: { errors } } = useForm<RegisterValues>({
+    const { register, handleSubmit, setError, formState: { errors } } = useForm<RegisterValues>({
         resolver: zodResolver(registerSchema)
     })
 
     const onSubmit = async (data: RegisterValues) => {
-        const response = await registerUser(data)
-        login(response)
-        navigate("/account")
+
+        try {
+            
+            const response = await registerUser(data)
+            login(response)
+            navigate("/account")
+
+        } catch ( err ) {
+
+            if(isApiError(err)  && err.fieldErrors) {
+                Object.entries(err.fieldErrors).forEach(([field, messages]) => {
+                    setError(field as keyof RegisterValues, {
+                        type: "manual",
+                        message: messages[0]
+                    })
+                })
+
+            } else {
+
+                toast.error("Registration failed. Please try again.")     
+            }
+        }
+       
     }
 
 

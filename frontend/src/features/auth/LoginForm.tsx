@@ -4,14 +4,19 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema, type LoginValues } from "@/features/auth/authSchema"
 import { loginUser } from "@/services/auth"
 import { useAuthStore } from "@/store/authStore"
+import type { ApiError } from "@/types/api"
 import Input from "@/components/ui/Input"
 import Button from "@/components/ui/Button"
+import { toast } from "sonner"
 
 
+function isApiError(err: unknown): err is ApiError {
+    return typeof err === "object" && err !== null && "fieldErrors" in err
+}
 
 function LoginForm() {
 
-    const { register, handleSubmit, formState: { errors } } = useForm<LoginValues>({
+    const { register, handleSubmit, setError, formState: { errors } } = useForm<LoginValues>({
         resolver: zodResolver(loginSchema)
     })
 
@@ -22,9 +27,30 @@ function LoginForm() {
     const from = location.state?.from?.pathname ?? "/account"
 
     const onSubmit = async (data: LoginValues) => {
-        const response = await loginUser(data)
-        login(response)
-        navigate(from, { replace: true })
+
+        try {
+
+            const response = await loginUser(data)
+            login(response)
+            navigate(from, { replace: true })
+
+        } catch( err ) {
+
+            if(isApiError(err) && err.fieldErrors) {
+                Object.entries(err.fieldErrors).forEach(([field, messages]) => {
+                    setError(field as keyof LoginValues, {
+                        type: "manual",
+                        message: messages[0]
+                    })
+                })
+
+            } else {
+
+                toast.error("Login failed. Please try again.")
+
+            }
+        }
+        
     }
 
 

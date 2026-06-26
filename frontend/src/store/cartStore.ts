@@ -1,5 +1,6 @@
 
 import { create } from "zustand"
+import { persist } from "zustand/middleware"
 import type { CartItem } from "@/types/cart"
 import type { Product } from "@/types/product"
 
@@ -11,38 +12,47 @@ type CartStore = {
     clearCart: () => void;
 }
 
-export const useCartStore = create<CartStore>((set) => ({
+export const useCartStore = create<CartStore>()(
+  
+  
+  persist(
+    (set) => ({
+
+      items: [],
+ 
+      addItem: (product) =>
+        set((state) => {
+          const item = state.items.find((i) => i.product.id === product.id)
     
-  items: [],
+          if (!item) {
+            return { items: [...state.items, { product, quantity: 1 }] }
+          } else {
+            return {
+              items: state.items.map((i) =>
+                i.product.id === product.id
+                  ? { ...i, quantity: i.quantity + 1 }
+                  : i
+              ),
+            }
+          }
+        }),
+    
+      removeItem: (id) =>
+        set((state) => ({
+          items: state.items.filter((i) => i.product.id !== id),
+        })),
  
-  addItem: (product) =>
-    set((state) => {
-      const item = state.items.find((i) => i.product.id === product.id)
- 
-      if (!item) {
-        return { items: [...state.items, { product, quantity: 1 }] }
-      } else {
-        return {
+      updateQty: (id, quantity) =>
+        set((state) => ({
           items: state.items.map((i) =>
-            i.product.id === product.id
-              ? { ...i, quantity: i.quantity + 1 }
-              : i
+            i.product.id === id ? { ...i, quantity } : i
           ),
-        }
-      }
-    }),
+        })),
  
-  removeItem: (id) =>
-    set((state) => ({
-      items: state.items.filter((i) => i.product.id !== id),
-    })),
- 
-  updateQty: (id, quantity) =>
-    set((state) => ({
-      items: state.items.map((i) =>
-        i.product.id === id ? { ...i, quantity } : i
-      ),
-    })),
- 
-  clearCart: () => set(() => ({ items: [] })),
-}))
+      clearCart: () => set(() => ({ items: [] })),
+      }),
+    {
+      name: "cart-storage",
+    }
+  )
+)
