@@ -188,6 +188,64 @@ return (
                 </div>
             </section>
 
+            <section className="w-full bg-cream-200 py-20">
+                <div className="max-w-6xl mx-auto px-4">
+                    <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+
+                        <div className="flex flex-col gap-6">
+                            <div className="flex items-center gap-3 w-full max-w-xs">
+                                <span className="flex-1 h-px bg-bark-900/20" />
+                                <span className="font-body text-xs tracking-[0.25em] uppercase text-bark-700">A Note from the Hollow</span>
+                                <span className="flex-1 h-px bg-bark-900/20" />
+                            </div>
+
+                            <p className="font-body text-xl md:text-2xl text-plum-700 italic leading-relaxed">
+                                Welcome, dear visitor. I hope you find the spooks you are looking for.
+                            </p>
+
+                            <div className="flex flex-col gap-4 font-body text-base text-bark-700 leading-relaxed">
+                                <p>
+                                    Every little figurine starts as a small chunk of clay and a mood. Retro Halloween tunes in the background, a warm cup of coffee close by ... that is where these little ones come from.
+                                </p>
+                                <p>
+                                    Every tiny detail is made by hand. The books. The carpets. Even the little pillows.
+                                </p>
+                                <p>
+                                    I enjoy building these small scenes. They make me smile. And I hope one of them finds its way to your shelf and makes <span className="text-plum-700 italic">you</span> smile too.
+                                </p>
+                            </div>
+
+                            <p className="font-body text-sm text-bark-700 italic">
+                                Haunting the hollows of Eastern Europe, one tiny figurine at a time.
+                            </p>
+                        </div>
+
+                        <div className="relative flex justify-center items-center h-96 md:h-[28rem]">
+                            <div className="absolute top-0 right-25 md:-right-10 rotate-3 z-10 w-45 md:w-70">
+                                <div className="bg-cream-50 p-2 border-2 border-bark-900 shadow-[4px_4px_0px_var(--color-bark-900)]">
+                                    <img
+                                        src="/meetTheMaker/maker-accent.jpg"
+                                        alt="Ghost-costumed figure with sunglasses in an autumn field"
+                                        className="w-full aspect-square object-cover object-top"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="relative -rotate-1 z-20 w-70 md:w-92 mt-25">
+                                <div className="bg-cream-50 p-3 border-2 border-bark-900 shadow-[6px_6px_0px_var(--color-bark-900)]">
+                                    <img
+                                        src="/meetTheMaker/maker-main.jpg"
+                                        alt="A pair of boots walking through autumn leaves"
+                                        className="w-full aspect-[3/4] object-cover"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
             <section className="w-full bg-bark-900 py-20">
                 <div className="max-w-4xl mx-auto px-4 flex flex-col items-center gap-8 text-center">
 
