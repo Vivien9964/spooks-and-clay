@@ -7,14 +7,32 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    private List<ProductDto> products = List.of(
-            new ProductDto(1, "Spooky Candle", "spooky-candle"),
-            new ProductDto(2, "Witch hat", "witch-hat"),
-            new ProductDto(3, "Pumpkin Spice pillow sheet", "pimpkin-pillow-sheet")
-    );
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     public List<ProductDto> getAll() {
+        return productRepository.findAll()
+                .stream()
+                .map(product -> toDto(product))
+                .toList();
+    }
 
-        return products;
+    private ProductDto toDto(Product product) {
+        return new ProductDto(
+                product.getId(),
+                product.getName(),
+                product.getSlug(),
+                product.getShortDesc(),
+                product.getLongDesc(),
+                product.getPrice().toString(),
+                product.isOnSale(),
+                product.getDiscountPercent(),
+                product.getStockCount(),
+                product.getCreatedAt(),
+                product.getCategory()
+        );
     }
 }
