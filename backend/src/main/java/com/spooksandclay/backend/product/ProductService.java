@@ -3,6 +3,7 @@ package com.spooksandclay.backend.product;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -18,6 +19,10 @@ public class ProductService {
                 .stream()
                 .map(product -> toDto(product))
                 .toList();
+    }
+
+    public Optional<ProductDto> getBySlug(String slug) {
+        return productRepository.findBySlug(slug).map(product -> toDto(product));
     }
 
     private ProductDto toDto(Product product) {

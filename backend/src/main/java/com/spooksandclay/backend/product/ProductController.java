@@ -3,6 +3,7 @@ package com.spooksandclay.backend.product;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,6 +22,13 @@ public class ProductController {
     public ResponseEntity<List<ProductDto>> getProducts() {
 
         return ResponseEntity.ok(productService.getAll());
+    }
+
+    @GetMapping("/api/products/{slug}")
+    public ResponseEntity<ProductDto> getProductBySlug(@PathVariable String slug) {
+        return productService.getBySlug(slug)
+                .map(dto -> ResponseEntity.ok(dto))
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }

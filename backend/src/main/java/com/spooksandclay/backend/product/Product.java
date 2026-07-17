@@ -119,9 +119,4 @@ public class Product {
         return category;
     }
 
-
-
-
-
-
 }
