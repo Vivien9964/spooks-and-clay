@@ -57,4 +57,26 @@ public class ProductService {
         Product savedProduct = productRepository.save(product);
         return toDto(savedProduct);
     }
+
+    public ProductDto update(Long id, CreateProductRequest request) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        product.setName(request.name());
+        product.setSlug(request.slug());
+        product.setShortDesc(request.shortDesc());
+        product.setLongDesc(request.longDesc());
+        product.setPrice(new BigDecimal(request.price()));
+        product.setOnSale(request.onSale());
+        product.setDiscountPercent(request.discountPercent());
+        product.setStockCount(request.stockCount());
+        product.setCategory(request.category());
+
+        Product saved = productRepository.save(product);
+        return toDto(saved);
+    }
+
+    public void delete(Long id) {
+        productRepository.deleteById(id);
+    }
 }
