@@ -5,8 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -25,7 +27,8 @@ public class Product {
     private boolean onSale;
     private Integer discountPercent;
     private Integer stockCount;
-    private String createdAt;
+    @CreationTimestamp
+    private Instant createdAt;
     private String category;
 
     public Product() {}
@@ -66,7 +69,7 @@ public class Product {
         return stockCount;
     }
 
-    public String getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
@@ -107,7 +110,7 @@ public class Product {
         this.stockCount = stockCount;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
