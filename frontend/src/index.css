@@ -21,18 +21,17 @@
   --color-cream-400: #BCA866;
 
   /* Text: bark */
-  --color-bark-300: #B8A8CC;
-  --color-bark-500: #7A608A;
-  --color-bark-700: #4A2C5E;
-  --color-bark-900: #1E0A35;
+  --color-bark-300: #B8A38C;
+  --color-bark-500: #8A6F58;
+  --color-bark-700: #5C4433;
+  --color-bark-900: #2E1F14;
 
-  /* Accent 1: sage */
-  --color-sage-100: #CCE8BC;
-  --color-sage-300: #78B44E;
-  --color-sage-500: #3C7218;
-  --color-sage-700: #224810;
-  --color-sage-900: #102608;
-
+  /* Accent 1: gold */
+  --color-gold-100: #F7E8BE;
+  --color-gold-300: #E8C468;
+  --color-gold-500: #E0A526;
+  --color-gold-700: #A67818;
+  --color-gold-900: #5C4718;
 
   /* Accent 2: plum */
   --color-plum-100: #F2E8FF;

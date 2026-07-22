@@ -69,7 +69,7 @@ function AccountPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
 
             <h1 className="font-display text-3xl md:text-4xl text-bark-900 mb-8">
-                Happy haunting, <span className="text-plum-500">{user.name}</span>
+                Welcome back, <span className="text-pumpkin-700">{user.name}</span>
             </h1>
 
             <div className="flex flex-col md:flex-row gap-8 items-start">
@@ -115,9 +115,9 @@ function AccountPage() {
                     {orderHistory.length === 0 ? (
 
                         <div className="bg-cream-50 border border-dashed border-cream-300 rounded-2xl p-12 flex flex-col items-center text-center gap-3">
-                            <Ghost className="w-12 h-12 text-plum-300 mb-2 animate-bounce" aria-hidden="true" />
+                            <Ghost className="w-12 h-12 text-bark-300 mb-2 animate-bounce" aria-hidden="true" />
                             <p className="font-display text-xl text-bark-900">No orders yet</p>
-                            <p className="font-body text-sm text-bark-500">A tiny spook is waiting for you...</p>
+                            <p className="font-body text-sm text-bark-500">Your little worlds will show up here once you order one.</p>
                             <Link to="/shop">
                                 <Button variant="primary" className="mt-4">
                                     Browse the Shop

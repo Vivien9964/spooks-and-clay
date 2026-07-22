@@ -1,7 +1,7 @@
 
 export const categoryLabels: Record<string, string> = {
-    figurines: "Figurines",
-    accessories: "Accessories",
-    seasonalCollections: "Seasonal Collections",
+    autumnScenes: "Autumn Scenes",
+    halloweenScenes: "Halloween Scenes",
+    collections: "Collections",
     uniquePieces: "One of a Kind",
 }

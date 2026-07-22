@@ -134,7 +134,7 @@ function ProductPage() {
                         ) : product.stockCount < 10 ? (
                             <p className="font-body text-sm text-pumpkin-700 font-semibold">Only {product.stockCount} left!</p>
                         ) : (
-                            <p className="font-body text-sm text-sage-700">✦ In stock</p>
+                            <p className="font-body text-sm text-gold-700">✦ In stock</p>
                         )}
 
                         {product.variants && product.variants[0]?.sizes?.length > 0 && (

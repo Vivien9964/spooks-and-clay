@@ -16,8 +16,8 @@ const navLinkStyle = ({ isActive }: { isActive: boolean }) =>
     clsx(
         "inline-block px-3 py-1.5 rounded-lg text-base font-body",
         "text-bark-700 transition-all duration-200",
-        "hover:rotate-2 hover:bg-pumpkin-100 hover:text-pumpkin-700",
-        isActive && "rotate-3 bg-pumpkin-100 text-pumpkin-700"
+        "hover:rotate-2 hover:bg-gold-100 hover:text-gold-900",
+        isActive && "rotate-3 bg-gold-100 text-gold-900"
     )
 
 const mobileLinkStyle = ({ isActive }: { isActive: boolean }) =>

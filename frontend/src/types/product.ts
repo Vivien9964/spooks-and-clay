@@ -1,5 +1,5 @@
 
-export type Category = "figurines" | "seasonalCollections" | "uniquePieces" | "accessories"
+export type Category = "autumnScenes" | "halloweenScenes" | "collections" | "uniquePieces"
 
 export type DiscountInfo = 
     | { isOnSale: true, discountPercent: number }

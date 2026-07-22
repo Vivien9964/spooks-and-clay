@@ -10,9 +10,9 @@ const baseStyle = "px-2.5 py-0.5 text-xs font-bold font-body uppercase tracking-
 
 const styleConfig = {
 
-    warning: "bg-plum-100 text-plum-700",
+    warning: "bg-pumpkin-300 text-bark-900",
 
-    neutral: "bg-sage-100 text-sage-700",
+    neutral: "bg-gold-100 text-gold-700",
 
     positive: "bg-pumpkin-100 text-pumpkin-900"
 }

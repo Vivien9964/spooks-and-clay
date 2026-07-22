@@ -17,13 +17,13 @@ function Footer() {
 
                 <div className="flex items-center gap-3 w-48">
                     <span className="flex-1 h-px bg-bark-500" />
-                    <span className="text-pumpkin-300 text-xs select-none">✦</span>
+                    <span className="text-gold-300 text-xs select-none">✦</span>
                     <span className="flex-1 h-px bg-bark-500" />
                 </div>
 
                 <nav className="flex flex-wrap justify-center gap-6">
-                    <NavLink to="/" end className="font-body text-sm text-bark-300 hover:text-pumpkin-300 transition-colors duration-200">Home</NavLink>
-                    <NavLink to="/shop" className="font-body text-sm text-bark-300 hover:text-pumpkin-300 transition-colors duration-200">Shop</NavLink>
+                    <NavLink to="/" end className="font-body text-sm text-bark-300 hover:text-gold-300 transition-colors duration-200">Home</NavLink>
+                    <NavLink to="/shop" className="font-body text-sm text-bark-300 hover:text-gold-300 transition-colors duration-200">Shop</NavLink>
                 </nav>
 
                 <p className="font-body text-xs text-bark-500">
