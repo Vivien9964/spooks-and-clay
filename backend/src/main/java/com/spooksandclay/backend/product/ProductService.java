@@ -1,5 +1,6 @@
 package com.spooksandclay.backend.product;
 
+import com.spooksandclay.backend.error.ProductNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -60,7 +61,7 @@ public class ProductService {
 
     public ProductDto update(Long id, CreateProductRequest request) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
         product.setName(request.name());
         product.setSlug(request.slug());
