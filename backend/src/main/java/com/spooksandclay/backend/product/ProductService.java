@@ -1,6 +1,8 @@
 package com.spooksandclay.backend.product;
 
 import com.spooksandclay.backend.error.ProductNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,11 +18,12 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductDto> getAll() {
-        return productRepository.findAll()
-                .stream()
-                .map(product -> toDto(product))
-                .toList();
+    public Page<ProductDto> getAll(Pageable pageable, String category) {
+        Page<Product> productPage = (category == null)
+                ? productRepository.findAll(pageable)
+                : productRepository.findByCategory(category, pageable);
+
+        return productPage.map(product -> toDto(product));
     }
 
     public Optional<ProductDto> getBySlug(String slug) {
