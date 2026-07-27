@@ -6,3 +6,6 @@ VALUES ('Witch Hat', 'witch-hat', 'A classic pointed witch hat', 'Handmade felt 
 
 INSERT INTO product (name, slug, short_desc, long_desc, price, on_sale, discount_percent, stock_count, created_at, category)
 VALUES ('Pumpkin Spice Pillow Sheet', 'pumpkin-spice-pillow-sheet', 'Cozy autumn-themed pillowcase', 'Soft cotton pillowcase featuring a pumpkin spice motif, machine washable.', '12.00', false, NULL, 40, '2026-01-15', 'collections');
+
+INSERT INTO users (name, email)
+VALUES ('Alice Cauldron', 'alice@example.com');

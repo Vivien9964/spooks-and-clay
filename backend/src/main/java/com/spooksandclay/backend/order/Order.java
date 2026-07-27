@@ -1,5 +1,5 @@
-package com.spooksandclay.backend.order;
 
+package com.spooksandclay.backend.order;
 
 import com.spooksandclay.backend.user.User;
 import jakarta.persistence.*;
@@ -12,6 +12,7 @@ import java.util.List;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
+@Table(name = "orders")
 public class Order {
 
     @Id
