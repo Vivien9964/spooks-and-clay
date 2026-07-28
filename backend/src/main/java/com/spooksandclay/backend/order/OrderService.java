@@ -2,6 +2,7 @@ package com.spooksandclay.backend.order;
 
 
 import com.spooksandclay.backend.error.ProductNotFoundException;
+import com.spooksandclay.backend.error.UserNotFoundException;
 import com.spooksandclay.backend.product.Product;
 import com.spooksandclay.backend.product.ProductRepository;
 import com.spooksandclay.backend.user.User;
@@ -26,7 +27,7 @@ public class OrderService {
 
     public OrderDto create(CreateOrderRequest request) {
         User user = userRepository.findById(request.userId())
-                .orElseThrow(() -> new ProductNotFoundException("User not found!"));
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
         Order order = new Order();
         order.setUser(user);
@@ -54,6 +55,13 @@ public class OrderService {
         return orderRepository.findById(id).map(order -> toOrderDto(order));
     }
 
+    public List<OrderDto> getAllOrders(Long userId) {
+        List<Order> orders = (userId == null)
+                ? orderRepository.findAll()
+                : orderRepository.findOrdersByUserId(userId);
+
+        return orders.stream().map(order -> toOrderDto(order)).toList();
+    }
 
     private OrderDto toOrderDto(Order order) {
         List<OrderItemDto> itemDtos = order.getItems()

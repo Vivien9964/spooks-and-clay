@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class OrderController {
 
@@ -14,6 +16,11 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+
+    @GetMapping("/api/orders")
+    public ResponseEntity<List<OrderDto>> getOrders(@RequestParam(required = false) Long userId) {
+        return ResponseEntity.ok(orderService.getAllOrders(userId));
+    }
 
     @GetMapping("/api/orders/{id}")
     public ResponseEntity<OrderDto> getOrderById(@PathVariable Long id) {
