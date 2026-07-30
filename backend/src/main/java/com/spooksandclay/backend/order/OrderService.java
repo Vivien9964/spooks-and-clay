@@ -57,8 +57,8 @@ public class OrderService {
 
     public List<OrderDto> getAllOrders(Long userId) {
         List<Order> orders = (userId == null)
-                ? orderRepository.findAll()
-                : orderRepository.findOrdersByUserId(userId);
+                ? orderRepository.findAllWithDetails()
+                : orderRepository.findByUserIdWithDetails(userId);
 
         return orders.stream().map(order -> toOrderDto(order)).toList();
     }
