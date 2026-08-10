@@ -1,6 +1,7 @@
 package com.spooksandclay.backend.order;
 
 
+import com.spooksandclay.backend.error.OrderNotFoundException;
 import com.spooksandclay.backend.error.ProductNotFoundException;
 import com.spooksandclay.backend.error.UserNotFoundException;
 import com.spooksandclay.backend.product.Product;
@@ -49,6 +50,21 @@ public class OrderService {
         Order savedOrder = orderRepository.save(order);
 
         return toOrderDto(savedOrder);
+    }
+
+
+    public OrderDto updateStatus(Long id, UpdateOrderStatusRequest request) {
+
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found!"));
+
+        order.setStatus(request.status());
+
+        Order savedOrder = orderRepository.save(order);
+
+        return toOrderDto(savedOrder);
+
+
     }
 
     public Optional<OrderDto> getOrderById(Long id) {

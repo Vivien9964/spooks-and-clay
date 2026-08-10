@@ -2,6 +2,7 @@ package com.spooksandclay.backend.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,7 +22,7 @@ public class GlobalExceptionHandler {
                 fieldErrors
                         .computeIfAbsent(error.getField(), key -> new java.util.ArrayList<>())
                         .add(error.getDefaultMessage())
-                );
+        );
 
         ApiErrorResponse body = new ApiErrorResponse(400, "Validation failed!", fieldErrors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
@@ -41,10 +42,25 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleOrderNotFound(OrderNotFoundException ex) {
+        ApiErrorResponse body = new ApiErrorResponse(404, ex.getMessage(), null);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
     @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<ApiErrorResponse> handleInvalidCredentials(InvalidCredentialsException ex){
+    public ResponseEntity<ApiErrorResponse> handleInvalidCredentials(InvalidCredentialsException ex) {
         ApiErrorResponse body = new ApiErrorResponse(401, ex.getMessage(), null);
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
     }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiErrorResponse> handleAccessDenied(AccessDeniedException ex) {
+        ApiErrorResponse body = new ApiErrorResponse(403, "Access denied!", null);
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+    }
+
 }
