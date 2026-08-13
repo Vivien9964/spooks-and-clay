@@ -44,8 +44,9 @@ public class OrderController {
     }
 
     @PostMapping("/api/orders")
-    public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody CreateOrderRequest request) {
-        OrderDto created = orderService.create(request);
+    public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody CreateOrderRequest request, Authentication authentication) {
+        Long callerId = Long.parseLong(authentication.getName());
+        OrderDto created = orderService.create(request, callerId);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 

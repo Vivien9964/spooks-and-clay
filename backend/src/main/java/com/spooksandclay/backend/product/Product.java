@@ -1,10 +1,7 @@
 package com.spooksandclay.backend.product;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
@@ -20,6 +17,7 @@ public class Product {
     private Long id;
 
     private String name;
+    @Column(unique = true)
     private String slug;
     private String shortDesc;
     private String longDesc;

@@ -52,7 +52,7 @@ public class ProductService {
         product.setSlug(request.slug());
         product.setShortDesc(request.shortDesc());
         product.setLongDesc(request.longDesc());
-        product.setPrice(new BigDecimal(request.price()));
+        product.setPrice(request.price());
         product.setOnSale(request.onSale());
         product.setDiscountPercent(request.discountPercent());
         product.setStockCount(request.stockCount());
@@ -70,7 +70,7 @@ public class ProductService {
         product.setSlug(request.slug());
         product.setShortDesc(request.shortDesc());
         product.setLongDesc(request.longDesc());
-        product.setPrice(new BigDecimal(request.price()));
+        product.setPrice(request.price());
         product.setOnSale(request.onSale());
         product.setDiscountPercent(request.discountPercent());
         product.setStockCount(request.stockCount());

@@ -10,6 +10,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -23,6 +25,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
     private final ConcurrentHashMap<String, Bucket> buckets = new ConcurrentHashMap<>();
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private static final Logger log = LoggerFactory.getLogger(RateLimitFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -41,7 +44,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
       Bucket ipBucket = resolveBucket("ip:" + ip);
 
       if(!ipBucket.tryConsume(1)) {
-          respondTooManyRequests(response);
+          respondTooManyRequests(response, "ip:" + ip);
           return;
       }
 
@@ -52,7 +55,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
               Bucket emailBucket = resolveBucket("email:" + email.toLowerCase());
 
               if(!emailBucket.tryConsume(1)) {
-                  respondTooManyRequests(response);
+                  respondTooManyRequests(response, "email:" + email.toLowerCase());
                   return;
               }
           }
@@ -79,7 +82,8 @@ public class RateLimitFilter extends OncePerRequestFilter {
     }
 
 
-    private void respondTooManyRequests(HttpServletResponse response) throws IOException {
+    private void respondTooManyRequests(HttpServletResponse response, String key) throws IOException {
+        log.warn("Rate limit exceeded for key={}", key);
         response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
         response.setContentType("application/json");
         response.getWriter().write("{\"status\":429,\"message\":\"Too many requests. Please try again later.\",\"fieldErrors\":null}");

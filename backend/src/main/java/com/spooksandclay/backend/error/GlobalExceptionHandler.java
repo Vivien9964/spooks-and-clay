@@ -1,5 +1,6 @@
 package com.spooksandclay.backend.error;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -61,6 +62,18 @@ public class GlobalExceptionHandler {
         ApiErrorResponse body = new ApiErrorResponse(403, "Access denied!", null);
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+    }
+
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<ApiErrorResponse> handleDuplicateEmail(DuplicateEmailException ex) {
+        ApiErrorResponse body = new ApiErrorResponse(409, ex.getMessage(), null);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        ApiErrorResponse body = new ApiErrorResponse(409, "A record with this value already exists!", null);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
 }

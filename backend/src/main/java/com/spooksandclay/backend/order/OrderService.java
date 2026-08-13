@@ -26,8 +26,8 @@ public class OrderService {
         this.productRepository = productRepository;
     }
 
-    public OrderDto create(CreateOrderRequest request) {
-        User user = userRepository.findById(request.userId())
+    public OrderDto create(CreateOrderRequest request, Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
         Order order = new Order();
