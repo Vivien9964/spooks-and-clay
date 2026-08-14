@@ -4,6 +4,8 @@ package com.spooksandclay.backend.order;
 import com.spooksandclay.backend.product.Product;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -23,6 +25,8 @@ public class OrderItem {
 
     private Integer quantity;
 
+    private BigDecimal unitPrice;
+
     public OrderItem() {}
 
     public Long getId() {
@@ -41,6 +45,8 @@ public class OrderItem {
         return quantity;
     }
 
+    public BigDecimal getUnitPrice() { return unitPrice; }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -56,4 +62,6 @@ public class OrderItem {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
+    public void setUnitPrice(BigDecimal unitPrice) { this.unitPrice = unitPrice; }
 }

@@ -1,6 +1,7 @@
 package com.spooksandclay.backend.order;
 
 
+import com.spooksandclay.backend.error.InsufficientStockException;
 import com.spooksandclay.backend.error.OrderNotFoundException;
 import com.spooksandclay.backend.error.ProductNotFoundException;
 import com.spooksandclay.backend.error.UserNotFoundException;
@@ -8,6 +9,7 @@ import com.spooksandclay.backend.product.Product;
 import com.spooksandclay.backend.product.ProductRepository;
 import com.spooksandclay.backend.user.User;
 import com.spooksandclay.backend.user.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class OrderService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public OrderDto create(CreateOrderRequest request, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
@@ -38,10 +41,15 @@ public class OrderService {
             Product product = productRepository.findById(itemRequest.productId())
                     .orElseThrow(() -> new ProductNotFoundException("Product not found!"));
 
+            int updatedRows = productRepository.decrementStock(itemRequest.productId(), itemRequest.quantity());
+            if (updatedRows == 0) {
+                throw new InsufficientStockException("Not enough stock for product: " + product.getName());
+            }
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
             orderItem.setProduct(product);
             orderItem.setQuantity(itemRequest.quantity());
+            orderItem.setUnitPrice(product.getPrice());
 
             order.getItems().add(orderItem);
 
@@ -99,7 +107,7 @@ public class OrderService {
                 item.getId(),
                 item.getProduct().getId(),
                 item.getProduct().getName(),
-                item.getProduct().getPrice().toString(),
+                item.getUnitPrice().toString(),
                 item.getQuantity()
         );
     }
