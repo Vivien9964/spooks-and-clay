@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -28,6 +30,10 @@ public class Product {
     @CreationTimestamp
     private Instant createdAt;
     private String category;
+    @ElementCollection
+    @CollectionTable(name= "product_images", joinColumns = @JoinColumn(name = "product_id"))
+    @OrderColumn(name = "image_order")
+    private List<ProductImage> images = new ArrayList<>();
 
     public Product() {}
 
@@ -75,6 +81,10 @@ public class Product {
         this.id = id;
     }
 
+    public List<ProductImage> getImages() {
+        return images;
+    }
+
 
     public void setName(String name) {
         this.name = name;
@@ -119,5 +129,19 @@ public class Product {
     public String getCategory() {
         return category;
     }
+
+    public void setImages(List<ProductImage> images) {
+        this.images = images;
+    }
+
+    public void addImage(ProductImage image) {
+        if(image == null) {
+            return;
+        }
+
+        images.add(image);
+    }
+
+
 
 }

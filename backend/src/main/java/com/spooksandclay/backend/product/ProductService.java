@@ -31,6 +31,9 @@ public class ProductService {
     }
 
     private ProductDto toDto(Product product) {
+
+        List<ProductImageDto> imageDtos = product.getImages().stream().map(img -> new ProductImageDto(img.getSrc(), img.getAlt())).toList();
+
         return new ProductDto(
                 product.getId(),
                 product.getName(),
@@ -42,8 +45,20 @@ public class ProductService {
                 product.getDiscountPercent(),
                 product.getStockCount(),
                 product.getCreatedAt().toString(),
-                product.getCategory()
+                product.getCategory(),
+                imageDtos
         );
+    }
+
+    private List<ProductImage>toProductImages(List<ProductImageDto> dtos) {
+        return dtos.stream()
+                .map(dto -> {
+                    ProductImage image = new ProductImage();
+                    image.setSrc(dto.src());
+                    image.setAlt(dto.alt());
+                    return image;
+                }).toList();
+
     }
 
     public ProductDto create(CreateProductRequest request) {
@@ -57,6 +72,7 @@ public class ProductService {
         product.setDiscountPercent(request.discountPercent());
         product.setStockCount(request.stockCount());
         product.setCategory(request.category());
+        product.setImages(toProductImages(request.images()));
 
         Product savedProduct = productRepository.save(product);
         return toDto(savedProduct);
@@ -75,6 +91,8 @@ public class ProductService {
         product.setDiscountPercent(request.discountPercent());
         product.setStockCount(request.stockCount());
         product.setCategory(request.category());
+        product.setImages(toProductImages(request.images()));
+
 
         Product saved = productRepository.save(product);
         return toDto(saved);

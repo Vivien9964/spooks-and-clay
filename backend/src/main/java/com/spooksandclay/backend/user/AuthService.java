@@ -15,11 +15,13 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final UserService userService;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, UserService userService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.userService = userService;
     }
 
     public UserDto create(RegisterRequest request) {
@@ -36,7 +38,7 @@ public class AuthService {
 
         User savedUser = userRepository.save(user);
 
-        return toUserDto(savedUser);
+        return userService.toDto(savedUser);
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -55,20 +57,10 @@ public class AuthService {
 
         log.info("User {} logged in", user.getId());
 
-        AuthResponse response = new AuthResponse(jwtService.generateToken(user), toUserDto(user));
+        AuthResponse response = new AuthResponse(jwtService.generateToken(user), userService.toDto(user));
 
         return response;
 
     }
-
-    public UserDto toUserDto(User user) {
-        return new UserDto(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getRole()
-        );
-    }
-
 
 }
