@@ -82,4 +82,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
+    @ExceptionHandler(SelfRoleChangeException.class)
+    public ResponseEntity<ApiErrorResponse> handleSelfRoleChange(SelfRoleChangeException ex) {
+        ApiErrorResponse body = new ApiErrorResponse(409, ex.getMessage(), null);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
 }

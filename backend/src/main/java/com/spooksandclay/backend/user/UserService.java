@@ -17,6 +17,16 @@ public class UserService {
         return toDto(user);
     }
 
+    public UserDto updateRole(Long id, Role newRole) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found!"));
+
+        user.setRole(newRole);
+
+        User savedUser = userRepository.save(user);
+
+        return toDto(savedUser);
+    }
+
     public UserDto toDto(User user) {
         return new UserDto(
                 user.getId(),

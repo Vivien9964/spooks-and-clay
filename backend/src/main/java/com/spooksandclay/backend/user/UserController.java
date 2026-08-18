@@ -1,9 +1,11 @@
 package com.spooksandclay.backend.user;
 
+import com.spooksandclay.backend.error.SelfRoleChangeException;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
@@ -19,5 +21,20 @@ public class UserController {
         Long callerId = Long.parseLong(authentication.getName());
         UserDto user = userService.getById(callerId);
         return ResponseEntity.ok(user);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/api/users/{id}/role")
+    public ResponseEntity<UserDto> updateRole(@PathVariable Long id, @Valid @RequestBody UpdateRoleRequest request, Authentication authentication) {
+
+        Long callerId = Long.parseLong(authentication.getName());
+
+        if(id.equals(callerId)) {
+            throw new SelfRoleChangeException("Unable to update role!");
+        }
+
+        UserDto updated = userService.updateRole(id, request.role());
+
+        return ResponseEntity.ok(updated);
     }
 }
