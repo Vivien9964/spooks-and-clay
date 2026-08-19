@@ -10,6 +10,8 @@ import com.spooksandclay.backend.product.ProductRepository;
 import com.spooksandclay.backend.user.User;
 import com.spooksandclay.backend.user.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -79,12 +81,12 @@ public class OrderService {
         return orderRepository.findById(id).map(order -> toOrderDto(order));
     }
 
-    public List<OrderDto> getAllOrders(Long userId) {
-        List<Order> orders = (userId == null)
-                ? orderRepository.findAllWithDetails()
-                : orderRepository.findByUserIdWithDetails(userId);
+    public Page<OrderDto> getAllOrders(Pageable pageable, Long userId, String status) {
 
-        return orders.stream().map(order -> toOrderDto(order)).toList();
+        Page<Order> orderPage = orderRepository.findAllFiltered(userId, status, pageable);
+
+        return orderPage.map(order -> toOrderDto(order));
+
     }
 
     private OrderDto toOrderDto(Order order) {

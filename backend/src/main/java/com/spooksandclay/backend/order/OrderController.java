@@ -1,6 +1,8 @@
 package com.spooksandclay.backend.order;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,14 +22,14 @@ public class OrderController {
 
 
     @GetMapping("/api/orders")
-    public ResponseEntity<List<OrderDto>> getOrders(@RequestParam(required = false) Long userId, Authentication authentication) {
+    public ResponseEntity<Page<OrderDto>> getOrders(@RequestParam(required = false) Long userId, Pageable pageable, @RequestParam(required = false) String status, Authentication authentication) {
 
         Long callerId = Long.parseLong(authentication.getName());
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
         Long effectiveUserId = isAdmin ? userId : callerId;
 
-        return ResponseEntity.ok(orderService.getAllOrders(effectiveUserId));
+        return ResponseEntity.ok(orderService.getAllOrders(pageable, effectiveUserId, status));
     }
 
     @GetMapping("/api/orders/{id}")
