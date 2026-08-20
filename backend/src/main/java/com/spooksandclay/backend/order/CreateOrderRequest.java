@@ -1,7 +1,10 @@
 package com.spooksandclay.backend.order;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+
 import java.util.List;
 
 public record CreateOrderRequest(
-        List<OrderItemRequest> items
+       @NotEmpty @Valid List<OrderItemRequest> items
 ) {}

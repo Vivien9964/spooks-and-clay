@@ -37,7 +37,7 @@ public class OrderService {
 
         Order order = new Order();
         order.setUser(user);
-        order.setStatus("PENDING");
+        order.setStatus(OrderStatus.PENDING);
 
         for(OrderItemRequest itemRequest : request.items()) {
             Product product = productRepository.findById(itemRequest.productId())
@@ -81,7 +81,7 @@ public class OrderService {
         return orderRepository.findById(id).map(order -> toOrderDto(order));
     }
 
-    public Page<OrderDto> getAllOrders(Pageable pageable, Long userId, String status) {
+    public Page<OrderDto> getAllOrders(Pageable pageable, Long userId, OrderStatus status) {
 
         Page<Order> orderPage = orderRepository.findAllFiltered(userId, status, pageable);
 

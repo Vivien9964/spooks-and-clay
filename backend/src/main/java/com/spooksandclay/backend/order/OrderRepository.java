@@ -14,5 +14,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "LEFT JOIN FETCH i.product " +
             "WHERE (:userId IS NULL OR o.user.id = :userId) " +
             "AND (:status IS NULL OR o.status = :status)")
-    Page<Order> findAllFiltered(@Param("userId") Long userId, @Param("status") String status, Pageable pageable);
+    Page<Order> findAllFiltered(@Param("userId") Long userId, @Param("status") OrderStatus status, Pageable pageable);
 }

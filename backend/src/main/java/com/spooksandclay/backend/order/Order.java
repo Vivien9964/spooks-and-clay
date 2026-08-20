@@ -23,7 +23,8 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @CreationTimestamp
     private Instant createdAt;
@@ -41,7 +42,7 @@ public class Order {
         return user;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
@@ -61,7 +62,7 @@ public class Order {
         this.user = user;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 

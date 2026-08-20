@@ -5,7 +5,7 @@ import java.util.List;
 public record OrderDto(
         Long id,
         Long userId,
-        String status,
+        OrderStatus status,
         String createdAt,
         List<OrderItemDto> items
 ) {

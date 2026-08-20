@@ -22,7 +22,7 @@ public class OrderController {
 
 
     @GetMapping("/api/orders")
-    public ResponseEntity<Page<OrderDto>> getOrders(@RequestParam(required = false) Long userId, Pageable pageable, @RequestParam(required = false) String status, Authentication authentication) {
+    public ResponseEntity<Page<OrderDto>> getOrders(@RequestParam(required = false) Long userId, Pageable pageable, @RequestParam(required = false) OrderStatus status, Authentication authentication) {
 
         Long callerId = Long.parseLong(authentication.getName());
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
