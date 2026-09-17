@@ -1,7 +1,14 @@
 import { API_BASE_URL } from "@/config/env"
 import { useAuthStore } from "@/store/authStore"
 
-export async function http<T>(path: string): Promise<T> {
+
+type HttpOptions = {
+    method?: "GET" | "POST" | "PATCH" | "DELETE";
+    body?: unknown
+}
+
+
+export async function http<T>(path: string, options: HttpOptions = {}): Promise<T> {
 
     const token = localStorage.getItem("token")
 
@@ -11,7 +18,15 @@ export async function http<T>(path: string): Promise<T> {
         headers["Authorization"] = `Bearer ${token}`
     }
 
-    const res = await fetch(`${API_BASE_URL}${path}`, { headers })
+    if(options.body) {
+        headers["Content-Type"] = "application/json"
+    }
+
+    const res = await fetch(`${API_BASE_URL}${path}`, { 
+        headers, 
+        method: options.method,
+        body: options.body ? JSON.stringify(options.body) : undefined
+    })
 
     if(!res.ok) {
         if(res.status === 401) {

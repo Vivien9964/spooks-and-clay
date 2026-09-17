@@ -14,7 +14,7 @@ export type ProductDto = {
     onSale: boolean;
     discountPercent: number | null;    
     stockCount: number;
-    tags: string[];
+    tags?: string[];
     images: ProductImage[];
     slug: string;  
     createdAt: string;
@@ -37,4 +37,17 @@ export type ApiError = {
 export type AuthResponse = {
     token: string;
     user: User;
+}
+
+export type UserDto = {
+    id: number;
+    name: string;
+    email: string;
+    role: string;
+    createdAt: string;
+}
+
+export type AuthResponseDto = {
+    token: string;
+    user: UserDto;
 }

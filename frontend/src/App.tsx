@@ -10,11 +10,41 @@ import RegisterPage from "@/pages/RegisterPage"
 import NotFoundPage from "@/pages/NotFoundPage"
 import AccountPage from "@/pages/AccountPage"
 
+import { useEffect } from "react"
 import { Routes, Route } from "react-router-dom"
 import RootLayout from "@/layouts/RootLayout"
 import ProtectedRoute from "@/features/auth/ProtectedRoute"
+import { useAuthStore } from "@/store/authStore"
+import { getMe } from "@/services/auth"
+
 
 function App() {
+
+  const token = useAuthStore((s) => s.token)
+  const setUser = useAuthStore((s) => s.setUser)
+  const logout = useAuthStore((s) => s.logout)
+
+
+  useEffect(() => {
+    if (!token) return
+ 
+    let ignore = false
+ 
+    async function restoreSession() {
+      try {
+        const user = await getMe()
+        if (!ignore) {
+          setUser(user)
+        }
+      } catch {
+        if (!ignore) logout()
+      }
+    }
+ 
+    restoreSession()
+ 
+    return () => { ignore = true }
+  }, [])
 
   return (
     <>

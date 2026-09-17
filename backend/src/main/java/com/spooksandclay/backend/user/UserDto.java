@@ -4,5 +4,6 @@ public record UserDto(
         Long id,
         String name,
         String email,
-        Role role
+        Role role,
+        String createdAt
 ) {}

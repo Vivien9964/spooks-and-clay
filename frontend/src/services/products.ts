@@ -1,21 +1,26 @@
 
 import { products } from "@/data/products"
 import type { Product } from "@/types/product"
-import type { ProductDto } from "@/types/api"
+import type { ProductDto, Page } from "@/types/api"
+import { http } from "@/services/http"
 
 
 export async function getProducts(): Promise<Product[]> {
-    return [...products]
+
+    const res = await http<Page<ProductDto>>("/products")
+
+    return res.content.map((product) => toProduct(product))
+
+    // return [...products]
 }
 
 export async function getProductBySlug(slug: string): Promise<Product> {
-    const product = products.find((product) => product.slug === slug)
+   
+   // const product = products.find((product) => product.slug === slug)
 
-    if(!product) {
-        throw new Error("Product not found!")
-    }
+   const product = await http<ProductDto>(`/products/${slug}`)
 
-    return product
+    return toProduct(product)
 }
 
 export function toProduct(dto: ProductDto): Product {
@@ -34,7 +39,7 @@ export function toProduct(dto: ProductDto): Product {
         longDesc: dto.longDesc,
         basePrice: Number(dto.price), 
         stockCount: dto.stockCount,
-        tags: dto.tags,
+        tags: dto.tags ?? [],
         images: dto.images,
         slug: dto.slug,
         ...discount
