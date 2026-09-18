@@ -1,5 +1,3 @@
-
-import { products } from "@/data/products"
 import type { Product } from "@/types/product"
 import type { ProductDto, Page } from "@/types/api"
 import { http } from "@/services/http"
