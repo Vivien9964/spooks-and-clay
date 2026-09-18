@@ -8,11 +8,15 @@ import ProductPage from "@/pages/ProductPage"
 import LoginPage from "@/pages/LoginPage"
 import RegisterPage from "@/pages/RegisterPage"
 import NotFoundPage from "@/pages/NotFoundPage"
+import ForbiddenPage from "@/pages/ForbiddenPage"
 import AccountPage from "@/pages/AccountPage"
+import AdminProductsPage from "@/pages/AdminProductsPage"
+import AdminOrdersPage from "@/pages/AdminOrdersPage"
 
 import { useEffect } from "react"
 import { Routes, Route } from "react-router-dom"
 import RootLayout from "@/layouts/RootLayout"
+import AdminLayout from "@/layouts/AdminLayout"
 import ProtectedRoute from "@/features/auth/ProtectedRoute"
 import { useAuthStore } from "@/store/authStore"
 import { getMe } from "@/services/auth"
@@ -55,9 +59,18 @@ function App() {
             <Route path="/product/:slug" element={<ProductPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/403" element={<ForbiddenPage />} />
+
 
             <Route element={<ProtectedRoute />}>  
               <Route path="/account" element={<AccountPage />} />
+            </Route>
+
+            <Route element={<ProtectedRoute requireRole="admin" />}>
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route path="products" element={<AdminProductsPage />} />
+                <Route path="orders" element={<AdminOrdersPage />} />
+              </Route>
             </Route>
 
             <Route path="*" element={<NotFoundPage />} />
