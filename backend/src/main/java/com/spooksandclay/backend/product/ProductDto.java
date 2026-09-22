@@ -15,5 +15,7 @@ public record ProductDto(
         Integer stockCount,
         String createdAt,
         String category,
-        List<ProductImageDto> images) {}
+        List<ProductImageDto> images,
+        boolean portfolioFeatured
+        ) {}
 

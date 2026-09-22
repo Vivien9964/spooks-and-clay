@@ -20,14 +20,16 @@ public class ProductService {
 
     public Page<ProductDto> getAll(Pageable pageable, String category) {
         Page<Product> productPage = (category == null)
-                ? productRepository.findAll(pageable)
-                : productRepository.findByCategory(category, pageable);
+                ? productRepository.findByActiveTrue(pageable)
+                : productRepository.findByActiveTrueAndCategory(category, pageable);
 
         return productPage.map(product -> toDto(product));
     }
 
     public Optional<ProductDto> getBySlug(String slug) {
-        return productRepository.findBySlug(slug).map(product -> toDto(product));
+        return productRepository.findBySlug(slug)
+                .filter(product -> product.isActive())
+                .map(product -> toDto(product));
     }
 
     private ProductDto toDto(Product product) {
@@ -46,7 +48,8 @@ public class ProductService {
                 product.getStockCount(),
                 product.getCreatedAt().toString(),
                 product.getCategory(),
-                imageDtos
+                imageDtos,
+                product.isPortfolioFeatured()
         );
     }
 
@@ -73,6 +76,7 @@ public class ProductService {
         product.setStockCount(request.stockCount());
         product.setCategory(request.category());
         product.setImages(toProductImages(request.images()));
+        product.setPortfolioFeatured(request.portfolioFeatured());
 
         Product savedProduct = productRepository.save(product);
         return toDto(savedProduct);
@@ -92,6 +96,7 @@ public class ProductService {
         product.setStockCount(request.stockCount());
         product.setCategory(request.category());
         product.setImages(toProductImages(request.images()));
+        product.setPortfolioFeatured(request.portfolioFeatured());
 
 
         Product saved = productRepository.save(product);
@@ -99,6 +104,8 @@ public class ProductService {
     }
 
     public void delete(Long id) {
-        productRepository.deleteById(id);
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found!"));
+        product.setActive(false);
+        productRepository.save(product);
     }
 }

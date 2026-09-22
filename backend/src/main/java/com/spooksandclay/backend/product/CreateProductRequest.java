@@ -19,6 +19,7 @@ public record CreateProductRequest(
         Integer discountPercent,
         @PositiveOrZero  Integer stockCount,
         @NotBlank String category,
-        @Valid List<ProductImageDto> images
+        @Valid List<ProductImageDto> images,
+        boolean portfolioFeatured
 
 ) {}

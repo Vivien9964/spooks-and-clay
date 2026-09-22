@@ -25,11 +25,13 @@ public class Product {
     private String longDesc;
     private BigDecimal price;
     private boolean onSale;
+    private boolean active = true;
     private Integer discountPercent;
     private Integer stockCount;
     @CreationTimestamp
     private Instant createdAt;
     private String category;
+    private boolean portfolioFeatured = false;
     @ElementCollection
     @CollectionTable(name= "product_images", joinColumns = @JoinColumn(name = "product_id"))
     @OrderColumn(name = "image_order")
@@ -65,6 +67,8 @@ public class Product {
         return onSale;
     }
 
+    public boolean isActive() { return active; }
+
     public Integer getDiscountPercent() {
         return discountPercent;
     }
@@ -76,6 +80,8 @@ public class Product {
     public Instant getCreatedAt() {
         return createdAt;
     }
+
+    public boolean isPortfolioFeatured() { return portfolioFeatured; }
 
     public void setId(Long id) {
         this.id = id;
@@ -110,6 +116,8 @@ public class Product {
         this.onSale = onSale;
     }
 
+    public void setActive(boolean active) { this.active = active; }
+
     public void setDiscountPercent(Integer discountPercent) {
         this.discountPercent = discountPercent;
     }
@@ -125,6 +133,8 @@ public class Product {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    public void setPortfolioFeatured(boolean portfolioFeatured) { this.portfolioFeatured = portfolioFeatured; }
 
     public String getCategory() {
         return category;
