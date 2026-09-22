@@ -53,7 +53,7 @@ export const products: readonly Product[] = [
         name: "The Whole Haunted Family",
         category: "collections",
         shortDesc: "A little gathering of two ghosts and their pumpkin, nestled on a mossy wood slice.",
-        longDesc: "Our flagship seasonal set brings the whole haunted family together — two hand-sculpted ghosts and a chubby clay pumpkin, arranged on a real mossy wood slice. A limited run made fresh every autumn, so no two arrangements are exactly alike.",
+        longDesc: "Our flagship seasonal set brings the whole haunted family together - two hand-sculpted ghosts and a chubby clay pumpkin, arranged on a real mossy wood slice. A limited run made fresh every autumn, so no two arrangements are exactly alike.",
         basePrice: 35.99,
         stockCount: 8,
         variants: [{ sizes: ["standard", "deluxe"], colors: [] }],

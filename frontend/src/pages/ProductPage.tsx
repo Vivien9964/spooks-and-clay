@@ -130,7 +130,7 @@ function ProductPage() {
                         <p className="font-body text-base text-bark-500 leading-relaxed">{product.shortDesc}</p>
 
                         {product.stockCount === 1 ? (
-                            <p className="font-body text-sm text-plum-500 font-semibold">✦ One of a Kind — only one exists</p>
+                            <p className="font-body text-sm text-plum-500 font-semibold">✦ One of a kind</p>
                         ) : product.stockCount < 10 ? (
                             <p className="font-body text-sm text-pumpkin-700 font-semibold">Only {product.stockCount} left!</p>
                         ) : (
