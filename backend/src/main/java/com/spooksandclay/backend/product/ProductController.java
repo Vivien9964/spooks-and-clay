@@ -37,6 +37,11 @@ public class ProductController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/api/products/portfolio")
+    public ResponseEntity<Page<ProductDto>> getPortfolio(Pageable pageable) {
+        return ResponseEntity.ok(productService.getPortfolio(pageable));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/api/products")
     public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody CreateProductRequest request) {

@@ -19,6 +19,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findByActiveTrueAndCategory(String category, Pageable pageable);
 
+    Page<Product> findByPortfolioFeaturedTrue(Pageable pageable);
+
     @Modifying
     @Query("UPDATE Product p SET p.stockCount = p.stockCount - :qty WHERE p.id = :id AND p.stockCount >= :qty")
     int decrementStock(@Param("id") Long id, @Param("qty") Integer qty);

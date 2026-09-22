@@ -39,6 +39,10 @@ public class ProductService {
                 .map(product -> toDto(product));
     }
 
+    public Page<ProductDto> getPortfolio(Pageable pageable) {
+        return productRepository.findByPortfolioFeaturedTrue(pageable).map(product -> toDto(product));
+    }
+
     private ProductDto toDto(Product product) {
 
         List<ProductImageDto> imageDtos = product.getImages().stream().map(img -> new ProductImageDto(img.getSrc(), img.getAlt())).toList();
