@@ -81,7 +81,7 @@ export const products: readonly Product[] = [
         id: 6,
         name: "Cozy Reading Nook",
         category: "autumnScenes",
-        shortDesc: "A tiny armchair, an open book, and a steaming mug \u2014 a little corner of autumn to keep on your shelf.",
+        shortDesc: "A tiny armchair, an open book, and a steaming mug - a little corner of autumn to keep on your shelf.",
         longDesc: "This miniature scene captures a quiet autumn afternoon: a hand-built little armchair, a miniature book with real tiny pages, and a mug you could almost believe is warm. Every piece is sculpted and assembled by hand, so each nook feels just a little different from the last.",
         basePrice: 27.99,
         stockCount: 15,
