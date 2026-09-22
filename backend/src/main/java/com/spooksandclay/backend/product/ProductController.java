@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -22,8 +23,11 @@ public class ProductController {
     }
 
     @GetMapping("/api/products")
-    public ResponseEntity<Page<ProductDto>> getProducts(Pageable pageable, @RequestParam(required = false) String category) {
-        return ResponseEntity.ok(productService.getAll(pageable, category));
+    public ResponseEntity<Page<ProductDto>> getProducts(Pageable pageable, @RequestParam(required = false) String category, @RequestParam(required = false, defaultValue = "false") boolean includeInactive, Authentication authentication) {
+
+        boolean isAdmin = authentication != null && authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        return ResponseEntity.ok(productService.getAll(pageable, category, includeInactive && isAdmin));
     }
 
     @GetMapping("/api/products/{slug}")

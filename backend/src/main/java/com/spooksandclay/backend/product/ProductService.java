@@ -18,11 +18,18 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Page<ProductDto> getAll(Pageable pageable, String category) {
-        Page<Product> productPage = (category == null)
-                ? productRepository.findByActiveTrue(pageable)
-                : productRepository.findByActiveTrueAndCategory(category, pageable);
+    public Page<ProductDto> getAll(Pageable pageable, String category, boolean includeInactive) {
+       Page<Product> productPage;
 
+       if(includeInactive) {
+          productPage = (category == null)
+          ? productRepository.findAll(pageable)
+          : productRepository.findByCategory(category, pageable);
+       } else {
+           productPage = (category == null)
+           ? productRepository.findByActiveTrue(pageable)
+           : productRepository.findByActiveTrueAndCategory(category, pageable);
+       }
         return productPage.map(product -> toDto(product));
     }
 
