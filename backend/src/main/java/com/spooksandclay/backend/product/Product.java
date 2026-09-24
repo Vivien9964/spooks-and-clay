@@ -21,8 +21,11 @@ public class Product {
     private String name;
     @Column(unique = true)
     private String slug;
+    @Column(length = 500)
     private String shortDesc;
+    @Column(length = 4000)
     private String longDesc;
+    @Column(precision = 10, scale = 2)
     private BigDecimal price;
     private boolean onSale;
     private boolean active = true;

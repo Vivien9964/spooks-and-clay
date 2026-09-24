@@ -17,7 +17,7 @@ public record CreateProductRequest(
         @NotNull @Positive BigDecimal price,
         boolean onSale,
         Integer discountPercent,
-        @PositiveOrZero  Integer stockCount,
+       @NotNull @PositiveOrZero Integer stockCount,
         @NotBlank String category,
         @Valid List<ProductImageDto> images,
         boolean portfolioFeatured
