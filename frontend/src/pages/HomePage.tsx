@@ -2,9 +2,10 @@
 import { Link } from "react-router-dom"
 import Button from "@/components/ui/Button"
 import ProductCard from "@/features/products/ProductCard"
-import { products } from "@/data/products"
+import { useEffect, useState } from "react"
+import { getPortfolioProducts } from "@/services/products"
+import type { Product } from "@/types/product"
 
-const featured = products.filter((product) => product.isFeatured === true)
 const browseCategories = [
     { slug: "autumnScenes",       label: "Autumn Scenes", image: "/categories/autumnScenes.png", tagline: "Small companions for your shelf", bg: "bg-cream-300",   textColor: "text-bark-900",    subtextColor: "text-bark-700",    dividerColor: "bg-bark-300" },
     { slug: "halloweenScenes",    label: "Halloween Scenes", image: "/categories/halloweenScenes.png", tagline: "Ghosts, pumpkins, and mischief",  bg: "bg-plum-300",    textColor: "text-plum-900",    subtextColor: "text-plum-700",    dividerColor: "bg-plum-500" },
@@ -14,6 +15,30 @@ const browseCategories = [
 const trustItems = ["Handmade", "Tiny worlds", "Made with love", "No two alike", "Shipped with care"]
 
 function HomePage() {
+
+
+    const [featured, setFeatured] = useState<Product[]>([])
+
+    useEffect(() => {
+        let ignore = false
+
+        getPortfolioProducts()
+            .then((data) => { 
+                if(!ignore) {
+                    setFeatured(data)
+                }
+            })
+            .catch(() => {
+                if(!ignore) {
+                    setFeatured([])
+                }
+            })
+
+        return () =>  { 
+            ignore = true 
+        }
+
+    }, [])
 
 return (
         <div className="flex flex-col gap-8 items-center">
@@ -104,7 +129,7 @@ return (
                                 Sculpted by hand, one at a time. No moulds. No shortcuts.
                             </p>
                             <div className="pt-2">
-                                <Link to="/product/haunted-family-set">
+                                <Link to="/product/spooky-friends">
                                     <Button variant="primary">Meet the ghosts</Button>
                                 </Link>
                             </div>
@@ -269,19 +294,19 @@ return (
 
                     <div className="-rotate-1 bg-cream-50 p-3 border-2 border-bark-700 shadow-[4px_4px_0px_var(--color-bark-700)] w-48">
                         <img
-                            src="/products/moon-cat.jpg"
-                            alt="Hand-Carved Moon Cat - one-of-a-kind clay sculpture"
+                            src="/products/pumpkin-4.jpg"
+                            alt="A unique clay pumpkin"
                             className="w-full aspect-square object-cover"
                         />
                     </div>
 
                     <div className="flex flex-col gap-1 items-center">
-                        <span className="font-display text-2xl text-pumpkin-300">The Potion Keeper</span>
-                        <span className="font-body text-sm text-bark-300">Only 1 exists · 50.00 Lei</span>
+                        <span className="font-display text-2xl text-pumpkin-300">Only one of each</span>
+                        <span className="font-body text-sm text-bark-300"> Once it's gone, it's gone </span>
                     </div>
 
-                    <Link to="/product/the-potion-keeper">
-                        <Button variant="primary">Claim this piece</Button>
+                    <Link to="/shop?category=uniquePieces">
+                        <Button variant="primary">See the unique pieces</Button>
                     </Link>
 
                 </div>

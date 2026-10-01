@@ -21,6 +21,13 @@ export async function getProductBySlug(slug: string): Promise<Product> {
     return toProduct(product)
 }
 
+
+export async function getPortfolioProducts(): Promise<Product[]> {
+    const res = await http<Page<ProductDto>>("/products/portfolio")
+
+    return res.content.map((product) => toProduct(product))
+}
+
 export function toProduct(dto: ProductDto): Product {
 
     const discount = dto.onSale
@@ -40,6 +47,7 @@ export function toProduct(dto: ProductDto): Product {
         tags: dto.tags ?? [],
         images: dto.images,
         slug: dto.slug,
+        isFeatured: dto.portfolioFeatured,
         ...discount
     }
 }
