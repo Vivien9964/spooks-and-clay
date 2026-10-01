@@ -22,6 +22,7 @@ function ProductCard({ product }: ProductCardProps) {
 
     const productPrice = product.isOnSale ? product.basePrice * (1 - product.discountPercent / 100) : product.basePrice
     const categoryLabel = categoryLabels[product.category] ?? product.category
+    const image = product.images[0]
 
     const handleAddToCart = () => {
         addItem(product);
@@ -37,11 +38,20 @@ function ProductCard({ product }: ProductCardProps) {
                         <Badge variant="positive">{product.discountPercent}% off</Badge>
                     </div>
                 )}
-                <img
-                    src={product.images[0].src}
-                    alt={product.images[0].alt}
-                    className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                />
+
+                {image ? (
+                    <img
+                        src={product.images[0].src}
+                        alt={product.images[0].alt}
+                        className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                    />
+
+                ) : (
+                    <div className="w-full aspect-square flex items-center justify-center bg-cream-100 text-bark-300 text-xs">
+                        No image yet!
+                    </div>
+                )}
+               
             </div>
 
             <div className="flex flex-col flex-1 gap-2 p-4">

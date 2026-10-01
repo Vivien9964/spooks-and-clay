@@ -2,6 +2,9 @@ package com.spooksandclay.backend.user;
 
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.Instant;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -18,6 +21,8 @@ public class User {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @CreationTimestamp
+    private Instant createdAt;
 
     public User() {}
 
@@ -37,6 +42,8 @@ public class User {
     public String getPassword() { return password; }
 
     public Role getRole() { return role; }
+
+    public Instant getCreatedAt() { return createdAt; }
 
     public void setId(Long id) {
         this.id = id;
