@@ -3,6 +3,7 @@ import type { User } from "@/types/user"
 
 
 export type RequestStatus = "loading" | "success" | "error"
+export type OrderStatusDto = "PENDING" | "PAID" | "SHIPPED" | "DELIVERED" | "CANCELLED"
 
 export type ProductDto = {
     readonly id: number;
@@ -19,6 +20,22 @@ export type ProductDto = {
     slug: string;  
     createdAt: string;
     portfolioFeatured: boolean;
+}
+
+export type OrderItemDto = {
+    readonly id: number;
+    productId: number;
+    productName: string;
+    price: string;
+    quantity: number;
+}
+
+export type OrderDto = {
+    readonly id: number;
+    userId: number;
+    status: OrderStatusDto;
+    createdAt: string;
+    items: OrderItemDto[];
 }
 
 export type Page<T> = {

@@ -1,22 +1,20 @@
 
 import React from "react"
 import { Link } from "react-router-dom"
-import { Ghost, LogOut, PackageCheck, Truck, Clock, XCircle } from "lucide-react"
+import { Ghost, LogOut, PackageCheck, Truck, Clock, XCircle, CreditCard } from "lucide-react"
 
-import { toast } from "sonner"
 import Button from "@/components/ui/Button"
 import Badge from "@/components/ui/Badge"
 
 import { useAuthStore } from "@/store/authStore"
-import { useCartStore } from "@/store/cartStore"
-import { orders } from "@/data/orders"
-import { products } from "@/data/products"
-import type { Order, OrderStatus } from "@/types/order"
+import { useOrders } from "@/hooks/useOrders"
+import type { OrderStatus } from "@/types/order"
 
 
-const statusVariantMap: Record<OrderStatus, "positive" | "neutral" | "warning"> = {
+const statusVariantMap: Record<OrderStatus, "positive" | "payment" | "neutral" | "warning"> = {
     delivered: "positive",
     shipped: "neutral",
+    paid: "payment",
     pending: "warning",
     cancelled: "warning",
 }
@@ -24,6 +22,7 @@ const statusVariantMap: Record<OrderStatus, "positive" | "neutral" | "warning"> 
 const statusIconMap: Record<OrderStatus, React.ElementType> = {
     delivered: PackageCheck,
     shipped: Truck,
+    paid: CreditCard,
     pending: Clock,
     cancelled: XCircle,
 }
@@ -43,26 +42,12 @@ function OrderStatusBadge({ status }: { status: OrderStatus }) {
 function AccountPage() {
 
     const user = useAuthStore((s) => s.user)
-    const addItem = useCartStore((s) => s.addItem)
     const logOut = useAuthStore((s) => s.logout)
 
+    const { orders, loadingStatus, errors } = useOrders(user?.id ?? 0)
 
     if(!user) {
         return null;
-    }
-
-    const orderHistory = orders.filter((order) => order.userId === user.id)
-
-    function handleOrderAgain(order: Order) {
-        order.items.forEach((item) => {
-            const product = products.find((p) => p.name === item.productName)
-            if (product) {
-                for (let i = 0; i < item.quantity; i++) {
-                    addItem(product)
-                }
-            }
-        })
-        toast.success("Items added to your cart!")
     }
 
     return (
@@ -93,8 +78,8 @@ function AccountPage() {
                             Member since {new Date(user.createdAt).toLocaleDateString()}
                         </p>
 
-                        <Button 
-                            variant="ghost" 
+                        <Button
+                            variant="ghost"
                             onClick={logOut}
                             className="w-full mt-4 flex items-center justify-center gap-2 hover:text-pumpkin-700">
                             <LogOut className="w-4 h-4" aria-hidden="true" />
@@ -109,10 +94,29 @@ function AccountPage() {
 
                     <div className="flex items-baseline gap-2 mb-4">
                         <h2 className="font-display text-xl text-bark-900">Order History</h2>
-                        <span className="font-body text-sm text-bark-300">{orderHistory.length} orders</span>
+                        {loadingStatus === "success" && (
+                            <span className="font-body text-sm text-bark-300">
+                                {orders.length} {orders.length === 1 ? "order" : "orders"}
+                            </span>
+                        )}
                     </div>
 
-                    {orderHistory.length === 0 ? (
+                    {loadingStatus === "loading" ? (
+
+                        <div className="flex flex-col gap-4">
+                            {Array.from({ length: 3 }).map((_, i) => (
+                                <div key={i} className="bg-cream-50 border border-cream-300 rounded-2xl p-5 h-36 animate-pulse" />
+                            ))}
+                        </div>
+
+                    ) : loadingStatus === "error" ? (
+
+                        <div className="bg-cream-50 border border-dashed border-cream-300 rounded-2xl p-12 flex flex-col items-center text-center gap-3">
+                            <p className="font-display text-xl text-bark-900">We couldn't reach the hollow.</p>
+                            <p className="font-body text-sm text-bark-500 italic">{errors ?? "Something went wrong. Please try again."}</p>
+                        </div>
+
+                    ) : orders.length === 0 ? (
 
                         <div className="bg-cream-50 border border-dashed border-cream-300 rounded-2xl p-12 flex flex-col items-center text-center gap-3">
                             <Ghost className="w-12 h-12 text-bark-300 mb-2 animate-bounce" aria-hidden="true" />
@@ -128,12 +132,12 @@ function AccountPage() {
                     ) : (
 
                         <div className="flex flex-col gap-4">
-                            {orderHistory.map((order) => (
-                                <div key={order.orderId} className="bg-cream-50 border border-cream-300 rounded-2xl p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+                            {orders.map((order) => (
+                                <div key={order.id} className="bg-cream-50 border border-cream-300 rounded-2xl p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
 
                                     <div className="flex justify-between items-start mb-3">
                                         <div>
-                                            <p className="font-display text-base text-bark-900">Order #{order.orderId}</p>
+                                            <p className="font-display text-base text-bark-900">Order #{order.id}</p>
                                             <p className="font-body text-xs text-bark-400 mt-0.5">
                                                 {new Date(order.orderedAt).toLocaleDateString()}
                                             </p>
@@ -145,7 +149,7 @@ function AccountPage() {
 
                                     <div className="flex flex-col gap-1">
                                         {order.items.map((item) => (
-                                            <div key={`${item.productName}-${order.orderId}`} className="flex justify-between items-center py-1.5">
+                                            <div key={`${order.id}-${item.productId}`} className="flex justify-between items-center py-1.5">
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-10 h-10 rounded-lg bg-pumpkin-100 text-pumpkin-700 font-display text-sm flex items-center justify-center shrink-0" aria-hidden="true">
                                                         {item.productName.charAt(0).toUpperCase()}
@@ -173,16 +177,6 @@ function AccountPage() {
                                             {order.items.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0).toFixed(2)} Lei
                                         </span>
                                     </div>
-
-                                    {order.status === "delivered" && (
-                                        <Button
-                                            variant="secondary"
-                                            className="w-[50%] mt-3 flex items-center justify-center gap-2"
-                                            onClick={() => handleOrderAgain(order)}
-                                        >
-                                            Order again
-                                        </Button>
-                                    )}
 
                                 </div>
                             ))}

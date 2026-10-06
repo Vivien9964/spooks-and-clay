@@ -14,6 +14,8 @@ export function useProduct(slug: string) {
     useEffect(() => {
 
         let ignore = false
+
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- reset stale data on slug change
         setLoadingStatus("loading")
 
         async function loadProduct() {
@@ -24,7 +26,7 @@ export function useProduct(slug: string) {
                     setProductData(data)
                     setLoadingStatus("success")
                 }
-            } catch (err) {
+            } catch {
 
                 if(!ignore) {
                     setLoadingStatus("error")

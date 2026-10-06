@@ -2,9 +2,10 @@
 import type { Address } from "@/types/address"
 
 
-export type OrderStatus = "pending" | "shipped" | "delivered" | "cancelled"
+export type OrderStatus = "pending" | "paid" | "shipped" | "delivered" | "cancelled"
 
 export type OrderItem = {
+    productId: number;
     productName: string;
     unitPrice: number;
     quantity: number;
@@ -12,11 +13,11 @@ export type OrderItem = {
 }
 
 export type Order = {
-    orderId: number;
+    id: number;
     userId: number;
     items: OrderItem[];
     status: OrderStatus;
     orderedAt: string;
     deliveredAt?: string;
-    shippingAddress: Address
+    shippingAddress?: Address
 }

@@ -58,7 +58,7 @@ export function useProducts({ searchTerm, selectedCategory, sortOrder}: UseProdu
                     setLoadingStatus("success")
                 }
 
-            } catch (err) {
+            } catch {
                 
                 if(!ignore) {
                     setLoadingStatus("error")
