@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,28 +40,58 @@ public class OrderService {
         Order order = new Order();
         order.setUser(user);
         order.setStatus(OrderStatus.PENDING);
+        order.setRecipientName(request.recipientName());
+        order.setStreet(request.street());
+        order.setCity(request.city());
+        order.setRegion(request.region());
+        order.setPostalCode(request.postalCode());
+        order.setCountry(request.country());
+        order.setPhone(request.phone());
+
+        BigDecimal total = BigDecimal.ZERO;
 
         for(OrderItemRequest itemRequest : request.items()) {
             Product product = productRepository.findById(itemRequest.productId())
                     .orElseThrow(() -> new ProductNotFoundException("Product not found!"));
 
+            if(!product.isActive()) {
+                throw new ProductNotFoundException("Product not found!");
+            }
+
             int updatedRows = productRepository.decrementStock(itemRequest.productId(), itemRequest.quantity());
             if (updatedRows == 0) {
                 throw new InsufficientStockException("Not enough stock for product: " + product.getName());
             }
+
+            BigDecimal unitPrice = effectiveUnitPrice(product);
+
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
             orderItem.setProduct(product);
             orderItem.setQuantity(itemRequest.quantity());
-            orderItem.setUnitPrice(product.getPrice());
+            orderItem.setUnitPrice(unitPrice);
 
             order.getItems().add(orderItem);
+            total = total.add(unitPrice.multiply(BigDecimal.valueOf(itemRequest.quantity())));
 
         }
+
+        order.setTotalAmount(total);
+        order.setCurrency("RON");
 
         Order savedOrder = orderRepository.save(order);
 
         return toOrderDto(savedOrder);
+    }
+
+    private BigDecimal effectiveUnitPrice(Product product) {
+        Integer discount = product.getDiscountPercent();
+
+        if(!product.isOnSale() || discount == null || discount <= 0) {
+            return product.getPrice();
+        }
+
+        return product.getPrice().multiply(BigDecimal.valueOf(100-discount)).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
     }
 
 
@@ -100,6 +132,8 @@ public class OrderService {
                 order.getUser().getId(),
                 order.getStatus(),
                 order.getCreatedAt().toString(),
+                order.getTotalAmount().toString(),
+                order.getCurrency(),
                 itemDtos
         );
     }

@@ -7,6 +7,8 @@ public record OrderDto(
         Long userId,
         OrderStatus status,
         String createdAt,
+        String total,
+        String currency,
         List<OrderItemDto> items
 ) {
 }

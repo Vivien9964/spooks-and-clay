@@ -5,6 +5,7 @@ import com.spooksandclay.backend.user.User;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,12 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal totalAmount;
+
+    @Column(length = 3)
+    private String currency;
 
     @CreationTimestamp
     private Instant createdAt;
@@ -69,6 +76,10 @@ public class Order {
         return status;
     }
 
+    public BigDecimal getTotalAmount() { return totalAmount; }
+
+    public String getCurrency() { return currency; }
+
     public Instant getCreatedAt() {
         return createdAt;
     }
@@ -104,6 +115,10 @@ public class Order {
     public void setStatus(OrderStatus status) {
         this.status = status;
     }
+
+    public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
+
+    public void setCurrency(String currency) { this.currency = currency; }
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
