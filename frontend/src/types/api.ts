@@ -22,20 +22,40 @@ export type ProductDto = {
     portfolioFeatured: boolean;
 }
 
-export type OrderItemDto = {
-    readonly id: number;
-    productId: number;
-    productName: string;
-    price: string;
-    quantity: number;
-}
 
 export type OrderDto = {
     readonly id: number;
     userId: number;
     status: OrderStatusDto;
     createdAt: string;
+    total: string;
+    currency: string;
     items: OrderItemDto[];
+}
+
+export type OrderItemRequestDto = {
+    productId: number;
+    quantity: number;
+}
+
+
+export type CreateOrderRequestDto = {
+    items: OrderItemRequestDto[];
+    recipientName: string;
+    street: string;
+    city: string;
+    region?: string;
+    postalCode: string;
+    country: string;
+    phone: string;
+}
+
+export type OrderItemDto = {
+    readonly id: number;
+    productId: number;
+    productName: string;
+    price: string;
+    quantity: number;
 }
 
 export type Page<T> = {
@@ -69,3 +89,4 @@ export type AuthResponseDto = {
     token: string;
     user: UserDto;
 }
+

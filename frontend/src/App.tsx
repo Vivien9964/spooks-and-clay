@@ -12,6 +12,7 @@ import ForbiddenPage from "@/pages/ForbiddenPage"
 import AccountPage from "@/pages/AccountPage"
 import AdminProductsPage from "@/pages/AdminProductsPage"
 import AdminOrdersPage from "@/pages/AdminOrdersPage"
+import CheckoutPage from "@/pages/CheckoutPage"
 
 import { useEffect } from "react"
 import { Routes, Route } from "react-router-dom"
@@ -64,6 +65,7 @@ function App() {
 
             <Route element={<ProtectedRoute />}>  
               <Route path="/account" element={<AccountPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
             </Route>
 
             <Route element={<ProtectedRoute requireRole="admin" />}>

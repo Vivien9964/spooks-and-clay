@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react"
+import { effectivePrice } from "@/utils/price"
 import type { CategoryFilter, SortOrder, Product } from "@/types/product"
 import type { RequestStatus } from "@/types/api"
 import { getProducts } from "@/services/products"
@@ -29,10 +30,10 @@ export function useProducts({ searchTerm, selectedCategory, sortOrder}: UseProdu
         const sorted = [...filteredProducts];
 
         if(sortOrder === "price-low") {
-            sorted.sort((a, b) => a.basePrice - b.basePrice)
+            sorted.sort((a, b) => effectivePrice(a) - effectivePrice(b))
 
         } else if( sortOrder === "price-high") {
-            sorted.sort((a, b) => b.basePrice - a.basePrice)
+            sorted.sort((a, b) => effectivePrice(b) - effectivePrice(a))
         }
 
         return sorted;

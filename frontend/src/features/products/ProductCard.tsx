@@ -9,6 +9,7 @@ import { toast } from "sonner"
 import { categoryLabels } from "@/data/categories"
 
 import { useCartStore } from "@/store/cartStore"
+import { effectivePrice, formatLei } from "@/utils/price"
 
 
 
@@ -20,7 +21,7 @@ function ProductCard({ product }: ProductCardProps) {
 
     const addItem = useCartStore((s) => s.addItem)
 
-    const productPrice = product.isOnSale ? product.basePrice * (1 - product.discountPercent / 100) : product.basePrice
+    const productPrice = effectivePrice(product)
     const categoryLabel = categoryLabels[product.category] ?? product.category
     const image = product.images[0]
 
@@ -70,9 +71,9 @@ function ProductCard({ product }: ProductCardProps) {
                 )}
 
                 <div className="flex items-baseline gap-2 mt-auto pt-1">
-                    <span className="font-display text-xl text-pumpkin-700">{productPrice.toFixed(2)} Lei</span>
+                    <span className="font-display text-xl text-pumpkin-700">{formatLei(productPrice)}</span>
                     {product.isOnSale && (
-                        <span className="text-sm text-bark-300 line-through">{product.basePrice.toFixed(2)} Lei</span>
+                        <span className="text-sm text-bark-300 line-through">{formatLei(product.basePrice)}</span>
                     )}
                 </div>
 

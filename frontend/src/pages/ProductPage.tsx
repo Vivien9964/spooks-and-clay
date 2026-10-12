@@ -6,6 +6,7 @@ import { useUIStore } from "@/store/uiStore"
 import { useProduct } from "@/hooks/useProduct"
 
 import { categoryLabels } from "@/data/categories" 
+import { effectivePrice, formatLei } from "@/utils/price"
 
 import Button from "@/components/ui/Button"
 import Badge from "@/components/ui/Badge"
@@ -41,7 +42,7 @@ function ProductPage() {
 
     const product = productData
 
-    const price = product.isOnSale ? product.basePrice * (1 - product.discountPercent / 100) : product.basePrice
+    const price = effectivePrice(product)
     const categoryLabel = categoryLabels[product.category] ?? product.category
 
     const hasSizes = !!product.variants?.[0]?.sizes?.length
@@ -112,10 +113,10 @@ function ProductPage() {
                         <h1 className="font-display text-4xl text-bark-900 leading-tight">{product.name}</h1>
 
                         <div className="flex items-baseline gap-3 flex-wrap">
-                            <span className="font-display text-3xl text-pumpkin-700">{price.toFixed(2)} Lei</span>
+                            <span className="font-display text-3xl text-pumpkin-700">{formatLei(price)} Lei</span>
                             {product.isOnSale && (
                                 <>
-                                    <span className="font-body text-lg text-bark-300 line-through">{product.basePrice.toFixed(2)} Lei</span>
+                                    <span className="font-body text-lg text-bark-300 line-through">{formatLei(product.basePrice)} Lei</span>
                                     <Badge variant="positive">{product.discountPercent}% off</Badge>
                                 </>
                             )}

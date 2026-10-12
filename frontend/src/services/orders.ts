@@ -1,5 +1,5 @@
 import type { Order, OrderItem, OrderStatus } from "@/types/order"
-import type { OrderDto, OrderItemDto, OrderStatusDto, Page } from "@/types/api"
+import type { OrderDto, OrderItemDto, OrderStatusDto, Page, CreateOrderRequestDto } from "@/types/api"
 import { http } from "@/services/http"
 
 
@@ -18,6 +18,12 @@ export async function getMyOrders(userId: number) : Promise<Order[]> {
 }
 
 
+export async function createOrder(payload: CreateOrderRequestDto): Promise<Order> {
+    const dto = await http<OrderDto>("/orders", { method: "POST", body: payload })
+    return toOrder(dto)
+}
+
+
 export function toOrder(dto: OrderDto): Order {
 
     return {
@@ -25,6 +31,8 @@ export function toOrder(dto: OrderDto): Order {
         userId: dto.userId,
         status: statusMap[dto.status],
         orderedAt: dto.createdAt,
+        total: Number(dto.total),
+        currency: dto.currency,
         items: dto.items.map((item) => toOrderItem(item))
     }
 }

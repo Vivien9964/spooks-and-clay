@@ -1,12 +1,16 @@
 
 import { useCartStore } from "@/store/cartStore"
+import { cartTotal, formatLei } from "@/utils/price"
 import { useUIStore } from "@/store/uiStore"
+import { useNavigate } from "react-router-dom"
 import CartItem from "@/features/cart/CartItem"
 import Button from "@/components/ui/Button"
 import { X } from "lucide-react"
 
+
 function CartDrawer() {
     
+    const navigate = useNavigate()
     const items = useCartStore((s) => s.items)
     const clearCart = useCartStore((s) => s.clearCart)
     const isCartOpen = useUIStore((s) => s.isCartOpen)
@@ -14,7 +18,7 @@ function CartDrawer() {
 
     if(!isCartOpen) return null;
 
-    const total = items.reduce((sum, item) => sum + item.product.basePrice * item.quantity, 0)
+    const total = cartTotal(items)
 
     return (
         <div className="fixed inset-0 z-50">
@@ -46,9 +50,17 @@ function CartDrawer() {
                     <div className="p-4 border-t border-cream-300 flex flex-col gap-3">
                         <div className="flex justify-between font-body font-bold text-bark-900">
                             <span>Total</span>
-                            <span>{total.toFixed(2)} Lei</span>
+                            <span>{formatLei(total)}</span>
                         </div>
-                        <Button variant="primary" className="w-full">Checkout</Button>
+                        <Button 
+                            variant="primary" 
+                            className="w-full"
+                            onClick={() => { 
+                                closeCart()
+                                navigate("/checkout")
+                            }}>
+                                Checkout
+                            </Button>
                         <Button variant="ghost" onClick={clearCart}>Clear cart</Button>
                     </div>
                 )}

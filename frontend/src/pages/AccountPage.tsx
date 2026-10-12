@@ -8,6 +8,7 @@ import Badge from "@/components/ui/Badge"
 
 import { useAuthStore } from "@/store/authStore"
 import { useOrders } from "@/hooks/useOrders"
+import { formatLei } from "@/utils/price"
 import type { OrderStatus } from "@/types/order"
 
 
@@ -163,7 +164,7 @@ function AccountPage() {
                                                 </div>
                                                 <div className="flex items-center gap-4">
                                                     <span className="font-body text-xs text-bark-300">x{item.quantity}</span>
-                                                    <span className="font-body text-sm text-bark-500">{item.unitPrice.toFixed(2)} Lei</span>
+                                                    <span className="font-body text-sm text-bark-500">{formatLei(item.unitPrice)}</span>
                                                 </div>
                                             </div>
                                         ))}
@@ -174,7 +175,7 @@ function AccountPage() {
                                     <div className="flex justify-between items-center">
                                         <span className="font-body text-sm text-bark-500 font-semibold">Order total</span>
                                         <span className="font-display text-lg text-pumpkin-700">
-                                            {order.items.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0).toFixed(2)} Lei
+                                            {formatLei(order.total)}
                                         </span>
                                     </div>
 

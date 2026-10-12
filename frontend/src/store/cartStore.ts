@@ -14,7 +14,6 @@ type CartStore = {
 
 export const useCartStore = create<CartStore>()(
   
-  
   persist(
     (set) => ({
 

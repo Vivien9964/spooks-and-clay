@@ -18,6 +18,8 @@ export type Order = {
     items: OrderItem[];
     status: OrderStatus;
     orderedAt: string;
+    total: number;
+    currency: string;
     deliveredAt?: string;
     shippingAddress?: Address
 }
