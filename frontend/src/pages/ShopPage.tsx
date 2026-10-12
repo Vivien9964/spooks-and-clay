@@ -3,10 +3,12 @@ import type { CategoryFilter, SortOrder } from "@/types/product"
 import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { useProducts } from "@/hooks/useProducts"
+import { useIsSlow } from "@/hooks/useIsSlow"
 import { categoryLabels } from "@/data/categories"
 
 import ProductCard from "@/features/products/ProductCard"
 import ProductCardSkeleton from "@/features/products/ProductCardSkeleton"
+import SlowLoadNotice from "@/components/SlowLoadNotice"
 
 
 function ShopPage() {
@@ -17,6 +19,7 @@ function ShopPage() {
     const sortOrder = (searchParams.get("sort") ?? "default") as SortOrder
 
     const { productCategories, sortedProducts, loadingStatus, errors } = useProducts({ searchTerm, selectedCategory, sortOrder})
+    const isSlow = useIsSlow(loadingStatus === "loading")
 
 
     const onSaleCount = sortedProducts.filter(p => p.isOnSale).length
@@ -98,12 +101,17 @@ function ShopPage() {
             </div>
 
            <div className="max-w-7xl mx-auto px-4 py-10 w-full">
+
                 {loadingStatus === "loading" ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-                        {Array.from({ length: 8 }).map((_, i) => (
-                            <ProductCardSkeleton key={i} />
-                        ))}
-                    </div>
+                    <>
+                        {isSlow && <SlowLoadNotice className="mb-8" />}
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+                            {Array.from({ length: 8 }).map((_, i) => (
+                                <ProductCardSkeleton key={i} />
+                            ))}
+                        </div>
+                    </>
                 ) : loadingStatus === "error" ? (
                     <div className="bg-cream-50 border-2 border-bark-900 shadow-[4px_4px_0px_var(--color-bark-900)] rounded-sm p-16 flex flex-col items-center gap-4 text-center">
                         <h2 className="font-display text-2xl text-bark-900">The hollow is unreachable.</h2>

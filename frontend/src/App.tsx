@@ -21,6 +21,8 @@ import AdminLayout from "@/layouts/AdminLayout"
 import ProtectedRoute from "@/features/auth/ProtectedRoute"
 import { useAuthStore } from "@/store/authStore"
 import { getMe } from "@/services/auth"
+import { ApiError } from "@/services/http"
+
 
 
 function App() {
@@ -41,8 +43,10 @@ function App() {
         if (!ignore) {
           setUser(user)
         }
-      } catch {
-        if (!ignore) logout()
+      } catch (error) {
+        if(error instanceof ApiError && error.status === 401) {
+          logout()
+        }
       }
     }
  

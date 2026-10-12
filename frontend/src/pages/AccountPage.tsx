@@ -5,9 +5,11 @@ import { Ghost, LogOut, PackageCheck, Truck, Clock, XCircle, CreditCard } from "
 
 import Button from "@/components/ui/Button"
 import Badge from "@/components/ui/Badge"
+import SlowLoadNotice from "@/components/SlowLoadNotice"
 
 import { useAuthStore } from "@/store/authStore"
 import { useOrders } from "@/hooks/useOrders"
+import { useIsSlow } from "@/hooks/useIsSlow"
 import { formatLei } from "@/utils/price"
 import type { OrderStatus } from "@/types/order"
 
@@ -46,6 +48,7 @@ function AccountPage() {
     const logOut = useAuthStore((s) => s.logout)
 
     const { orders, loadingStatus, errors } = useOrders(user?.id ?? 0)
+    const isSlow = useIsSlow(loadingStatus === "loading")
 
     if(!user) {
         return null;
@@ -104,11 +107,15 @@ function AccountPage() {
 
                     {loadingStatus === "loading" ? (
 
-                        <div className="flex flex-col gap-4">
-                            {Array.from({ length: 3 }).map((_, i) => (
-                                <div key={i} className="bg-cream-50 border border-cream-300 rounded-2xl p-5 h-36 animate-pulse" />
-                            ))}
-                        </div>
+                        <>
+                            {isSlow && <SlowLoadNotice className="mb-4" />}
+
+                            <div className="flex flex-col gap-4">
+                                {Array.from({ length: 3 }).map((_, i) => (
+                                    <div key={i} className="bg-cream-50 border border-cream-300 rounded-2xl p-5 h-36 animate-pulse" />
+                                ))}
+                            </div>
+                        </>
 
                     ) : loadingStatus === "error" ? (
 

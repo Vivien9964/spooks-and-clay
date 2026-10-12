@@ -2,8 +2,10 @@
 import { Link } from "react-router-dom"
 import Button from "@/components/ui/Button"
 import ProductCard from "@/features/products/ProductCard"
+import SlowLoadNotice from "@/components/SlowLoadNotice"
 import { useEffect, useState } from "react"
 import { getPortfolioProducts } from "@/services/products"
+import { useIsSlow } from "@/hooks/useIsSlow"
 import type { Product } from "@/types/product"
 
 const browseCategories = [
@@ -18,6 +20,9 @@ function HomePage() {
 
 
     const [featured, setFeatured] = useState<Product[]>([])
+    const [isLoadingFeatured, setIsLoadingFeatured] = useState(true)
+
+    const isSlow = useIsSlow(isLoadingFeatured)
 
     useEffect(() => {
         let ignore = false
@@ -31,6 +36,11 @@ function HomePage() {
             .catch(() => {
                 if(!ignore) {
                     setFeatured([])
+                }
+            })
+            .finally(() => {
+                if(!ignore) {
+                    setIsLoadingFeatured(false)
                 }
             })
 
@@ -150,6 +160,8 @@ return (
                             <span className="flex-1 h-px bg-cream-300" />
                         </div>
                     </div>
+
+                    {isSlow && <SlowLoadNotice className="w-full max-w-xl" />}
 
                     <div className="flex md:grid md:grid-cols-3 gap-6 w-full overflow-x-auto md:overflow-visible snap-x md:snap-none snap-mandatory scroll-smooth scrollbar-hide pb-2 md:pb-0">
                         {featured.map((featuredProduct) => (
