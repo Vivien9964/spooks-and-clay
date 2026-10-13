@@ -4,39 +4,55 @@ import { useParams, Link } from "react-router-dom"
 import { useCartStore } from "@/store/cartStore"
 import { useUIStore } from "@/store/uiStore"
 import { useProduct } from "@/hooks/useProduct"
+import { useIsSlow } from "@/hooks/useIsSlow"
 
 import { categoryLabels } from "@/data/categories" 
 import { effectivePrice, formatLei } from "@/utils/price"
 
 import Button from "@/components/ui/Button"
 import Badge from "@/components/ui/Badge"
+import SlowLoadNotice from "@/components/SlowLoadNotice"
 
 
 
-function ProductPage() {
+function ProductPageContent({ slug }: { slug: string }) {
 
-    const { slug } = useParams<{ slug: string }>()
-    const { productData, loadingStatus, errors } = useProduct(slug ?? "")
+    const { productData, loadingStatus, errorStatus, refetch } = useProduct(slug)
     const addItem = useCartStore((s) => s.addItem)
     const openCart = useUIStore((s) => s.openCart)
     const [selectedImage, setSelectedImage] = useState(0)
     const [selectedSize, setSelectedSize] = useState<string | null>(null)
+    const isSlow = useIsSlow(loadingStatus === "loading")
 
     if (loadingStatus === "loading") {
         return (
             <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
                 <p className="font-body text-bark-500 italic">Summoning the creature…</p>
+                {isSlow && <SlowLoadNotice />}
             </div>
         )
     }
  
     if (loadingStatus === "error" || !productData) {
+
+        const notFound = errorStatus === 404
+
         return (
-            <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
-                <h1 className="font-display text-4xl text-bark-900">This ghoul has wandered off!</h1>
-                <p className="font-body text-sm text-bark-500 italic">{errors ?? "This creature has wandered off."}</p>
-                <Link to="/shop"><Button variant="ghost">Back to Shop</Button></Link>
-            </div>
+               <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4 text-center px-4">
+                    <h1 className="font-display text-4xl text-bark-900">
+                        {notFound ? "This ghoul has wandered off!" : "We couldn't reach the hollow."}
+                    </h1>
+                    <p className="font-body text-sm text-bark-500 italic">
+                        {notFound
+                            ? "This creature isn't in our collection."
+                            : "The shop runs on free hosting and may still be waking up."
+                        }
+                    </p>
+                <div className="flex items-center gap-3">
+                    {!notFound && <Button variant="primary" onClick={refetch}>Try again</Button>}
+                    <Link to="/shop"><Button variant="ghost">Back to Shop</Button></Link>
+                </div>
+        </div>
         )
     }
 
@@ -187,6 +203,14 @@ function ProductPage() {
             </div>
         </div>
     )
+}
+
+
+function ProductPage() {
+
+    const { slug } = useParams<{ slug: string }>()
+
+    return <ProductPageContent key={slug} slug={slug ?? ""} />
 }
 
 export default ProductPage

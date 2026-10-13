@@ -67,10 +67,6 @@ async function sendRequest<T>(path: string, options: HttpOptions): Promise<T> {
 
 
 
-
-
-
-
 export async function http<T>(path: string, options: HttpOptions = {}): Promise<T> {
 
    const method = options.method ?? "GET"

@@ -3,20 +3,19 @@ import { useState, useEffect } from "react"
 import type { Product } from "@/types/product"
 import type { RequestStatus } from "@/types/api"
 import { getProductBySlug } from "@/services/products"
+import { ApiError } from "@/services/http"
 
 export function useProduct(slug: string) {
 
     const [ productData, setProductData ] = useState<Product | null>(null)
     const [ loadingStatus, setLoadingStatus ] = useState<RequestStatus>("loading")
-    const [ errors, setErrors ] = useState<string | null>(null)
+    const [ errorStatus, setErrorStatus ] = useState<number | null>(null)
+    const [ reloadKey, setReloadKey ] = useState(0)
 
 
     useEffect(() => {
 
         let ignore = false
-
-        // eslint-disable-next-line react-hooks/set-state-in-effect -- reset stale data on slug change
-        setLoadingStatus("loading")
 
         async function loadProduct() {
             try {
@@ -26,11 +25,12 @@ export function useProduct(slug: string) {
                     setProductData(data)
                     setLoadingStatus("success")
                 }
-            } catch {
+
+            } catch (error) {
 
                 if(!ignore) {
                     setLoadingStatus("error")
-                    setErrors("Failed to load product!")
+                    setErrorStatus(error instanceof ApiError ? error.status : null)
                 }
             }
         }
@@ -39,13 +39,21 @@ export function useProduct(slug: string) {
 
         return () => { ignore = true } 
 
-    }, [slug])
+    }, [slug, reloadKey])
+
+
+    function refetch() {
+        setLoadingStatus("loading")
+        setErrorStatus(null)
+        setReloadKey((key) => key + 1)
+    }
 
 
     return {
         productData,
         loadingStatus,
-        errors
+        errorStatus,
+        refetch
     }
 
 

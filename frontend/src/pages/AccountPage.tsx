@@ -47,7 +47,7 @@ function AccountPage() {
     const user = useAuthStore((s) => s.user)
     const logOut = useAuthStore((s) => s.logout)
 
-    const { orders, loadingStatus, errors } = useOrders(user?.id ?? 0)
+    const { orders, loadingStatus, errors, refetch } = useOrders(user?.id ?? 0)
     const isSlow = useIsSlow(loadingStatus === "loading")
 
     if(!user) {
@@ -119,9 +119,10 @@ function AccountPage() {
 
                     ) : loadingStatus === "error" ? (
 
-                        <div className="bg-cream-50 border border-dashed border-cream-300 rounded-2xl p-12 flex flex-col items-center text-center gap-3">
-                            <p className="font-display text-xl text-bark-900">We couldn't reach the hollow.</p>
+                        <div className="bg-cream-50 border-2 border-bark-900 shadow-[4px_4px_0px_var(--color-bark-900)] rounded-sm p-16 flex flex-col items-center gap-4 text-center">
+                            <h2 className="font-display text-2xl text-bark-900">The hollow is unreachable.</h2>
                             <p className="font-body text-sm text-bark-500 italic">{errors ?? "Something went wrong. Please try again."}</p>
+                            <Button variant="primary" onClick={refetch}>Try again</Button>
                         </div>
 
                     ) : orders.length === 0 ? (

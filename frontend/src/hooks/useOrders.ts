@@ -8,6 +8,7 @@ export function useOrders(userId: number) {
     const [ orders, setOrders ] = useState<Order[]>([])
     const [ loadingStatus, setLoadingStatus ] = useState<RequestStatus>("loading")
     const [ errors, setErrors ] = useState<string | null>(null)
+    const [ reloadKey, setReloadKey ] = useState(0)
 
 
     useEffect(() => {
@@ -32,12 +33,20 @@ export function useOrders(userId: number) {
 
         return () => { ignore = true }
 
-    }, [userId])
+    }, [userId, reloadKey])
+
+
+    function refetch() {
+        setLoadingStatus("loading")
+        setErrors(null)
+        setReloadKey((key) => key + 1)
+    }
 
     return {
         orders,
         loadingStatus,
-        errors
+        errors,
+        refetch
     }
 
 }

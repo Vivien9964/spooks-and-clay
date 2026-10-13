@@ -17,6 +17,7 @@ export function useProducts({ searchTerm, selectedCategory, sortOrder}: UseProdu
     const [ productsData, setProductsData ] = useState<Product[]>([])
     const [ loadingStatus, setLoadingStatus ] = useState<RequestStatus>("loading")
     const [ errors, setErrors ] = useState<string | null>(null)
+    const [ reloadKey, setReloadKey ] = useState(0)
 
     const productCategories = [...new Set(productsData.map((product) => product.category))];
 
@@ -73,9 +74,14 @@ export function useProducts({ searchTerm, selectedCategory, sortOrder}: UseProdu
 
        return () => { ignore = true }
 
-    }, [])
+    }, [reloadKey])
     
 
+    function refetch() {
+        setLoadingStatus("loading")
+        setErrors(null)
+        setReloadKey((key) => key + 1)
+    }
 
 
 
@@ -83,7 +89,8 @@ export function useProducts({ searchTerm, selectedCategory, sortOrder}: UseProdu
         productCategories,
         sortedProducts,
         loadingStatus,
-        errors
+        errors,
+        refetch
     }
 
 

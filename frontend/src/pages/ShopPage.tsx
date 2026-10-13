@@ -7,6 +7,7 @@ import { useIsSlow } from "@/hooks/useIsSlow"
 import { categoryLabels } from "@/data/categories"
 
 import ProductCard from "@/features/products/ProductCard"
+import Button from "@/components/ui/Button"
 import ProductCardSkeleton from "@/features/products/ProductCardSkeleton"
 import SlowLoadNotice from "@/components/SlowLoadNotice"
 
@@ -18,7 +19,7 @@ function ShopPage() {
     const selectedCategory = (searchParams.get("category") ?? "all") as CategoryFilter
     const sortOrder = (searchParams.get("sort") ?? "default") as SortOrder
 
-    const { productCategories, sortedProducts, loadingStatus, errors } = useProducts({ searchTerm, selectedCategory, sortOrder})
+    const { productCategories, sortedProducts, loadingStatus, errors, refetch } = useProducts({ searchTerm, selectedCategory, sortOrder})
     const isSlow = useIsSlow(loadingStatus === "loading")
 
 
@@ -116,6 +117,7 @@ function ShopPage() {
                     <div className="bg-cream-50 border-2 border-bark-900 shadow-[4px_4px_0px_var(--color-bark-900)] rounded-sm p-16 flex flex-col items-center gap-4 text-center">
                         <h2 className="font-display text-2xl text-bark-900">The hollow is unreachable.</h2>
                         <p className="font-body text-sm text-bark-500 italic">{errors ?? "Something went wrong. Please try again."}</p>
+                        <Button variant="primary" onClick={refetch}>Try again</Button>
                     </div>
                 ) : sortedProducts.length === 0 ? (
                     <div className="bg-cream-50 border-2 border-bark-900 shadow-[4px_4px_0px_var(--color-bark-900)] rounded-sm p-16 flex flex-col items-center gap-4 text-center">
