@@ -1,27 +1,21 @@
-# Spooks & Clay
+# Spooks & Clay - Frontend
 
-A Halloween-themed ecommerce shop for handmade clay figurines, built as a personal project to gain hands-on experience working with React and TypeScript. The plan is to eventually pair it with a Java / Spring Boot backend, which is currently under work. Until then, this repo runs on mock data / mock auth.
+The React + TypeScript frontend for Spooks & Clay, a Halloween-themed shop for handmade clay figurines. It talks to the Spring Boot backend in `../backend`. For the full project overview, see the [root README](../README.md).
 
-This isn't just a practice project. The long-term goal is to turn it into a real online shop for my own handmade clay figurines, so it's both a coding exercise and the early stage of an actual product.
-
-## Why I made this
-
-I wanted something more interesting than another to-do app or clone, so I went with a small handmade-crafts shop with a cottagecore/vintage-Halloween theme. It gave me a reason to practice real frontend architecture with services, hooks, and typed API contracts, rather than just writing components, and it's a project I can point to as an example of that.
-
-Along the way I used an AI tool (Claude Code) for some styling/boilerplate help and to explain new concepts I was learning.
+Live on Vercel: [spooks-and-clay.vercel.app](https://spooks-and-clay.vercel.app/)
 
 ## Features
 
-- Home, shop and individual product pages
-- Cart (Zustand store, persists in localStorage)
-- Login / register forms with validation (React Hook Form + Zod)
-- Protected `/account` route (redirects if you're not logged in)
-- Proper loading / success / error states when fetching data, instead of a spinner that never reflects what's actually happening
-- Custom 404 page and an error boundary to avoid a blank white screen on unexpected errors
-- Fully custom design system (colors, fonts)
+- Home, shop and product pages, with search, category filter and sorting by price
+- Cart that stays saved after a refresh, and a checkout page that places a real order
+- Login and register, and you stay logged in after refreshing the page
+- Account page with your past orders, and admin-only pages that customers can't open
+- Loading and error states on every page that fetches data, plus a "Try again" button and a message when the server is slow to wake up
+- A 404 page and an error boundary, so an unexpected error doesn't leave a blank white screen
+- My own color palette and fonts
+
 ## Tech stack
 
-**Frontend**
 - React 19 + TypeScript
 - Vite
 - Tailwind CSS v4
@@ -30,24 +24,15 @@ Along the way I used an AI tool (Claude Code) for some styling/boilerplate help 
 - React Hook Form + Zod (forms & validation)
 - Lucide React (icons), sonner (toasts)
 
-**Backend** (in progress, separate from this folder)
-- Java + Spring Boot
-
 ## What I learned building this
 
 - The difference between properly handling async state (loading/error/success) and faking it with a `setTimeout`
-- How to structure a frontend so logic isn't all crammed into `useEffect` — service layer, custom hooks, typed API contracts
+- How to structure a frontend so logic isn't all crammed into `useEffect`: service layer, custom hooks, typed API contracts
 - Tailwind v4's new `@theme` config (no more `tailwind.config.js`) took some adjusting to
 - Zustand for complex state management instead of reaching for Context API
 - Designing a custom color palette and typography system instead of relying on defaults
-
-## What's next
-
-- [ ] Hook the frontend up to the real Spring Boot backend (currently mock services)
-- [ ] Real authentication with JWT instead of the mock login
-- [ ] Checkout flow + real payments
-- [ ] Deploy backend + connect it to the deployed frontend
-- [ ] If all goes well, actually launch it as a real shop
+- Once the real backend was connected, I found out that some of my TypeScript types didn't match what the API actually sends. TypeScript can't check that for you at runtime
+- Keeping one rule in one place: the price was calculated in six different components and they had started showing different numbers
 
 ## Running it locally
 
@@ -59,25 +44,23 @@ npm run dev
 Create a `.env` file based on `.env.example`:
 
 ```
-VITE_API_BASE_URL=
+VITE_API_BASE_URL=http://localhost:8080/api
 ```
 
-## Project structure (frontend)
+You'll need the backend running too (see the root README).
+
+## Project structure
 
 ```
 src/
   components/   shared UI (Header, Footer, ErrorBoundary...)
-  features/     auth, cart, products (grouped by feature)
-  hooks/        useProducts, useProduct, etc.
-  layouts/      RootLayout
+  config/       environment variables
+  features/     auth, cart, checkout, products (grouped by feature)
+  hooks/        useProducts, useProduct, useOrders, etc.
+  layouts/      RootLayout, AdminLayout
   pages/        route-level pages
   services/     fetch wrapper + API calls
   store/        Zustand stores (auth, cart, ui)
   types/        shared TS types / API contracts
+  utils/        price calculation
 ```
-
-## Live demo
-
-Deployed on Vercel: [spooks-and-clay.vercel.app](https://spooks-and-clay.vercel.app/)
-
-Currently running on mock data / mock auth since the backend isn't hooked up yet.
