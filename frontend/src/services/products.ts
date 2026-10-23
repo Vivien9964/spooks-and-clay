@@ -8,14 +8,10 @@ export async function getProducts(): Promise<Product[]> {
     const res = await http<Page<ProductDto>>("/products")
 
     return res.content.map((product) => toProduct(product))
-
-    // return [...products]
 }
 
 export async function getProductBySlug(slug: string): Promise<Product> {
    
-   // const product = products.find((product) => product.slug === slug)
-
    const product = await http<ProductDto>(`/products/${slug}`)
 
     return toProduct(product)

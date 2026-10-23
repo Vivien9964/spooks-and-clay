@@ -53,24 +53,13 @@ function HomePage() {
 return (
         <div className="flex flex-col gap-8 items-center">
 
-            <section className="w-full bg-cream-100 border-b-2 border-bark-900">
-                <div className="max-w-4xl mx-auto px-4 py-14 md:py-20 flex flex-col items-center gap-8 text-center">
+            <section className="w-full gap-3 bg-cream-100 border-b-2 border-bark-900">
+                <div className="max-w-4xl mx-auto px-4 py-12 md:py-20 flex flex-col items-center gap-8 text-center">
 
-                    <div className="flex items-center gap-3 w-full max-w-xs">
-                        <span className="flex-1 h-px bg-bark-900/20" />
-                        <span className="font-body text-xs tracking-[0.25em] uppercase text-bark-500">spooks &amp; clay</span>
-                        <span className="flex-1 h-px bg-bark-900/20" />
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                        <h1 className="font-display text-4xl md:text-6xl text-bark-900 leading-tight">
-                            Little Worlds <br />
-                            for <br/>
-                            Slow Afternoons
+                    <div className="flex flex-col">
+                        <h1 className="font-display text-4xl md:text-5xl text-bark-900 leading-tight">
+                            Little creatures, big personalities!
                         </h1>
-                        <p className="font-body text-lg text-bark-500 max-w-sm mx-auto">
-                            Every shelf deserves a little <span className="text-orange-700 italic font-bold">cozy</span>.
-                        </p>
                     </div>
 
                     <div className="flex items-end justify-center gap-4 md:gap-6 w-full max-w-2xl">
@@ -97,7 +86,6 @@ return (
                                 Shop now
                             </Button>
                         </Link>
-                        <p className="font-body text-sm text-bark-300">No two alike · Sculpted just for you</p>
                     </div>
 
                 </div>

@@ -66,10 +66,6 @@ function ProductCard({ product }: ProductCardProps) {
                 <h2 className="font-display text-lg text-bark-900 leading-snug">{product.name}</h2>
                 <p className="font-body text-xs text-bark-500 line-clamp-2">{product.shortDesc}</p>
 
-                {product.stockCount < 10 && (
-                    <p className="font-body text-xs text-pumpkin-700 font-semibold">Only {product.stockCount} left</p>
-                )}
-
                 <div className="flex items-baseline gap-2 mt-auto pt-1">
                     <span className="font-display text-xl text-pumpkin-700">{formatLei(productPrice)}</span>
                     {product.isOnSale && (
