@@ -3,54 +3,55 @@
 @theme {
 
   /* Fonts */
-  --font-display: "Yeseva One", serif;
-  --font-body: "Nunito", sans-serif;
+  --font-display: "Modak", "Cooper Black", "Bookman Old Style", Georgia, serif;
+  --font-body: "Frank Ruhl Libre", Georgia, "Times New Roman", serif;
 
-  /* Primary color: pumpkin */
-  --color-pumpkin-100: #FFF0CC;
-  --color-pumpkin-300: #FFA020;
-  --color-pumpkin-500: #FF6200;
-  --color-pumpkin-700: #E04800;
-  --color-pumpkin-900: #881E00;
-
-  /* Background: cream */
-  --color-cream-50:  #FDFCF2;
-  --color-cream-100: #F5F0DA;
-  --color-cream-200: #EBE0BA;
-  --color-cream-300: #D4C48A;
-  --color-cream-400: #BCA866;
+  /* Background: cream (tune) */
+  --color-cream-50:  #FFFDF0;
+  --color-cream-100: #FBF3D9;
+  --color-cream-200: #F3E6C2;
+  --color-cream-300: #E8D5A3;
 
   /* Text: bark */
   --color-bark-300: #B8A38C;
-  --color-bark-500: #8A6F58;
-  --color-bark-700: #5C4433;
-  --color-bark-900: #2E1F14;
+  --color-bark-500: #895129;
+  --color-bark-700: #614419;
+  --color-bark-900: #332216;
 
-  /* Accent 1: gold */
-  --color-gold-100: #F7E8BE;
-  --color-gold-300: #E8C468;
-  --color-gold-500: #E0A526;
-  --color-gold-700: #A67818;
-  --color-gold-900: #5C4718;
+  /* Primary CTA: pumpkin (100 is a tint for hover fills, tune) */
+  --color-pumpkin-100: #FDE9CC;
+  --color-pumpkin-300: #FFB343;
+  --color-pumpkin-500: #EE851B;
+  --color-pumpkin-700: #BE5103;
+  --color-pumpkin-900: #8C4C1F;
 
-  /* Accent 2: plum */
-  --color-plum-100: #F2E8FF;
-  --color-plum-300: #CC99EE;
-  --color-plum-500: #8B3FCE;
-  --color-plum-700: #5E1E9A;
-  --color-plum-900: #360A6E;
+  /* Joy / highlights: honey (fills only) */
+  --color-honey-100: #FFFDD0;
+  --color-honey-300: #F9E076;
+  --color-honey-500: #FFC107;
+  --color-honey-700: #AD7A32;
+
+  /* Nature / secondary: moss */
+  --color-moss-300: #A1A404;
+  --color-moss-500: #75710B;
+  --color-moss-700: #544823;
+
+  /* Rare accent: berry */
+  --color-berry-500: #C5020F;
+  --color-berry-700: #660F09;
+
+  /* Soft, warm-tinted shadows */
+  --shadow-soft: 0 6px 20px -8px rgb(97 68 25 / 0.28);
+  --shadow-lift: 0 14px 30px -10px rgb(97 68 25 / 0.35);
 
   /* Animations */
   --animate-float: float 3s ease-in-out infinite;
   --animate-float-md: float 4.5s ease-in-out 0.5s infinite;
   --animate-float-lg: float 5.5s ease-in-out 1s infinite;
-  --animate-marquee: marquee 25s linear infinite;
+  --animate-shadow: shadow-pulse 3s ease-in-out infinite;
+  --animate-shadow-md: shadow-pulse 4.5s ease-in-out 0.5s infinite;
+  --animate-shadow-lg: shadow-pulse 5.5s ease-in-out 1s infinite;
 
-}
-
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
 }
 
 @keyframes float {
@@ -58,10 +59,42 @@
   50%      { transform: translateY(-10px); }
 }
 
+/* Oval shadow under a floating figurine: shrinks while the figurine is up */
+@keyframes shadow-pulse {
+  0%, 100% { transform: scaleX(1);    opacity: 0.35; }
+  50%      { transform: scaleX(0.75); opacity: 0.2; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-float, .animate-float-md, .animate-float-lg, .animate-marquee {
+  .animate-float, .animate-float-md, .animate-float-lg,
+  .animate-shadow, .animate-shadow-md, .animate-shadow-lg {
     animation: none;
   }
+}
+
+/* Subheadings: Fraunces with the soft + wonky axes for the storybook feel */
+@utility font-heading {
+  font-family: "Fraunces", Georgia, serif;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+}
+
+/* Shapes for photos */
+@utility blob-1 {
+  border-radius: 58% 42% 55% 45% / 52% 48% 52% 48%;
+}
+@utility blob-2 {
+  border-radius: 42% 58% 46% 54% / 55% 45% 55% 45%;
+}
+@utility blob-3 {
+  border-radius: 50% 50% 38% 62% / 60% 52% 48% 40%;
+}
+
+@utility wave {
+  height: 20px;
+  background-color: currentColor;
+  --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 20'%3E%3Cpath d='M0 10 Q20 0 40 10 T80 10 V20 H0 Z'/%3E%3C/svg%3E");
+  -webkit-mask: var(--wave) repeat-x 0 0 / 80px 20px;
+  mask: var(--wave) repeat-x 0 0 / 80px 20px;
 }
 
 @utility scrollbar-hide {
@@ -75,6 +108,11 @@
 @layer base {
   body {
     @apply bg-cream-100 text-bark-700 font-body;
+  }
+
+  .font-display {
+    line-height: 0.95;
+    letter-spacing: 0.01em;
   }
 
   body::after {

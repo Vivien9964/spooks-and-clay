@@ -18,6 +18,13 @@ export async function getProductBySlug(slug: string): Promise<Product> {
 }
 
 
+// Asks for a single-item page: only totalElements is needed, not the products
+export async function getProductCount(): Promise<number> {
+    const res = await http<Page<ProductDto>>("/products?size=1")
+
+    return res.totalElements
+}
+
 export async function getPortfolioProducts(): Promise<Product[]> {
     const res = await http<Page<ProductDto>>("/products/portfolio")
 

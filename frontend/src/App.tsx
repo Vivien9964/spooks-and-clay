@@ -13,6 +13,7 @@ import AccountPage from "@/pages/AccountPage"
 import AdminProductsPage from "@/pages/AdminProductsPage"
 import AdminOrdersPage from "@/pages/AdminOrdersPage"
 import CheckoutPage from "@/pages/CheckoutPage"
+import PortfolioPage from "@/pages/PortfolioPage"
 
 import { useEffect } from "react"
 import { Routes, Route } from "react-router-dom"
@@ -61,6 +62,7 @@ function App() {
           <Route element={<RootLayout /> }>
             <Route path="/" element={<HomePage />} />
             <Route path="/shop" element={<ShopPage />} />
+            <Route path="/portfolio" element={<PortfolioPage />} />
             <Route path="/product/:slug" element={<ProductPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />

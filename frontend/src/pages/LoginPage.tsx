@@ -9,7 +9,7 @@ function LoginPage() {
     return (
         <div className="max-w-md mx-auto mt-20 mb-12 bg-cream-50 rounded-2xl border border-cream-300 shadow-sm p-8">
 
-            <h1 className="font-display text-2xl text-bark-900">Welcome back!</h1>
+            <h1 className="font-heading font-semibold text-2xl text-bark-900">Welcome back!</h1>
             <LoginForm />
 
             <p className="font-body text-sm text-bark-500 mt-6 pt-5 border-t border-cream-300">Don't have an account?</p>

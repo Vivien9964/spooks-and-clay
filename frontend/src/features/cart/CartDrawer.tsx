@@ -30,7 +30,7 @@ function CartDrawer() {
  
             <aside className="absolute top-0 right-0 h-full w-full max-w-md bg-cream-50 shadow-xl flex flex-col">
                 <div className="flex items-center justify-between p-4 border-b border-cream-300">
-                    <h2 className="font-display text-2xl text-bark-900">Your Cart</h2>
+                    <h2 className="font-heading font-semibold text-2xl text-bark-900">Your Cart</h2>
                     <button onClick={closeCart} className="text-bark-500 hover:text-pumpkin-700">
                         <X size={24} />
                     </button>

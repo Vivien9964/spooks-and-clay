@@ -57,7 +57,7 @@ function AccountPage() {
     return (
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
 
-            <h1 className="font-display text-3xl md:text-4xl text-bark-900 mb-8">
+            <h1 className="font-heading font-semibold text-3xl md:text-4xl text-bark-900 mb-8">
                 Welcome back, <span className="text-pumpkin-700">{user.name}</span>
             </h1>
 
@@ -67,13 +67,13 @@ function AccountPage() {
                     <div className="bg-cream-50 border border-cream-300 rounded-2xl p-6 shadow-sm">
 
                         <div
-                            className="w-16 h-16 rounded-full bg-pumpkin-100 text-pumpkin-700 font-display text-2xl flex items-center justify-center mx-auto mb-4"
+                            className="w-16 h-16 rounded-full bg-pumpkin-100 text-pumpkin-700 font-heading font-semibold text-2xl flex items-center justify-center mx-auto mb-4"
                             aria-hidden="true"
                         >
                             {user.name.charAt(0).toUpperCase()}
                         </div>
 
-                        <p className="font-display text-xl text-bark-900 text-center">{user.name}</p>
+                        <p className="font-heading font-semibold text-xl text-bark-900 text-center">{user.name}</p>
                         <p className="font-body text-sm text-bark-500 text-center mt-1">{user.email}</p>
 
                         <div className="border-t border-cream-300 my-4" />
@@ -97,7 +97,7 @@ function AccountPage() {
                 <main className="flex-1 min-w-0">
 
                     <div className="flex items-baseline gap-2 mb-4">
-                        <h2 className="font-display text-xl text-bark-900">Order History</h2>
+                        <h2 className="font-heading font-semibold text-xl text-bark-900">Order History</h2>
                         {loadingStatus === "success" && (
                             <span className="font-body text-sm text-bark-300">
                                 {orders.length} {orders.length === 1 ? "order" : "orders"}
@@ -119,8 +119,8 @@ function AccountPage() {
 
                     ) : loadingStatus === "error" ? (
 
-                        <div className="bg-cream-50 border-2 border-bark-900 shadow-[4px_4px_0px_var(--color-bark-900)] rounded-sm p-16 flex flex-col items-center gap-4 text-center">
-                            <h2 className="font-display text-2xl text-bark-900">The hollow is unreachable.</h2>
+                        <div className="bg-cream-50 rounded-2xl shadow-soft p-16 flex flex-col items-center gap-4 text-center">
+                            <h2 className="font-heading font-semibold text-2xl text-bark-900">We couldn't load your orders.</h2>
                             <p className="font-body text-sm text-bark-500 italic">{errors ?? "Something went wrong. Please try again."}</p>
                             <Button variant="primary" onClick={refetch}>Try again</Button>
                         </div>
@@ -129,7 +129,7 @@ function AccountPage() {
 
                         <div className="bg-cream-50 border border-dashed border-cream-300 rounded-2xl p-12 flex flex-col items-center text-center gap-3">
                             <Ghost className="w-12 h-12 text-bark-300 mb-2 animate-bounce" aria-hidden="true" />
-                            <p className="font-display text-xl text-bark-900">No orders yet</p>
+                            <p className="font-heading font-semibold text-xl text-bark-900">No orders yet</p>
                             <p className="font-body text-sm text-bark-500">Your little worlds will show up here once you order one.</p>
                             <Link to="/shop">
                                 <Button variant="primary" className="mt-4">
@@ -146,7 +146,7 @@ function AccountPage() {
 
                                     <div className="flex justify-between items-start mb-3">
                                         <div>
-                                            <p className="font-display text-base text-bark-900">Order #{order.id}</p>
+                                            <p className="font-heading font-semibold text-base text-bark-900">Order #{order.id}</p>
                                             <p className="font-body text-xs text-bark-400 mt-0.5">
                                                 {new Date(order.orderedAt).toLocaleDateString()}
                                             </p>
@@ -160,7 +160,7 @@ function AccountPage() {
                                         {order.items.map((item) => (
                                             <div key={`${order.id}-${item.productId}`} className="flex justify-between items-center py-1.5">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="w-10 h-10 rounded-lg bg-pumpkin-100 text-pumpkin-700 font-display text-sm flex items-center justify-center shrink-0" aria-hidden="true">
+                                                    <div className="w-10 h-10 rounded-lg bg-pumpkin-100 text-pumpkin-700 font-heading font-semibold text-sm flex items-center justify-center shrink-0" aria-hidden="true">
                                                         {item.productName.charAt(0).toUpperCase()}
                                                     </div>
                                                     <div className="flex flex-col gap-0.5">
@@ -182,7 +182,7 @@ function AccountPage() {
 
                                     <div className="flex justify-between items-center">
                                         <span className="font-body text-sm text-bark-500 font-semibold">Order total</span>
-                                        <span className="font-display text-lg text-pumpkin-700">
+                                        <span className="font-heading font-semibold text-lg text-pumpkin-700">
                                             {formatLei(order.total)}
                                         </span>
                                     </div>

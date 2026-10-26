@@ -15,7 +15,7 @@ function ForbiddenPage() {
                 403
             </h1>
  
-            <p className="font-display text-2xl text-bark-700">
+            <p className="font-heading font-semibold text-2xl text-bark-700">
                 This corner is warded off limits!
             </p>
  

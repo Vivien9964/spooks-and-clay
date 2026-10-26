@@ -16,7 +16,7 @@ function NotFoundPage() {
                 404
             </h1>
 
-            <p className="font-display text-2xl text-bark-700">
+            <p className="font-heading font-semibold text-2xl text-bark-700">
                 This page vanished into the hollow.
             </p>
 

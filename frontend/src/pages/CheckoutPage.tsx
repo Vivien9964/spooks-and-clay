@@ -45,7 +45,7 @@ function CheckoutPage() {
     if (items.length === 0) {
         return (
             <div className="max-w-md mx-auto mt-20 mb-12 text-center">
-                <h1 className="font-display text-2xl text-bark-900">No little spooks yet</h1>
+                <h1 className="font-heading font-semibold text-2xl text-bark-900">No little spooks yet</h1>
                 <p className="font-body text-sm text-bark-500 mt-3">Plenty of them waiting to be adopted.</p>
                 <Link to="/shop">
                     <Button variant="primary" className="mt-6">Find a spook</Button>
@@ -57,13 +57,13 @@ function CheckoutPage() {
     return (
         <div className="max-w-2xl mx-auto mt-20 mb-12 bg-cream-50 rounded-2xl border border-cream-300 shadow-sm p-8">
 
-            <h1 className="font-display text-2xl text-bark-900">Checkout</h1>
+            <h1 className="font-heading font-semibold text-2xl text-bark-900">Checkout</h1>
 
-            <p className="font-display text-xl text-bark-900">Just a few details and we'll wrap your order up!</p>
+            <p className="font-heading font-semibold text-xl text-bark-900">Just a few details and we'll wrap your order up!</p>
 
             <div className="mt-6 border-b border-cream-300 pb-5">
 
-                <h2 className="font-display text-2xl text-bark-900">Your haul</h2>
+                <h2 className="font-heading font-semibold text-2xl text-bark-900">Your haul</h2>
 
                 {items.map((item) => (
                     <div key={item.product.id} className="flex justify-between font-body text-sm text-bark-700 py-1">

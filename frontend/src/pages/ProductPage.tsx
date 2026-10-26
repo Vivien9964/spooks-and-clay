@@ -10,6 +10,7 @@ import { categoryLabels } from "@/data/categories"
 import { effectivePrice, formatLei } from "@/utils/price"
 
 import Button from "@/components/ui/Button"
+import { buttonClasses } from "@/components/ui/buttonStyles"
 import Badge from "@/components/ui/Badge"
 import SlowLoadNotice from "@/components/SlowLoadNotice"
 
@@ -40,7 +41,7 @@ function ProductPageContent({ slug }: { slug: string }) {
         return (
                <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4 text-center px-4">
                     <h1 className="font-display text-4xl text-bark-900">
-                        {notFound ? "This ghoul has wandered off!" : "We couldn't reach the hollow."}
+                        {notFound ? "This spook has wandered off!" : "We couldn't reach the spooks."}
                     </h1>
                     <p className="font-body text-sm text-bark-500 italic">
                         {notFound
@@ -50,7 +51,7 @@ function ProductPageContent({ slug }: { slug: string }) {
                     </p>
                 <div className="flex items-center gap-3">
                     {!notFound && <Button variant="primary" onClick={refetch}>Try again</Button>}
-                    <Link to="/shop"><Button variant="ghost">Back to Shop</Button></Link>
+                    <Link to="/shop" className={buttonClasses("ghost")}>Back to Shop</Link>
                 </div>
         </div>
         )
@@ -87,7 +88,7 @@ function ProductPageContent({ slug }: { slug: string }) {
                 <div className="grid md:grid-cols-2 gap-10 items-start">
 
                     <div className="flex flex-col gap-3">
-                        <div className="bg-cream-50 p-3 border-2 border-bark-900 rounded-sm shadow-[6px_6px_0px_var(--color-bark-900)]">
+                        <div className="bg-cream-200 rounded-[2rem] overflow-hidden shadow-lift">
                             <img
                                 src={product.images[selectedImage].src}
                                 alt={product.images[selectedImage].alt}
@@ -101,15 +102,17 @@ function ProductPageContent({ slug }: { slug: string }) {
                                     <button
                                         key={index}
                                         onClick={() => setSelectedImage(index)}
-                                        className={`bg-cream-50 p-1.5 rounded-sm border-2 overflow-hidden transition-all duration-200 ${
+                                        aria-label={`Show image ${index + 1}`}
+                                        aria-pressed={index === selectedImage}
+                                        className={`rounded-xl overflow-hidden ring-offset-2 ring-offset-cream-100 transition-all duration-200 cursor-pointer ${
                                             index === selectedImage
-                                                ? "border-bark-900 opacity-100 shadow-[3px_3px_0px_var(--color-bark-900)]"
-                                                : "border-bark-300 opacity-60 hover:opacity-90 hover:border-bark-500"
+                                                ? "ring-2 ring-pumpkin-500 opacity-100"
+                                                : "opacity-60 hover:opacity-90"
                                         }`}
                                     >
                                         <img
                                             src={image.src}
-                                            alt={image.alt}
+                                            alt=""
                                             className="w-16 h-16 object-cover"
                                         />
                                     </button>
@@ -120,38 +123,28 @@ function ProductPageContent({ slug }: { slug: string }) {
 
                     <div className="flex flex-col gap-4">
 
-                        <div className="flex items-center gap-3">
-                            <span className="flex-1 h-px bg-bark-300" />
-                            <span className="font-body text-xs tracking-[0.2em] uppercase text-bark-500">✦ {categoryLabel} ✦</span>
-                            <span className="flex-1 h-px bg-bark-300" />
-                        </div>
+                        <span className="font-body text-sm tracking-widest uppercase text-moss-700">{categoryLabel}</span>
 
-                        <h1 className="font-display text-4xl text-bark-900 leading-tight">{product.name}</h1>
+                        <h1 className="font-display text-5xl md:text-6xl text-bark-900">{product.name}</h1>
 
                         <div className="flex items-baseline gap-3 flex-wrap">
-                            <span className="font-display text-3xl text-pumpkin-700">{formatLei(price)} Lei</span>
+                            <span className="font-heading font-semibold text-3xl text-pumpkin-700">{formatLei(price)} Lei</span>
                             {product.isOnSale && (
                                 <>
-                                    <span className="font-body text-lg text-bark-300 line-through">{formatLei(product.basePrice)} Lei</span>
-                                    <Badge variant="positive">{product.discountPercent}% off</Badge>
+                                    <span className="font-body text-lg text-bark-500 line-through">{formatLei(product.basePrice)} Lei</span>
+                                    <Badge variant="sale">{product.discountPercent}% off</Badge>
                                 </>
                             )}
                         </div>
 
-                        <div className="flex items-center gap-2">
-                            <span className="flex-1 h-px bg-bark-300" />
-                            <span className="text-bark-300 text-xs">✦</span>
-                            <span className="flex-1 h-px bg-bark-300" />
-                        </div>
-
-                        <p className="font-body text-base text-bark-500 leading-relaxed">{product.shortDesc}</p>
+                        <p className="font-body text-lg text-bark-700 leading-relaxed">{product.shortDesc}</p>
 
                         {product.stockCount === 1 ? (
-                            <p className="font-body text-sm text-plum-500 font-semibold">✦ One of a kind</p>
+                            <p className="font-body text-sm text-berry-500 font-bold">One of a kind</p>
                         ) : product.stockCount < 10 ? (
-                            <p className="font-body text-sm text-pumpkin-700 font-semibold">Only {product.stockCount} left!</p>
+                            <p className="font-body text-sm text-pumpkin-700 font-bold">Only {product.stockCount} left!</p>
                         ) : (
-                            <p className="font-body text-sm text-gold-700">✦ In stock</p>
+                            <p className="font-body text-sm text-moss-700 font-bold">In stock</p>
                         )}
 
                         {product.variants && product.variants[0]?.sizes?.length > 0 && (
@@ -162,10 +155,11 @@ function ProductPageContent({ slug }: { slug: string }) {
                                         <button
                                             key={size}
                                             onClick={() => setSelectedSize(size)}
-                                             className={`font-body text-sm capitalize border-2 px-3 py-1 rounded-sm transition-colors duration-200 ${
+                                             aria-pressed={size === selectedSize}
+                                             className={`font-body text-sm capitalize px-4 py-1.5 rounded-full shadow-soft transition-colors duration-200 cursor-pointer ${
                                                 size === selectedSize
-                                                ? "border-bark-900 bg-pumpkin-100 text-pumpkin-700 shadow-[2px_2px_0px_var(--color-bark-900)]"
-                                                : "border-bark-900 bg-cream-50 hover:bg-pumpkin-100"
+                                                ? "bg-bark-900 text-cream-50"
+                                                : "bg-cream-50 text-bark-700 hover:bg-honey-100"
                                                  }`}
                                         >
                                             {size}
@@ -175,23 +169,17 @@ function ProductPageContent({ slug }: { slug: string }) {
                             </div>
                         )}
 
-                        <Button variant="primary" className="w-full" onClick={handleAddToCart} disabled={needsSize}>
+                        <Button variant="primary" size="lg" className="w-full" onClick={handleAddToCart} disabled={needsSize}>
                             {needsSize ? "Select a size" : "Add to cart"}
                         </Button>
 
-                        <div className="flex items-center gap-2">
-                            <span className="flex-1 h-px bg-bark-300" />
-                            <span className="text-bark-300 text-xs">✦</span>
-                            <span className="flex-1 h-px bg-bark-300" />
-                        </div>
-
-                        <p className="font-body text-sm text-bark-500 leading-relaxed">{product.longDesc}</p>
+                        <p className="font-body text-base text-bark-700 leading-relaxed pt-4 mt-2 border-t border-cream-300">{product.longDesc}</p>
 
                         <div className="flex flex-wrap gap-2 pt-2">
                             {product.tags.map((tag) => (
                                 <span
                                     key={tag}
-                                    className="font-body text-xs text-bark-500 bg-cream-200 border border-cream-300 px-2 py-0.5 rounded-sm"
+                                    className="font-body text-xs text-bark-700 bg-cream-200 px-2.5 py-0.5 rounded-full"
                                 >
                                     #{tag}
                                 </span>
