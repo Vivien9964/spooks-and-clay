@@ -20,6 +20,8 @@ const sizeConfig: Record<ButtonSize, string> = {
     lg: "px-8 py-3.5 text-lg",
 }
 
+export const textLinkClasses = "font-bold text-pumpkin-700 underline underline-offset-4 decoration-pumpkin-300 hover:decoration-pumpkin-700 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pumpkin-700"
+
 export function buttonClasses(variant: ButtonVariant = "primary", className?: string, size: ButtonSize = "md") {
     return clsx(baseStyle, styleConfig[variant], sizeConfig[size], className)
 }

@@ -2,27 +2,39 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "sonner"
+import { ChevronLeft, ChevronDown } from "lucide-react"
 import { checkoutSchema, type CheckoutValues } from "@/features/checkout/checkoutSchema"
 import { createOrder } from "@/services/orders"
 import { useCartStore } from "@/store/cartStore"
-import { cartTotal, lineTotal, formatLei } from "@/utils/price"
+import { cartTotal, formatLei } from "@/utils/price"
+import { euCountries } from "@/data/countries"
+import OrderSummary from "@/features/checkout/OrderSummary"
 
 import Input from "@/components/ui/Input"
 import Button from "@/components/ui/Button"
+import { buttonClasses } from "@/components/ui/buttonStyles"
+
+// Easy Tailwind values for styling the inputs
+const fieldsetClasses = "flex flex-col gap-4"
+const legendClasses = "font-heading font-semibold text-xl text-bark-900 mb-4"
 
 function CheckoutPage() {
 
+    // Get cart items and clear cart function from cartStore
     const items = useCartStore((s) => s.items)
     const clearCart = useCartStore((s) => s.clearCart)
     const navigate = useNavigate()
 
+    // Verify checkout values agains rules defined in Zod
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<CheckoutValues>({
         resolver: zodResolver(checkoutSchema),
         defaultValues: { country: "RO" }
     })
 
+    // Calculate the cart total from utils/price and count items
     const total = cartTotal(items)
 
+    // Validate checkout values and try to create an order
     const onSubmit = async (data: CheckoutValues) => {
         try {
             const order = await createOrder({
@@ -33,6 +45,7 @@ function CheckoutPage() {
                 ...data
             })
 
+            // On successful create: clear cart, show success message and navigate to account
             clearCart()
             toast.success(`Order #${order.id} confirmed! Preparing it now!`)
             navigate("/account")
@@ -42,57 +55,105 @@ function CheckoutPage() {
         }
     }
 
+    // Component shown when user did not put products into their cart 
     if (items.length === 0) {
         return (
-            <div className="max-w-md mx-auto mt-20 mb-12 text-center">
-                <h1 className="font-heading font-semibold text-2xl text-bark-900">No little spooks yet</h1>
-                <p className="font-body text-sm text-bark-500 mt-3">Plenty of them waiting to be adopted.</p>
-                <Link to="/shop">
-                    <Button variant="primary" className="mt-6">Find a spook</Button>
-                </Link>
+            <div className="max-w-md mx-auto px-4 py-20 flex flex-col items-center text-center">
+                <img
+                    src="/redesignImages/tinyPumpkins.jpeg"
+                    alt=""
+                    className="w-40 aspect-square object-cover blob-3 shadow-soft ring-4 ring-cream-50 motion-safe:animate-float"
+                />
+                <h1 className="font-heading font-semibold text-2xl text-bark-900 mt-8">No little spooks yet</h1>
+                <p className="font-body text-bark-700 mt-2">Plenty of them waiting to be adopted.</p>
+                {/* CTA button */}
+                <Link to="/shop" className={buttonClasses("primary", "mt-6")}>Find a spook</Link>
             </div>
         )
     }
 
     return (
-        <div className="max-w-2xl mx-auto mt-20 mb-12 bg-cream-50 rounded-2xl border border-cream-300 shadow-sm p-8">
-
-            <h1 className="font-heading font-semibold text-2xl text-bark-900">Checkout</h1>
-
-            <p className="font-heading font-semibold text-xl text-bark-900">Just a few details and we'll wrap your order up!</p>
-
-            <div className="mt-6 border-b border-cream-300 pb-5">
-
-                <h2 className="font-heading font-semibold text-2xl text-bark-900">Your haul</h2>
-
-                {items.map((item) => (
-                    <div key={item.product.id} className="flex justify-between font-body text-sm text-bark-700 py-1">
-                        <span>{item.product.name} x {item.quantity}</span>
-                        <span>{formatLei(lineTotal(item))}</span>
-                    </div>
-                ))}
-                <div className="flex justify-between font-body font-bold text-bark-900 mt-3">
-                    <span>Total</span>
-                    <span>{formatLei(total)}</span>
-                </div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 md:pt-12 pb-16">
+            {/* Navigate to shop */}
+            <Link to="/shop" className={buttonClasses("ghost", "-ml-3", "sm")}>
+                <ChevronLeft size={16} aria-hidden="true" />
+                Back to shop
+            </Link>
+            {/* Title */}
+            <div className="mt-4 mb-8">
+                <h1 className="font-display text-6xl md:text-7xl text-bark-900">Checkout</h1>
+                <p className="font-heading text-xl text-bark-700 mt-2">Almost there. Where should your spook go?</p>
             </div>
+            {/* Order details, two column grid */}
+            <div className="grid lg:grid-cols-[1fr_24rem] gap-6 lg:gap-10 items-start">
+                {/* Order summary with order items and total */}
+                <OrderSummary items={items} total={total} className="lg:order-last lg:sticky lg:top-24" />
+                
+                {/* Shipping details with personal information */}
+                <form
+                    noValidate
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="bg-cream-50 rounded-[2rem] shadow-soft p-6 sm:p-8 flex flex-col gap-8"
+                >
+                    {/* Contact information: name + phone */}
+                    <fieldset className={fieldsetClasses}>
+                        <legend className={legendClasses}>Contact</legend>
+                        <div className="grid sm:grid-cols-2 gap-4">
+                            <Input label="Full name" autoComplete="name" error={errors.recipientName?.message} {...register("recipientName")} />
+                            <Input label="Phone" type="tel" autoComplete="tel" error={errors.phone?.message} {...register("phone")} />
+                        </div>
+                    </fieldset>
+                    
+                    {/* Shipping details */}
+                    <fieldset className={fieldsetClasses}>
+                        {/* Address */}
+                        <legend className={legendClasses}>Shipping address</legend>
+                        <Input label="Street and number" autoComplete="address-line1" error={errors.street?.message} {...register("street")} />
+                        {/* City, region */}
+                        <div className="grid sm:grid-cols-2 gap-4">
+                            <Input label="City" autoComplete="address-level2" error={errors.city?.message} {...register("city")} />
+                            <Input label="County or region (optional)" autoComplete="address-level1" error={errors.region?.message} {...register("region")} />
+                        </div>
+                        {/* Postal code */}
+                        <div className="grid sm:grid-cols-2 gap-4">
+                            <Input label="Postal code" autoComplete="postal-code" error={errors.postalCode?.message} {...register("postalCode")} />
+                            {/* Country of destination */}
+                            <div className="relative">
+                                <select
+                                    id="checkout-country"
+                                    autoComplete="country"
+                                    aria-invalid={errors.country ? true : undefined}
+                                    className="peer w-full appearance-none px-4 pt-5 pb-2 pr-10 rounded-xl border border-cream-300 hover:border-bark-300 bg-cream-50 text-bark-900 font-body text-base cursor-pointer transition-colors duration-150 focus:outline-none focus:ring-2 focus:border-pumpkin-500 focus:ring-pumpkin-500"
+                                    {...register("country")}
+                                >   
+                                    {/* Country options */}
+                                    {euCountries.map((country) => (
+                                        <option key={country.code} value={country.code}>{country.name}</option>
+                                    ))}
+                                </select>
+                                <label htmlFor="checkout-country" className="absolute left-3 top-0 -translate-y-1/2 px-1 bg-cream-50 font-body text-xs text-bark-700 peer-focus:text-pumpkin-700 pointer-events-none">
+                                    Country
+                                </label>
+                                <ChevronDown size={18} aria-hidden="true" className="absolute right-4 top-1/2 -translate-y-1/2 text-bark-500 pointer-events-none" />
+                                {errors.country && <p className="text-xs font-body text-pumpkin-700 mt-1 ml-1">{errors.country.message}</p>}
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    {/* Submit button */}
+                    <div className="flex flex-col gap-3 pt-2">
+                        <Button type="submit" size="lg" disabled={isSubmitting} className="w-full">
+                            {isSubmitting ? "Placing order..." : `Place order · ${formatLei(total)}`}
+                        </Button>
+                        <p className="font-body text-sm text-bark-700 text-center">
+                            No payment is taken on this site yet.
+                        </p>
+                    </div>
+                </form>
 
-            <form className="flex flex-col gap-5 mt-6" onSubmit={handleSubmit(onSubmit)}>
-                <Input label="Recipient name" error={errors.recipientName?.message} {...register("recipientName")} />
-                <Input label="Street address" error={errors.street?.message} {...register("street")} />
-                <Input label="City" error={errors.city?.message} {...register("city")} />
-                <Input label="Region (optional)" error={errors.region?.message} {...register("region")} />
-                <Input label="Postal code" error={errors.postalCode?.message} {...register("postalCode")} />
-                <Input label="Country" error={errors.country?.message} {...register("country")} />
-                <Input label="Phone" type="tel" error={errors.phone?.message} {...register("phone")} />
-
-                <Button type="submit" disabled={isSubmitting} className="w-full mt-2 py-3 text-base">
-                    {isSubmitting ? "Placing order..." : "Place order"}
-                </Button>
-            </form>
+            </div>
         </div>
     )
 }
 
 export default CheckoutPage
-

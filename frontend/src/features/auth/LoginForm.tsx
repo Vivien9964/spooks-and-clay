@@ -16,7 +16,7 @@ function isApiError(err: unknown): err is ApiError {
 
 function LoginForm() {
 
-    const { register, handleSubmit, setError, formState: { errors } } = useForm<LoginValues>({
+    const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<LoginValues>({
         resolver: zodResolver(loginSchema)
     })
 
@@ -61,16 +61,20 @@ function LoginForm() {
             <Input 
                 label="Email"
                 type="email"
+                autoComplete="email"
                 error={errors.email?.message}
                 {...register("email")}
             />
              <Input 
                 label="Password"
                 type="password"
+                autoComplete="current-password"
                 error={errors.password?.message}
                 {...register("password")}
             />
-            <Button type="submit" className="w-full mt-2 py-3 text-base">Log in</Button>
+            <Button type="submit" size="lg" disabled={isSubmitting} className="w-full mt-2">
+                {isSubmitting ? "Signing in..." : "Sign in"}
+            </Button>
 
 
 

@@ -6,7 +6,7 @@
   --font-display: "Modak", "Cooper Black", "Bookman Old Style", Georgia, serif;
   --font-body: "Frank Ruhl Libre", Georgia, "Times New Roman", serif;
 
-  /* Background: cream (tune) */
+  /* Background: cream  */
   --color-cream-50:  #FFFDF0;
   --color-cream-100: #FBF3D9;
   --color-cream-200: #F3E6C2;
@@ -18,14 +18,14 @@
   --color-bark-700: #614419;
   --color-bark-900: #332216;
 
-  /* Primary CTA: pumpkin (100 is a tint for hover fills, tune) */
+  /* Primary CTA: pumpkin */
   --color-pumpkin-100: #FDE9CC;
   --color-pumpkin-300: #FFB343;
   --color-pumpkin-500: #EE851B;
   --color-pumpkin-700: #BE5103;
   --color-pumpkin-900: #8C4C1F;
 
-  /* Joy / highlights: honey (fills only) */
+  /* Joy / highlights: honey */
   --color-honey-100: #FFFDD0;
   --color-honey-300: #F9E076;
   --color-honey-500: #FFC107;
@@ -51,7 +51,19 @@
   --animate-shadow: shadow-pulse 3s ease-in-out infinite;
   --animate-shadow-md: shadow-pulse 4.5s ease-in-out 0.5s infinite;
   --animate-shadow-lg: shadow-pulse 5.5s ease-in-out 1s infinite;
+  --animate-drawer-in: drawer-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-fade-in: fade-in 0.2s ease-out;
 
+}
+
+@keyframes drawer-in {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @keyframes float {
@@ -67,7 +79,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-float, .animate-float-md, .animate-float-lg,
-  .animate-shadow, .animate-shadow-md, .animate-shadow-lg {
+  .animate-shadow, .animate-shadow-md, .animate-shadow-lg,
+  .animate-drawer-in, .animate-fade-in {
     animation: none;
   }
 }

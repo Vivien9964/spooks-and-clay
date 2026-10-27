@@ -1,5 +1,5 @@
 
-export type Category = "autumnScenes" | "halloweenScenes" | "collections" | "uniquePieces"
+export type Category = "autumnScenes" | "halloweenScenes" | "collections"
 
 export type DiscountInfo = 
     | { isOnSale: true, discountPercent: number }

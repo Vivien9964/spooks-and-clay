@@ -16,24 +16,27 @@ function isApiError(err: unknown): err is ApiError {
 
 function RegisterForm() {
 
+    // Get login from authStore
     const login = useAuthStore((s) => s.login)
     const navigate = useNavigate()
 
-
-    const { register, handleSubmit, setError, formState: { errors } } = useForm<RegisterValues>({
+    // Validate input against registerSchema
+    const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<RegisterValues>({
         resolver: zodResolver(registerSchema)
     })
 
+    // Register user 
     const onSubmit = async (data: RegisterValues) => {
 
         try {
             
+            // Upon successful registration login user and navigate to account page
             const response = await registerUser(data)
             login(response)
             navigate("/account")
 
         } catch ( err ) {
-
+            // In case fields contain errors inform the user
             if(isApiError(err)  && err.fieldErrors) {
                 Object.entries(err.fieldErrors).forEach(([field, messages]) => {
                     setError(field as keyof RegisterValues, {
@@ -54,30 +57,38 @@ function RegisterForm() {
     return (
         <form className="flex flex-col gap-5 mt-6" onSubmit={handleSubmit(onSubmit)}>
             <Input 
-                label="Full Name"
+                label="Full name"
                 type="text"
+                autoComplete="name"
                 error={errors.name?.message}
                 {...register("name")}
             />
             <Input 
                 label="Email"
                 type="email"
+                autoComplete="email"
                 error={errors.email?.message}
                 {...register("email")}
             />
              <Input 
                 label="Password"
                 type="password"
+                autoComplete="new-password"
                 error={errors.password?.message}
                 {...register("password")}
             />
             <Input 
                 label="Confirm password"
                 type="password"
+                autoComplete="new-password"
                 error={errors.confirmPassword?.message}
                 {...register("confirmPassword")}
             />
-            <Button type="submit" className="w-full mt-2 py-3 text-base">Register</Button>
+
+            
+            <Button type="submit" size="lg" disabled={isSubmitting} className="w-full mt-2">
+                {isSubmitting ? "Creating account..." : "Create account"}
+            </Button>
 
 
 

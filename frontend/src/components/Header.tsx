@@ -2,10 +2,11 @@
 import { NavLink, useNavigate, Link } from "react-router-dom"
 import clsx from "clsx"
 import { ShoppingBasket, UserRound, Menu, X } from 'lucide-react'
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { useCartStore } from "@/store/cartStore"
 import { useUIStore } from "@/store/uiStore"
 import { useAuthStore } from "@/store/authStore"
+import { useModalDialog } from "@/hooks/useModalDialog"
 
 
 import Button from "@/components/ui/Button"
@@ -38,8 +39,6 @@ const navLinks = [
  function Header() {
 
     const [ isMenuOpen, setIsMenuOpen ] = useState(false)
-    const menuRef = useRef<HTMLDivElement>(null)
-    const menuButtonRef = useRef<HTMLButtonElement>(null)
 
     const itemCount = useCartStore((s) => s.items.reduce((sum, item) => sum + item.quantity, 0))
     const openCart = useUIStore((s) => s.openCart)
@@ -52,6 +51,7 @@ const navLinks = [
     const initial = user?.name.trim().charAt(0).toUpperCase() || "?"
 
     const closeMenu = () => setIsMenuOpen(false)
+    const menuRef = useModalDialog<HTMLDivElement>(isMenuOpen, closeMenu)
 
     const handleLogout = () => {
         logout()
@@ -59,48 +59,6 @@ const navLinks = [
         closeMenu()
     }
 
-    useEffect(() => {
-        if (!isMenuOpen) return
-
-        const menuButton = menuButtonRef.current
-        const previousOverflow = document.body.style.overflow
-        document.body.style.overflow = "hidden"
-
-        const focusables = () => Array.from(
-            menuRef.current?.querySelectorAll<HTMLElement>("a[href], button:not([disabled])") ?? []
-        )
-        focusables()[0]?.focus()
-
-        const onKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "Escape") {
-                setIsMenuOpen(false)
-                return
-            }
-            if (e.key !== "Tab") return
-
-            const items = focusables()
-            if (items.length === 0) return
-            const first = items[0]
-            const last = items[items.length - 1]
-
-            if (e.shiftKey && document.activeElement === first) {
-                e.preventDefault()
-                last.focus()
-            } else if (!e.shiftKey && document.activeElement === last) {
-                e.preventDefault()
-                first.focus()
-            }
-        }
-
-        document.addEventListener("keydown", onKeyDown)
-
-        return () => {
-            document.body.style.overflow = previousOverflow
-            document.removeEventListener("keydown", onKeyDown)
-            menuButton?.focus()
-        }
-    }, [isMenuOpen])
-    
 
     return (
         <>
@@ -175,7 +133,6 @@ const navLinks = [
                 </button>
 
                 <button
-                    ref={menuButtonRef}
                     type="button"
                     className="flex md:hidden p-2 rounded-full text-bark-900 hover:bg-cream-200 transition-colors cursor-pointer"
                     onClick={() => setIsMenuOpen(true)}

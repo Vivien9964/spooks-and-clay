@@ -11,7 +11,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 function Button({ variant = "primary", size = "md", children, className, ...rest }: ButtonProps) {
 
     // Using clsx (inside buttonClasses) to create complete styles without messy concatenation 
-    // Even if extra an className is missing, clsx will skip it and show only the base + styleConfig
+    // Even if an extra className is missing, clsx will skip it and show only the base + styleConfig
     const classes = buttonClasses(variant, className, size)
 
     return (

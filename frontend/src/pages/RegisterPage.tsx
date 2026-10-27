@@ -1,22 +1,16 @@
 import RegisterForm from "@/features/auth/RegisterForm"
-import Button from "@/components/ui/Button"
-
-import { Link } from "react-router-dom"
+import AuthShell from "@/features/auth/AuthShell"
 
 function RegisterPage() {
     return (
-        <div className="max-w-md mx-auto mt-20 mb-12 bg-cream-50 rounded-2xl border border-cream-300 shadow-sm p-8">
-            <h1 className="font-heading font-semibold text-2xl text-bark-900">Create an account</h1>
+        <AuthShell
+            title="Create an account"
+            subtitle="Make a little home for your orders and spooks."
+            image={{ src: "/redesignImages/tinyPumpkinGhostieFriends-1.jpeg", bubble: "A new friend!" }}
+            footer={{ text: "Already have an account?", linkTo: "/login", linkLabel: "Sign in" }}
+        >
             <RegisterForm />
-
-            <p className="font-body text-sm text-bark-500 mt-6 pt-5 border-t border-cream-300">Already have an account?</p>
-            <Link to="/login">
-                <Button variant="ghost" className="text-sm text-pumpkin-700 hover:text-pumpkin-500 px-0">
-                    Log in
-                </Button>
-            </Link>
-
-        </div>
+        </AuthShell>
     )
 }
 
