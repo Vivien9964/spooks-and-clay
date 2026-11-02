@@ -12,11 +12,6 @@ export interface ProductImage {
     alt: string;
 }
 
-export interface Variant {
-    sizes: string[];
-    colors: string[];
-}
-
 export type Product = {
     readonly id: number;
     name: string;
@@ -25,8 +20,6 @@ export type Product = {
     longDesc: string;
     basePrice: number;    
     stockCount: number;
-    variants?: Variant[];
-    tags: string[];
     images: ProductImage[];
     slug: string;
     isFeatured?: boolean;

@@ -18,13 +18,16 @@ import SlowLoadNotice from "@/components/SlowLoadNotice"
 
 function ProductPageContent({ slug }: { slug: string }) {
 
+    // Get status info and data and refetch function from useProduct hook
     const { productData, loadingStatus, errorStatus, refetch } = useProduct(slug)
+    // Get addItem function from CartStore
     const addItem = useCartStore((s) => s.addItem)
     const openCart = useUIStore((s) => s.openCart)
+    // Keep track of which image to show, in case of multiple ones
     const [selectedImage, setSelectedImage] = useState(0)
-    const [selectedSize, setSelectedSize] = useState<string | null>(null)
     const isSlow = useIsSlow(loadingStatus === "loading")
 
+    // Show a message while loading the page 
     if (loadingStatus === "loading") {
         return (
             <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
@@ -33,7 +36,9 @@ function ProductPageContent({ slug }: { slug: string }) {
             </div>
         )
     }
- 
+    
+    // Show error message or prompt users to load the page again
+    // Handle  not found / server wake ups
     if (loadingStatus === "error" || !productData) {
 
         const notFound = errorStatus === 404
@@ -57,15 +62,13 @@ function ProductPageContent({ slug }: { slug: string }) {
         )
     }
 
+    // If no loading error occours set product details for rendering
     const product = productData
 
     const price = effectivePrice(product)
     const categoryLabel = categoryLabels[product.category] ?? product.category
 
-    const hasSizes = !!product.variants?.[0]?.sizes?.length
-    const needsSize = hasSizes && !selectedSize
-
-
+    // Add to cart function
     const handleAddToCart = () => {
         addItem(product)
         openCart()
@@ -74,19 +77,20 @@ function ProductPageContent({ slug }: { slug: string }) {
     return (
         <div className="bg-cream-100 min-h-screen">
             <div className="max-w-5xl mx-auto px-4 py-10 flex flex-col gap-10">
-
-                <nav className="flex items-center gap-2 font-body text-sm text-bark-300">
-                    <Link to="/" className="hover:text-bark-500 transition-colors">Home</Link>
-                    <span>›</span>
-                    <Link to="/shop" className="hover:text-bark-500 transition-colors">Shop</Link>
-                    <span>›</span>
-                    <span className="text-bark-500">{categoryLabel}</span>
-                    <span>›</span>
-                    <span className="text-bark-700 truncate">{product.name}</span>
+                {/* Breadcrumb */}
+                <nav className="flex items-center gap-2 font-body text-sm text-bark-500" aria-label="Breadcrumb">
+                    <Link to="/" className="hover:text-bark-700 transition-colors">Home</Link>
+                    <span aria-hidden="true">›</span>
+                    <Link to="/shop" className="hover:text-bark-700 transition-colors">Shop</Link>
+                    <span aria-hidden="true">›</span>
+                    <Link to={`/shop?category=${product.category}`} className="hover:text-bark-700 transition-colors">{categoryLabel}</Link>
+                    <span aria-hidden="true">›</span>
+                    <span className="text-bark-900 truncate" aria-current="page">{product.name}</span>
                 </nav>
 
                 <div className="grid md:grid-cols-2 gap-10 items-start">
 
+                    {/* Product images displayed in a row + currently selected */}
                     <div className="flex flex-col gap-3">
                         <div className="bg-cream-200 rounded-[2rem] overflow-hidden shadow-lift">
                             <img
@@ -95,7 +99,7 @@ function ProductPageContent({ slug }: { slug: string }) {
                                 className="w-full aspect-square object-cover"
                             />
                         </div>
-
+                        {/* Show image row in case multiple images are present - images are clickable, users select selectedImage with them */}
                         {product.images.length > 1 && (
                             <div className="flex gap-2">
                                 {product.images.map((image, index) => (
@@ -120,7 +124,8 @@ function ProductPageContent({ slug }: { slug: string }) {
                             </div>
                         )}
                     </div>
-
+                    
+                    {/* Metadata - name, category, description, price, variants etc. */}
                     <div className="flex flex-col gap-4">
 
                         <span className="font-body text-sm tracking-widest uppercase text-moss-700">{categoryLabel}</span>
@@ -139,52 +144,16 @@ function ProductPageContent({ slug }: { slug: string }) {
 
                         <p className="font-body text-lg text-bark-700 leading-relaxed">{product.shortDesc}</p>
 
-                        {product.stockCount === 1 ? (
-                            <p className="font-body text-sm text-berry-500 font-bold">One of a kind</p>
-                        ) : product.stockCount < 10 ? (
-                            <p className="font-body text-sm text-pumpkin-700 font-bold">Only {product.stockCount} left!</p>
-                        ) : (
-                            <p className="font-body text-sm text-moss-700 font-bold">In stock</p>
+                        {product.stockCount === 1 && (
+                            <p className="font-body text-base text-lime-700 text-shadow-sm font-bold">In stock</p>
                         )}
 
-                        {product.variants && product.variants[0]?.sizes?.length > 0 && (
-                            <div className="flex flex-col gap-2">
-                                <span className="font-body text-xs uppercase tracking-widest text-bark-300">Size</span>
-                                <div className="flex gap-2">
-                                    {product.variants[0].sizes.map((size) => (
-                                        <button
-                                            key={size}
-                                            onClick={() => setSelectedSize(size)}
-                                             aria-pressed={size === selectedSize}
-                                             className={`font-body text-sm capitalize px-4 py-1.5 rounded-full shadow-soft transition-colors duration-200 cursor-pointer ${
-                                                size === selectedSize
-                                                ? "bg-bark-900 text-cream-50"
-                                                : "bg-cream-50 text-bark-700 hover:bg-honey-100"
-                                                 }`}
-                                        >
-                                            {size}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        <Button variant="primary" size="lg" className="w-full" onClick={handleAddToCart} disabled={needsSize}>
-                            {needsSize ? "Select a size" : "Add to cart"}
+                    
+                        <Button variant="primary" size="lg" className="w-full" onClick={handleAddToCart}>
+                            Add to cart
                         </Button>
 
                         <p className="font-body text-base text-bark-700 leading-relaxed pt-4 mt-2 border-t border-cream-300">{product.longDesc}</p>
-
-                        <div className="flex flex-wrap gap-2 pt-2">
-                            {product.tags.map((tag) => (
-                                <span
-                                    key={tag}
-                                    className="font-body text-xs text-bark-700 bg-cream-200 px-2.5 py-0.5 rounded-full"
-                                >
-                                    #{tag}
-                                </span>
-                            ))}
-                        </div>
 
                     </div>
                 </div>
@@ -193,7 +162,7 @@ function ProductPageContent({ slug }: { slug: string }) {
     )
 }
 
-
+// ProductPage renders ProductPageContent
 function ProductPage() {
 
     const { slug } = useParams<{ slug: string }>()

@@ -15,7 +15,6 @@ export type ProductDto = {
     onSale: boolean;
     discountPercent: number | null;    
     stockCount: number;
-    tags?: string[];
     images: ProductImage[];
     slug: string;  
     createdAt: string;

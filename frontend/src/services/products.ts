@@ -40,7 +40,6 @@ export function toProduct(dto: ProductDto): Product {
         longDesc: dto.longDesc,
         basePrice: Number(dto.price), 
         stockCount: dto.stockCount,
-        tags: dto.tags ?? [],
         images: dto.images,
         slug: dto.slug,
         isFeatured: dto.portfolioFeatured,

@@ -2,7 +2,6 @@ import type { CartItem as CartItemType } from "@/types/cart"
 import { Link } from "react-router-dom"
 import { useCartStore } from "@/store/cartStore"
 import { lineTotal, formatLei } from "@/utils/price"
-import QuantitySelector from "@/components/ui/QuantitySelector"
 import { Trash2 } from "lucide-react"
 
 
@@ -13,13 +12,11 @@ type CartItemProps = {
 
 function CartItem({ item, onNavigate }: CartItemProps) {
 
-    const updateQty = useCartStore((s) => s.updateQty)
     const removeItem = useCartStore((s) => s.removeItem)
 
     const { product, quantity } = item
     const image = product.images[0]
     const productLink = `/product/${product.slug}`
-    const isOneOfAKind = product.stockCount <= 1
 
    return (
     <li className="flex gap-4 py-4">
@@ -50,18 +47,7 @@ function CartItem({ item, onNavigate }: CartItemProps) {
                 </button>
             </div>
 
-            <div className="mt-auto flex items-center justify-between gap-2">
-                {isOneOfAKind ? (
-                    <span className="font-body text-sm text-moss-700">One of a kind</span>
-                ) : (
-                    <QuantitySelector
-                        label={product.name}
-                        quantity={quantity}
-                        onIncrement={() => updateQty(product.id, quantity + 1)}
-                        onDecrement={() => updateQty(product.id, quantity - 1)}
-                        max={product.stockCount}
-                    />
-                )}
+            <div className="mt-auto flex items-center justify-end gap-2">
                 <span className="font-body font-bold text-bark-900">
                     {product.isOnSale && (
                         <s className="mr-2 font-normal text-sm text-bark-500">{formatLei(product.basePrice * quantity)}</s>

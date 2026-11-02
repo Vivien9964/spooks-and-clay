@@ -22,10 +22,6 @@ export function cartReducer(state: CartItem[], action: CartAction): CartItem[] {
             return state.filter((item) => item.product.id !== action.payload.id)
         }
 
-        case "UPDATE_QTY": {
-            return state.map((item) => item.product.id === action.payload.id ? {...item, quantity: action.payload.quantity } : item)
-        }
-
         case "CLEAR_CART": {
             return []
         }

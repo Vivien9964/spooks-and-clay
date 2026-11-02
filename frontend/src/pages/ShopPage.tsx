@@ -16,17 +16,19 @@ import SlowLoadNotice from "@/components/SlowLoadNotice"
 
 function ShopPage() {
 
+    // Filtering states
     const [ searchParams, setSearchParams ] = useSearchParams()
     const [ searchTerm, setSearchTerm ] = useState("");
     const selectedCategory = (searchParams.get("category") ?? "all") as CategoryFilter
     const sortOrder = (searchParams.get("sort") ?? "default") as SortOrder
 
+    // Run the effect in the hook to fetch data whenever searchTerm, category or order changes
     const { productCategories, sortedProducts, loadingStatus, errors, refetch } = useProducts({ searchTerm, selectedCategory, sortOrder})
     const isSlow = useIsSlow(loadingStatus === "loading")
 
-
     const onSaleCount = sortedProducts.filter(p => p.isOnSale).length
 
+    // Type search
     const setParam = (key: string, value: string, defaultValue: string) => {
         setSearchParams((prev) => {
             if(value === defaultValue) {
@@ -39,6 +41,7 @@ function ShopPage() {
         })
     }
 
+    // Category chips, based on available product categories
     const chips = [{ value: "all", label: "All" }, ...productCategories.map((category) => ({ value: category, label: categoryLabels[category] ?? category }))]
 
     return (
@@ -46,6 +49,7 @@ function ShopPage() {
 
             <div className="w-full bg-cream-100">
                 <div className="max-w-6xl mx-auto px-4 pt-10 md:pt-14 pb-4 flex flex-col md:flex-row md:items-end md:justify-between gap-5">
+                    {/* Title + on sale count */}
                     <div className="flex flex-col gap-1">
                         <h1 className="font-display text-6xl md:text-7xl text-bark-900">Shop</h1>
                         <p className="font-body text-base text-bark-700">
@@ -54,6 +58,7 @@ function ShopPage() {
                         </p>
                     </div>
 
+                    {/* Filter by type search */}
                     <div className="relative w-full md:w-80">
                         <Search size={18} aria-hidden="true" className="absolute left-4 top-1/2 -translate-y-1/2 text-bark-500" />
                         <input
@@ -68,7 +73,7 @@ function ShopPage() {
                 </div>
             </div>
 
-            {/* Sticky filter bar: chips scroll sideways on small screens */}
+            {/* Sticky filter bar - chips scroll sideways on small screens */}
             <div className="sticky top-[68px] z-30 w-full bg-cream-100/95 backdrop-blur-sm">
                 <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3">
                     <div role="group" aria-label="Filter by category" className="flex-1 flex gap-2 overflow-x-auto scrollbar-hide -mx-1 px-1 py-1">
@@ -92,7 +97,8 @@ function ShopPage() {
                             )
                         })}
                     </div>
-
+                    
+                    {/* Filter by sorting */}
                     <label className="shrink-0 flex items-center gap-2 font-body text-sm text-bark-700">
                         <span className="hidden sm:inline">Sort</span>
                         <select
@@ -110,7 +116,7 @@ function ShopPage() {
             </div>
 
            <div className="max-w-6xl mx-auto px-4 pt-6 pb-16 w-full">
-
+                {/* If loading is slow, show product card skeletons + slow load message */}
                 {loadingStatus === "loading" ? (
                     <>
                         {isSlow && <SlowLoadNotice className="mb-8" />}
@@ -121,12 +127,16 @@ function ShopPage() {
                             ))}
                         </div>
                     </>
+
+                    // If loading fails prompt users to load again 
                 ) : loadingStatus === "error" ? (
                     <div className="bg-cream-50 rounded-[2rem] shadow-soft p-12 md:p-16 flex flex-col items-center gap-4 text-center">
                         <h2 className="font-heading text-2xl font-semibold text-bark-900">The spooks are hiding right now.</h2>
                         <p className="font-body text-base text-bark-700">{errors ?? "Something went wrong. Please try again."}</p>
                         <Button variant="primary" onClick={refetch}>Try again</Button>
                     </div>
+
+                    // If user filter fails to find a specific product, prompt users to try a different search
                 ) : sortedProducts.length === 0 ? (
                     <div className="bg-cream-50 rounded-[2rem] shadow-soft p-12 md:p-16 flex flex-col items-center gap-4 text-center">
                         <h2 className="font-heading text-2xl font-semibold text-bark-900">No spooks found.</h2>
@@ -142,6 +152,8 @@ function ShopPage() {
                         </Button>
                     </div>
                 ) : (
+
+                    //  If all is well, show product cards
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                         {sortedProducts.map((product) => (
                             <ProductCard key={product.id} product={product} />
