@@ -133,10 +133,10 @@ function ProductPageContent({ slug }: { slug: string }) {
                         <h1 className="font-display text-5xl md:text-6xl text-bark-900">{product.name}</h1>
 
                         <div className="flex items-baseline gap-3 flex-wrap">
-                            <span className="font-heading font-semibold text-3xl text-pumpkin-700">{formatLei(price)} Lei</span>
+                            <span className="font-heading font-semibold text-3xl text-pumpkin-700">{formatLei(price)}</span>
                             {product.isOnSale && (
                                 <>
-                                    <span className="font-body text-lg text-bark-500 line-through">{formatLei(product.basePrice)} Lei</span>
+                                    <span className="font-body text-lg text-bark-500 line-through">{formatLei(product.basePrice)}</span>
                                     <Badge variant="sale">{product.discountPercent}% off</Badge>
                                 </>
                             )}
