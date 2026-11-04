@@ -15,11 +15,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findByCategory(String category, Pageable pageable);
 
-    Page<Product> findByActiveTrue(Pageable pageable);
+    @Query("SELECT p FROM Product p WHERE p.active = true AND p.stockCount > 0")
+    Page<Product> findAvailable(Pageable pageable);
 
-    Page<Product> findByActiveTrueAndCategory(String category, Pageable pageable);
+    @Query("SELECT p FROM Product p WHERE p.active = true AND p.stockCount > 0 AND p.category = :category")
+    Page<Product> findAvailableByCategory(@Param("category") String category, Pageable pageable);
 
-    Page<Product> findByPortfolioFeaturedTrue(Pageable pageable);
+    @Query("SELECT p FROM Product p WHERE p.active = true AND p.stockCount > 0 AND p.featured = true")
+    Page<Product> findFeatured(Pageable pageable);
 
     @Modifying
     @Query("UPDATE Product p SET p.stockCount = p.stockCount - :qty WHERE p.id = :id AND p.stockCount >= :qty")

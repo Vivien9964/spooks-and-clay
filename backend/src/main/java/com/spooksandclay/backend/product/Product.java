@@ -19,22 +19,44 @@ public class Product {
     private Long id;
 
     private String name;
+
     @Column(unique = true)
     private String slug;
+
     @Column(length = 500)
     private String shortDesc;
+
     @Column(length = 4000)
     private String longDesc;
+
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
+
     private boolean onSale;
     private boolean active = true;
     private Integer discountPercent;
     private Integer stockCount;
+
     @CreationTimestamp
     private Instant createdAt;
     private String category;
-    private boolean portfolioFeatured = false;
+    private boolean featured = false;
+
+    @Column(precision = 4, scale =1)
+    private BigDecimal heightCm;
+
+    @Column(precision = 4, scale = 1)
+    private BigDecimal widthCm;
+
+    @Column(name = "weight_g")
+    private Integer weightG;
+
+    @ElementCollection
+    @CollectionTable(name = "product_materials", joinColumns = @JoinColumn(name = "product_id"))
+    @OrderColumn(name = "material_order")
+    @Column(name = "material", length = 100, nullable = false)
+    private List<String> materials = new ArrayList<>();
+
     @ElementCollection
     @CollectionTable(name= "product_images", joinColumns = @JoinColumn(name = "product_id"))
     @OrderColumn(name = "image_order")
@@ -84,7 +106,15 @@ public class Product {
         return createdAt;
     }
 
-    public boolean isPortfolioFeatured() { return portfolioFeatured; }
+    public boolean isFeatured() { return featured; }
+
+    public BigDecimal getHeightCm() { return heightCm; }
+
+    public BigDecimal getWidthCm() { return widthCm; }
+
+    public Integer getWeightG() { return weightG; }
+
+    public List<String> getMaterials() { return materials; }
 
     public void setId(Long id) {
         this.id = id;
@@ -137,7 +167,20 @@ public class Product {
         this.category = category;
     }
 
-    public void setPortfolioFeatured(boolean portfolioFeatured) { this.portfolioFeatured = portfolioFeatured; }
+    public void setFeatured(boolean featured) { this.featured = featured; }
+
+    public void setHeightCm(BigDecimal heightCm) { this.heightCm = heightCm; }
+
+    public void setWidthCm(BigDecimal widthCm ) { this.widthCm = widthCm; }
+
+    public void setWeightG(Integer weightG ) { this.weightG = weightG; }
+
+    public void setMaterials(List<String> materials) {
+        this.materials.clear();
+        if(materials != null) {
+            this.materials.addAll(materials);
+        }
+    }
 
     public String getCategory() {
         return category;

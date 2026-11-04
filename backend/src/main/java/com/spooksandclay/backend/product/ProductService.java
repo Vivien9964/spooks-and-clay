@@ -27,20 +27,22 @@ public class ProductService {
           : productRepository.findByCategory(category, pageable);
        } else {
            productPage = (category == null)
-           ? productRepository.findByActiveTrue(pageable)
-           : productRepository.findByActiveTrueAndCategory(category, pageable);
+           ? productRepository.findAvailable(pageable)
+           : productRepository.findAvailableByCategory(category, pageable);
        }
         return productPage.map(product -> toDto(product));
     }
+
+
+    public Page<ProductDto> getFeatured(Pageable pageable) {
+        return productRepository.findFeatured(pageable).map(product -> toDto(product));
+    }
+
 
     public Optional<ProductDto> getBySlug(String slug) {
         return productRepository.findBySlug(slug)
                 .filter(product -> product.isActive())
                 .map(product -> toDto(product));
-    }
-
-    public Page<ProductDto> getPortfolio(Pageable pageable) {
-        return productRepository.findByPortfolioFeaturedTrue(pageable).map(product -> toDto(product));
     }
 
     private ProductDto toDto(Product product) {
@@ -60,7 +62,11 @@ public class ProductService {
                 product.getCreatedAt().toString(),
                 product.getCategory(),
                 imageDtos,
-                product.isPortfolioFeatured()
+                product.isFeatured(),
+                product.getHeightCm(),
+                product.getWidthCm(),
+                product.getWeightG(),
+                List.copyOf(product.getMaterials())
         );
     }
 
@@ -87,7 +93,11 @@ public class ProductService {
         product.setStockCount(request.stockCount());
         product.setCategory(request.category());
         product.setImages(toProductImages(request.images()));
-        product.setPortfolioFeatured(request.portfolioFeatured());
+        product.setFeatured(request.featured());
+        product.setHeightCm(request.heightCm());
+        product.setWidthCm(request.widthCm());
+        product.setWeightG(request.weightG());
+        product.setMaterials(request.materials());
 
         Product savedProduct = productRepository.save(product);
         return toDto(savedProduct);
@@ -107,8 +117,11 @@ public class ProductService {
         product.setStockCount(request.stockCount());
         product.setCategory(request.category());
         product.setImages(toProductImages(request.images()));
-        product.setPortfolioFeatured(request.portfolioFeatured());
-
+        product.setFeatured(request.featured());
+        product.setHeightCm(request.heightCm());
+        product.setWidthCm(request.widthCm());
+        product.setWeightG(request.weightG());
+        product.setMaterials(request.materials());
 
         Product saved = productRepository.save(product);
         return toDto(saved);

@@ -1,6 +1,7 @@
 package com.spooksandclay.backend.product;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public record ProductDto(
@@ -16,6 +17,11 @@ public record ProductDto(
         String createdAt,
         String category,
         List<ProductImageDto> images,
-        boolean portfolioFeatured
+        boolean featured,
+        BigDecimal heightCm,
+        BigDecimal widthCm,
+        Integer weightG,
+        List<String> materials
+
         ) {}
 

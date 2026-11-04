@@ -37,9 +37,9 @@ public class ProductController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/api/products/portfolio")
-    public ResponseEntity<Page<ProductDto>> getPortfolio(Pageable pageable) {
-        return ResponseEntity.ok(productService.getPortfolio(pageable));
+    @GetMapping({"/api/products/featured","/api/products/portfolio"})
+    public ResponseEntity<Page<ProductDto>> getFeatured(Pageable pageable) {
+        return ResponseEntity.ok(productService.getFeatured(pageable));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
