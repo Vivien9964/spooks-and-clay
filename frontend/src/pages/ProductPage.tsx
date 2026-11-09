@@ -13,6 +13,8 @@ import Button from "@/components/ui/Button"
 import { buttonClasses } from "@/components/ui/buttonStyles"
 import Badge from "@/components/ui/Badge"
 import SlowLoadNotice from "@/components/SlowLoadNotice"
+import FaqList from "@/components/FaqList"
+import { careText, shippingText, type FaqItem } from "@/data/faq"
 
 
 
@@ -67,6 +69,21 @@ function ProductPageContent({ slug }: { slug: string }) {
 
     const price = effectivePrice(product)
     const categoryLabel = categoryLabels[product.category] ?? product.category
+
+
+    const dimensionParts: string[] = []
+
+    if(product.heightCm != null) dimensionParts.push(`${product.heightCm} cm tall`)
+    if(product.widthCm != null) dimensionParts.push(`${product.widthCm} cm wide`)
+    if(product.weightG != null) dimensionParts.push(`${product.weightG} g`)
+
+    const dimensions = dimensionParts.join(" · ")
+
+    const productDetails: FaqItem[] = [
+        ...(product.materials.length > 0 ? [{ question: "Materials", answer: product.materials.join(", ")}] : []),
+        { question: "Care", answer: careText },
+        { question: "Shipping", answer: shippingText },
+    ]
 
     // Add to cart function
     const handleAddToCart = () => {
@@ -125,35 +142,52 @@ function ProductPageContent({ slug }: { slug: string }) {
                         )}
                     </div>
                     
-                    {/* Metadata - name, category, description, price, variants etc. */}
-                    <div className="flex flex-col gap-4">
+                    {/* Product info in three groups: deciding, story, reference */}
+                    <div className="flex flex-col gap-12">
 
-                        <span className="font-body text-sm tracking-widest uppercase text-moss-700">{categoryLabel}</span>
+                        {/* Deciding - everything needed to buy */}
+                        <div className="flex flex-col gap-4">
+                            <h1 className="font-display text-5xl md:text-6xl text-bark-900">{product.name}</h1>
 
-                        <h1 className="font-display text-5xl md:text-6xl text-bark-900">{product.name}</h1>
+                            <div className="flex items-baseline gap-3 flex-wrap">
+                                <span className="font-heading font-semibold text-3xl text-bark-900">{formatLei(price)}</span>
+                                {product.isOnSale && (
+                                    <>
+                                        <span className="font-body text-lg text-bark-500 line-through">{formatLei(product.basePrice)}</span>
+                                        <Badge variant="sale">{product.discountPercent}% off</Badge>
+                                    </>
+                                )}
+                            </div>
 
-                        <div className="flex items-baseline gap-3 flex-wrap">
-                            <span className="font-heading font-semibold text-3xl text-pumpkin-700">{formatLei(price)}</span>
-                            {product.isOnSale && (
-                                <>
-                                    <span className="font-body text-lg text-bark-500 line-through">{formatLei(product.basePrice)}</span>
-                                    <Badge variant="sale">{product.discountPercent}% off</Badge>
-                                </>
+                            <p className="font-body text-lg text-bark-700 leading-relaxed">{product.shortDesc}</p>
+
+                            {/* If dimension data is present, show dimension details  */}
+                            {dimensions && (
+                                <p className="font-body text-base text-bark-700">{dimensions}</p>
                             )}
+
+                            <div className="flex flex-col gap-2 pt-2">
+                                <Button variant="primary" size="lg" className="w-full" onClick={handleAddToCart}>
+                                    Add to cart
+                                </Button>
+                                <p className="font-body text-sm text-bark-500 italic">
+                                    Decorative piece, not a toy. Fragile, handle gently.
+                                </p>
+                            </div>
                         </div>
 
-                        <p className="font-body text-lg text-bark-700 leading-relaxed">{product.shortDesc}</p>
-
-                        {product.stockCount === 1 && (
-                            <p className="font-body text-base text-lime-700 text-shadow-sm font-bold">In stock</p>
+                        {/* Story - the personality of this piece */}
+                        {product.longDesc && (
+                            <section aria-labelledby="product-story" className="flex flex-col gap-3">
+                                <h2 id="product-story" className="font-heading font-semibold text-2xl text-bark-900">
+                                    Meet this little spook
+                                </h2>
+                                <p className="font-body text-base text-bark-700 leading-relaxed">{product.longDesc}</p>
+                            </section>
                         )}
 
-                    
-                        <Button variant="primary" size="lg" className="w-full" onClick={handleAddToCart}>
-                            Add to cart
-                        </Button>
-
-                        <p className="font-body text-base text-bark-700 leading-relaxed pt-4 mt-2 border-t border-cream-300">{product.longDesc}</p>
+                        {/* Reference - for those who want the details */}
+                        <FaqList items={productDetails} variant="plain" />
 
                     </div>
                 </div>

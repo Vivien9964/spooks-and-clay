@@ -19,6 +19,10 @@ export type ProductDto = {
     slug: string;  
     createdAt: string;
     featured: boolean;
+    heightCm: number | null;
+    widthCm: number | null;
+    weightG: number | null;
+    materials: string[];
 }
 
 

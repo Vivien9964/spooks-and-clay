@@ -43,6 +43,10 @@ export function toProduct(dto: ProductDto): Product {
         images: dto.images,
         slug: dto.slug,
         isFeatured: dto.featured,
+        heightCm: dto.heightCm,
+        widthCm: dto.widthCm,
+        weightG: dto.weightG,
+        materials: dto.materials ?? [],
         ...discount
     }
 }

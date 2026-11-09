@@ -4,10 +4,14 @@ export type FaqItem = {
     answer: string
 }
 
+export const shippingText = "Ready-made spooks are shipped within 3 to 5 working days. Delivery usually takes from 5 days up to 2 weeks, depending on where in the EU you are."
+
+export const careText = "Very little care needed! Dust gently with a soft, dry brush. Keep your spook somewhere dry: the wooden base and the unsealed underside don't like humidity and can develop mould. To store it, wrap it in bubble wrap and keep it in a box in a dry place."
+
 export const faqItems: FaqItem[] = [
     {
         question: "When will my little companion arrive?",
-        answer: "Ready-made spooks are shipped within 3 to 5 working days. Delivery usually takes from 5 days up to 2 weeks, depending on where in the EU you are.",
+        answer: shippingText,
     },
     {
         question: "Do you ship outside Romania?",
@@ -19,7 +23,7 @@ export const faqItems: FaqItem[] = [
     },
     {
         question: "How do I care for my miniature?",
-        answer: "Very little care needed! Dust gently with a soft, dry brush. Keep your spook somewhere dry: the wooden base and the unsealed underside don't like humidity and can develop mould. To store it, wrap it in bubble wrap and keep it in a box in a dry place.",
+        answer: careText,
     },
     {
         question: "Is it a toy?",

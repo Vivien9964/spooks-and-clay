@@ -23,6 +23,10 @@ export type Product = {
     images: ProductImage[];
     slug: string;
     isFeatured?: boolean;
+    heightCm: number | null;
+    widthCm: number | null;
+    weightG: number | null;
+    materials: string[];
 } & DiscountInfo
 
 export type CategoryFilter = Category | "all"
