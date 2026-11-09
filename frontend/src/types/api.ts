@@ -18,7 +18,7 @@ export type ProductDto = {
     images: ProductImage[];
     slug: string;  
     createdAt: string;
-    portfolioFeatured: boolean;
+    featured: boolean;
 }
 
 
