@@ -19,7 +19,7 @@ export async function getProductBySlug(slug: string): Promise<Product> {
 
 
 export async function getPortfolioProducts(): Promise<Product[]> {
-    const res = await http<Page<ProductDto>>("/products/featured")
+    const res = await http<Page<ProductDto>>("/products/portfolio")
 
     return res.content.map((product) => toProduct(product))
 }
@@ -42,7 +42,7 @@ export function toProduct(dto: ProductDto): Product {
         stockCount: dto.stockCount,
         images: dto.images,
         slug: dto.slug,
-        isFeatured: dto.featured,
+        isFeatured: dto.portfolioFeatured,
         ...discount
     }
 }
