@@ -8,7 +8,7 @@ import ScallopDivider from "@/components/ui/ScallopDivider"
 import FaqList from "@/components/FaqList"
 import { buttonClasses } from "@/components/ui/buttonStyles"
 import { useEffect, useState, type ReactNode } from "react"
-import { getPortfolioProducts } from "@/services/products"
+import { getFeaturedProducts } from "@/services/products"
 import { useIsSlow } from "@/hooks/useIsSlow"
 import { faqItems } from "@/data/faq"
 import { socials } from "@/data/socials"
@@ -55,7 +55,7 @@ function HomePage() {
     useEffect(() => {
         let ignore = false
 
-        getPortfolioProducts()
+        getFeaturedProducts()
             .then((data) => { 
                 if(!ignore) {
                     setFeatured(data)

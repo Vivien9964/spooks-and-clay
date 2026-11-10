@@ -37,7 +37,7 @@ public class ProductController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping({"/api/products/featured","/api/products/portfolio"})
+    @GetMapping({"/api/products/featured"})
     public ResponseEntity<Page<ProductDto>> getFeatured(Pageable pageable) {
         return ResponseEntity.ok(productService.getFeatured(pageable));
     }

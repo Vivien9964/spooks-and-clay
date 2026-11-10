@@ -18,7 +18,7 @@ export async function getProductBySlug(slug: string): Promise<Product> {
 }
 
 
-export async function getPortfolioProducts(): Promise<Product[]> {
+export async function getFeaturedProducts(): Promise<Product[]> {
     const res = await http<Page<ProductDto>>("/products/featured")
 
     return res.content.map((product) => toProduct(product))
