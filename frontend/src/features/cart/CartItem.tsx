@@ -2,7 +2,9 @@ import type { CartItem as CartItemType } from "@/types/cart"
 import { Link } from "react-router-dom"
 import { useCartStore } from "@/store/cartStore"
 import { lineTotal, formatLei } from "@/utils/price"
+import { isAvailable } from "@/utils/availability"
 import { Trash2 } from "lucide-react"
+import clsx from "clsx"
 
 
 type CartItemProps = {
@@ -17,6 +19,7 @@ function CartItem({ item, onNavigate }: CartItemProps) {
     const { product, quantity } = item
     const image = product.images[0]
     const productLink = `/product/${product.slug}`
+    const available = isAvailable(product)
 
    return (
     <li className="flex gap-4 py-4">
@@ -24,7 +27,7 @@ function CartItem({ item, onNavigate }: CartItemProps) {
             <img
                 src={image?.src}
                 alt=""
-                className="w-20 h-20 object-cover rounded-2xl shadow-soft"
+                className={clsx("w-20 h-20 object-cover rounded-2xl shadow-soft", !available && "opacity-60")}
             />
         </Link>
 
@@ -48,12 +51,16 @@ function CartItem({ item, onNavigate }: CartItemProps) {
             </div>
 
             <div className="mt-auto flex items-center justify-end gap-2">
-                <span className="font-body font-bold text-bark-900">
-                    {product.isOnSale && (
-                        <s className="mr-2 font-normal text-sm text-bark-500">{formatLei(product.basePrice * quantity)}</s>
-                    )}
-                    <span className={product.isOnSale ? "text-berry-500" : undefined}>{formatLei(lineTotal(item))}</span>
-                </span>
+                {available ? (
+                    <span className="font-body font-bold text-bark-900">
+                        {product.isOnSale && (
+                            <s className="mr-2 font-normal text-sm text-bark-500">{formatLei(product.basePrice * quantity)}</s>
+                        )}
+                        <span className={product.isOnSale ? "text-berry-500" : undefined}>{formatLei(lineTotal(item))}</span>
+                    </span>
+                ) : (
+                    <span className="font-body text-sm italic text-bark-700">Already found a home</span>
+                )}
             </div>
         </div>
     </li>

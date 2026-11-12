@@ -8,6 +8,8 @@ import { useIsSlow } from "@/hooks/useIsSlow"
 
 import { categoryLabels } from "@/data/categories" 
 import { effectivePrice, formatLei } from "@/utils/price"
+import { isAvailable } from "@/utils/availability"
+
 
 import Button from "@/components/ui/Button"
 import { buttonClasses } from "@/components/ui/buttonStyles"
@@ -15,6 +17,7 @@ import Badge from "@/components/ui/Badge"
 import SlowLoadNotice from "@/components/SlowLoadNotice"
 import FaqList from "@/components/FaqList"
 import { careText, shippingText, type FaqItem } from "@/data/faq"
+
 
 
 
@@ -167,12 +170,19 @@ function ProductPageContent({ slug }: { slug: string }) {
                             )}
 
                             <div className="flex flex-col gap-2 pt-2">
-                                <Button variant="primary" size="lg" className="w-full" onClick={handleAddToCart}>
-                                    Add to cart
-                                </Button>
+
+                                {!isAvailable(product) ? (
+                                    <p className="font-body text-base text-bark-900">Already found a home!</p>
+                                ) : (
+                                    <Button variant="primary" size="lg" className="w-full" onClick={handleAddToCart}>
+                                        Add to cart
+                                    </Button>
+                                )}
+
                                 <p className="font-body text-sm text-bark-500 italic">
                                     Decorative piece, not a toy. Fragile, handle gently.
                                 </p>
+
                             </div>
                         </div>
 

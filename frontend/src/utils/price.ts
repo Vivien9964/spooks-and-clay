@@ -1,5 +1,7 @@
 import type { Product } from "@/types/product"
 import type { CartItem } from "@/types/cart"
+import { isAvailable } from "@/utils/availability"
+
 
 export function effectivePrice(product: Product): number {
     if (!product.isOnSale) return product.basePrice
@@ -15,7 +17,9 @@ export function lineTotal(item: CartItem): number {
 }
 
 export function cartTotal(items: CartItem[]): number {
-    return items.reduce((sum, item) => sum + lineTotal(item), 0)
+    return items
+        .filter((item) => isAvailable(item.product))
+        .reduce((sum, item) => sum + lineTotal(item), 0)
 }
 
 

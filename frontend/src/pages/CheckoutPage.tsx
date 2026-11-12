@@ -7,8 +7,11 @@ import { checkoutSchema, type CheckoutValues } from "@/features/checkout/checkou
 import { createOrder } from "@/services/orders"
 import { useCartStore } from "@/store/cartStore"
 import { cartTotal, formatLei } from "@/utils/price"
+import { isAvailable } from "@/utils/availability"
 import { euCountries } from "@/data/countries"
 import OrderSummary from "@/features/checkout/OrderSummary"
+import { useCartCheck, fetchCartStatus } from "@/hooks/useCartCheck"
+import { ApiError } from "@/services/http"
 
 import Input from "@/components/ui/Input"
 import Button from "@/components/ui/Button"
@@ -23,9 +26,10 @@ function CheckoutPage() {
     // Get cart items and clear cart function from cartStore
     const items = useCartStore((s) => s.items)
     const clearCart = useCartStore((s) => s.clearCart)
+    const removeItem = useCartStore((s) => s.removeItem)
     const navigate = useNavigate()
 
-    // Verify checkout values agains rules defined in Zod
+    // Verify checkout values against rules defined in Zod
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<CheckoutValues>({
         resolver: zodResolver(checkoutSchema),
         defaultValues: { country: "RO" }
@@ -33,9 +37,18 @@ function CheckoutPage() {
 
     // Calculate the cart total from utils/price and count items
     const total = cartTotal(items)
+    const hasSoldItems = items.some((item) => !isAvailable(item.product))
+
+    const removeSoldItems = () => {
+        items
+            .filter((item) => !isAvailable(item.product))
+            .forEach((item) => removeItem(item.product.id))
+    }
 
     // Validate checkout values and try to create an order
     const onSubmit = async (data: CheckoutValues) => {
+        if (hasSoldItems) return
+
         try {
             const order = await createOrder({
                 items: items.map((item) => ({
@@ -50,10 +63,21 @@ function CheckoutPage() {
             toast.success(`Order #${order.id} confirmed! Preparing it now!`)
             navigate("/account")
 
-        } catch {
+        } catch (error) {
+
+            if(error instanceof ApiError && error.status === 409) {
+                toast.error("One of your spooks was just adopted by someone else. We've updated your cart.")
+
+                const { fresh, goneIds } = await fetchCartStatus(useCartStore.getState().items)
+                useCartStore.getState().syncProducts(fresh, goneIds)
+                return
+            }
+
             toast.error("We couldn't place your order. Your cart is safe, please try again.")
         }
     }
+
+    useCartCheck(true)
 
     // Component shown when user did not put products into their cart 
     if (items.length === 0) {
@@ -142,7 +166,23 @@ function CheckoutPage() {
                     
                     {/* Submit button */}
                     <div className="flex flex-col gap-3 pt-2">
-                        <Button type="submit" size="lg" disabled={isSubmitting} className="w-full">
+                        {hasSoldItems && (
+                            <div className="flex flex-col items-center gap-2 text-center">
+                                <p id="checkout-sold-notice" role="status" className="font-body text-sm font-semibold text-bark-900">
+                                    Some pieces in your order have already found a home.
+                                </p>
+                                <Button type="button" variant="secondary" size="sm" onClick={removeSoldItems}>
+                                    Remove sold pieces
+                                </Button>
+                            </div>
+                        )}
+                        <Button
+                            type="submit"
+                            size="lg"
+                            disabled={isSubmitting || hasSoldItems}
+                            aria-describedby={hasSoldItems ? "checkout-sold-notice" : undefined}
+                            className="w-full"
+                        >
                             {isSubmitting ? "Placing order..." : `Place order · ${formatLei(total)}`}
                         </Button>
                         <p className="font-body text-sm text-bark-700 text-center">

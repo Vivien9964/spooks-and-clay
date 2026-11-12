@@ -1,9 +1,11 @@
 
 import { useCartStore } from "@/store/cartStore"
 import { cartTotal, formatLei } from "@/utils/price"
+import { isAvailable } from "@/utils/availability"
 import { useUIStore } from "@/store/uiStore"
 import { useNavigate } from "react-router-dom"
 import { useModalDialog } from "@/hooks/useModalDialog"
+import { useCartCheck } from "@/hooks/useCartCheck"
 import CartItem from "@/features/cart/CartItem"
 import Button from "@/components/ui/Button"
 import { X } from "lucide-react"
@@ -18,11 +20,13 @@ function CartDrawer() {
     const closeCart = useUIStore((s) => s.closeCart)
 
     const drawerRef = useModalDialog<HTMLElement>(isCartOpen, closeCart)
-
+    useCartCheck(isCartOpen)
+    
     if(!isCartOpen) return null;
 
     const total = cartTotal(items)
     const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
+    const hasSoldItems = items.some((item) => !isAvailable(item.product))
 
     const goTo = (path: string) => {
         closeCart()
@@ -90,7 +94,19 @@ function CartDrawer() {
                                 <span className="font-semibold">Total</span>
                                 <span className="font-heading font-semibold text-xl">{formatLei(total)}</span>
                             </div>
-                            <Button variant="primary" size="lg" className="w-full" onClick={() => goTo("/checkout")}>
+                            {hasSoldItems && (
+                                <p id="cart-sold-notice" role="status" className="font-body text-sm font-semibold text-bark-900">
+                                    Remove sold pieces to continue.
+                                </p>
+                            )}
+                            <Button
+                                variant="primary"
+                                size="lg"
+                                className="w-full"
+                                disabled={hasSoldItems}
+                                aria-describedby={hasSoldItems ? "cart-sold-notice" : undefined}
+                                onClick={() => goTo("/checkout")}
+                            >
                                 Checkout
                             </Button>
                             <div className="flex justify-between items-center">
