@@ -45,13 +45,13 @@ public class AuthService {
 
         User user = userRepository.findByEmail(request.email())
                 .orElseGet(() -> {
-                    log.warn("Failed login attempt for email={}", request.email());
+                    log.warn("Failed login attempt");
                     throw new InvalidCredentialsException("Invalid email or password!");
                 });
 
 
         if(!passwordEncoder.matches(request.password(), user.getPassword())) {
-            log.warn("Failed login attempt for email={}", request.email());
+            log.warn("Failed login attempt for user {}", user.getId());
             throw new InvalidCredentialsException("Invalid email or password!");
         }
 

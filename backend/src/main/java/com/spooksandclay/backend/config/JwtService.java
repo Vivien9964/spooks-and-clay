@@ -65,7 +65,7 @@ public class JwtService {
             extractSubject(token);
             return true;
 
-        } catch(JwtException e) {
+        } catch(JwtException | IllegalArgumentException e) {
             return false;
         }
 
