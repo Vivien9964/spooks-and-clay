@@ -84,7 +84,7 @@ public class OrderService {
         return toOrderDto(savedOrder);
     }
 
-    private BigDecimal effectiveUnitPrice(Product product) {
+    static BigDecimal effectiveUnitPrice(Product product) {
         Integer discount = product.getDiscountPercent();
 
         if(!product.isOnSale() || discount == null || discount <= 0) {
