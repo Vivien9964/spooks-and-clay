@@ -44,9 +44,9 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) {
 
         User user = userRepository.findByEmail(request.email())
-                .orElseGet(() -> {
+                .orElseThrow(() -> {
                     log.warn("Failed login attempt");
-                    throw new InvalidCredentialsException("Invalid email or password!");
+                    return new InvalidCredentialsException("Invalid email or password!");
                 });
 
 
