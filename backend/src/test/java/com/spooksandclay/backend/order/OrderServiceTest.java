@@ -2,6 +2,7 @@ package com.spooksandclay.backend.order;
 
 import com.spooksandclay.backend.error.InsufficientStockException;
 import com.spooksandclay.backend.error.ProductNotFoundException;
+import com.spooksandclay.backend.error.UserNotFoundException;
 import com.spooksandclay.backend.product.Product;
 import com.spooksandclay.backend.product.ProductRepository;
 import com.spooksandclay.backend.user.User;
@@ -26,6 +27,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 public class OrderServiceTest {
@@ -48,7 +50,7 @@ public class OrderServiceTest {
     void setUp() {
         user = new User();
         user.setId(1L);
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        lenient().when(userRepository.findById(1L)).thenReturn(Optional.of(user));
     }
 
     private Product product(Long id, String price, boolean onSale, Integer discount) {
@@ -108,6 +110,20 @@ public class OrderServiceTest {
         when(productRepository.findById(10L)).thenReturn(Optional.of(p));
 
         assertThatThrownBy(() -> orderService.create(request(new OrderItemRequest(10L, 1)), 1L)).isInstanceOf(ProductNotFoundException.class);
+        verify(productRepository, never()).decrementStock(anyLong(), anyInt());
+        verify(orderRepository, never()).save(any());
+    }
+
+    @Test
+    void throwsWhenUserNotFound() {
+        assertThatThrownBy(() -> orderService.create(request(new OrderItemRequest(10L,1)), 99L)).isInstanceOf(UserNotFoundException.class);
+        verify(productRepository, never()).decrementStock(anyLong(), anyInt());
+        verify(orderRepository, never()).save(any());
+    }
+
+    @Test
+    void throwsWhenProductNotFound() {
+        assertThatThrownBy(() -> orderService.create(request(new OrderItemRequest(99L, 1)), 1L)).isInstanceOf(ProductNotFoundException.class);
         verify(productRepository, never()).decrementStock(anyLong(), anyInt());
         verify(orderRepository, never()).save(any());
     }
