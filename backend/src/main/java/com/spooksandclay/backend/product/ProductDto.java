@@ -21,7 +21,7 @@ public record ProductDto(
         BigDecimal heightCm,
         BigDecimal widthCm,
         Integer weightG,
-        List<String> materials
-
+        List<String> materials,
+        boolean active
         ) {}
 

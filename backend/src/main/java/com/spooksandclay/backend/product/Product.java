@@ -187,7 +187,11 @@ public class Product {
     }
 
     public void setImages(List<ProductImage> images) {
-        this.images = images;
+
+        this.images.clear();
+        if(images != null) {
+            this.images.addAll(images);
+        }
     }
 
     public void addImage(ProductImage image) {

@@ -45,6 +45,12 @@ public class ProductService {
                 .map(product -> toDto(product));
     }
 
+    public ProductDto getById(Long id) {
+        return productRepository.findById(id)
+                .map(product -> toDto(product))
+                .orElseThrow(() -> new ProductNotFoundException("Product not found!"));
+    }
+
     private ProductDto toDto(Product product) {
 
         List<ProductImageDto> imageDtos = product.getImages().stream().map(img -> new ProductImageDto(img.getSrc(), img.getAlt())).toList();
@@ -66,7 +72,8 @@ public class ProductService {
                 product.getHeightCm(),
                 product.getWidthCm(),
                 product.getWeightG(),
-                List.copyOf(product.getMaterials())
+                List.copyOf(product.getMaterials()),
+                product.isActive()
         );
     }
 
@@ -85,47 +92,36 @@ public class ProductService {
         Product product = new Product();
         product.setName(request.name());
         product.setSlug(request.slug());
-        product.setShortDesc(request.shortDesc());
-        product.setLongDesc(request.longDesc());
-        product.setPrice(request.price());
-        product.setOnSale(request.onSale());
-        product.setDiscountPercent(request.discountPercent());
-        product.setStockCount(request.stockCount());
-        product.setCategory(request.category());
-        product.setImages(toProductImages(request.images()));
-        product.setFeatured(request.featured());
-        product.setHeightCm(request.heightCm());
-        product.setWidthCm(request.widthCm());
-        product.setWeightG(request.weightG());
-        product.setMaterials(request.materials());
-
-        Product savedProduct = productRepository.save(product);
-        return toDto(savedProduct);
+        applyRequest(product, request);
+        return toDto(productRepository.save(product));
     }
 
     public ProductDto update(Long id, CreateProductRequest request) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+       applyRequest(product, request);
+       return toDto(productRepository.save(product));
+    }
 
+    private void applyRequest(Product product, CreateProductRequest request) {
         product.setName(request.name());
-        product.setSlug(request.slug());
         product.setShortDesc(request.shortDesc());
         product.setLongDesc(request.longDesc());
         product.setPrice(request.price());
         product.setOnSale(request.onSale());
-        product.setDiscountPercent(request.discountPercent());
+        product.setDiscountPercent(request.onSale() ? request.discountPercent() : null);
         product.setStockCount(request.stockCount());
         product.setCategory(request.category());
         product.setImages(toProductImages(request.images()));
         product.setFeatured(request.featured());
+        product.setActive(request.active());
         product.setHeightCm(request.heightCm());
         product.setWidthCm(request.widthCm());
         product.setWeightG(request.weightG());
         product.setMaterials(request.materials());
 
-        Product saved = productRepository.save(product);
-        return toDto(saved);
     }
+
 
     public void delete(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found!"));
