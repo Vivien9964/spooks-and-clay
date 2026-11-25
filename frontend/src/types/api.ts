@@ -93,3 +93,8 @@ export type AuthResponseDto = {
     user: UserDto;
 }
 
+export type UploadTicketDto = {
+    uploadUrl: string;
+    fields: Record<string, string>;
+}
+
