@@ -47,6 +47,7 @@ export function toProduct(dto: ProductDto): Product {
         widthCm: dto.widthCm,
         weightG: dto.weightG,
         materials: dto.materials ?? [],
+        isActive: dto.active,
         ...discount
     }
 }

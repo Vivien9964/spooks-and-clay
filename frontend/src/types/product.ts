@@ -27,6 +27,7 @@ export type Product = {
     widthCm: number | null;
     weightG: number | null;
     materials: string[];
+    isActive: boolean;
 } & DiscountInfo
 
 export type CategoryFilter = Category | "all"

@@ -4,7 +4,7 @@ import { useAuthStore } from "@/store/authStore"
 
 
 type HttpOptions = {
-    method?: "GET" | "POST" | "PATCH" | "DELETE";
+    method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
     body?: unknown
 }
 
@@ -54,6 +54,10 @@ async function sendRequest<T>(path: string, options: HttpOptions): Promise<T> {
 
         if(res.status === 401) {
             useAuthStore.getState().logout()
+        }
+
+        if(res.status === 204) {
+            return undefined as T
         }
 
         throw new ApiError(res.status)

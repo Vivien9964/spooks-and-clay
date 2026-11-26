@@ -23,6 +23,7 @@ export type ProductDto = {
     widthCm: number | null;
     weightG: number | null;
     materials: string[];
+    active: boolean;
 }
 
 
@@ -98,3 +99,21 @@ export type UploadTicketDto = {
     fields: Record<string, string>;
 }
 
+export type CreateProductRequestDto = {
+    name: string;
+    slug: string;
+    shortDesc: string;
+    longDesc: string;
+    price: number;
+    onSale: boolean;
+    discountPercent: number | null;
+    stockCount: number;
+    category: Category;
+    images: ProductImage[];
+    featured: boolean;
+    active: boolean;
+    heightCm: number | null;
+    widthCm: number | null;
+    weightG: number | null;
+    materials: string[];
+}
